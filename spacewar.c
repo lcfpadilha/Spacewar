@@ -28,6 +28,13 @@
 #define W 720  // Largura da janela.
 #define H 480  // Altura da janela.
 
+typedef struct {
+    planet world;
+    ship player1, player2;
+    int numberOfProj;
+    projectile *bullets;
+} objects;
+
 int main (int argc, char** argv) {
     /* Caso a biblioteca Xpm não esteja habilitada, o programa não funciona. */
     #ifdef NOXPM 
@@ -63,21 +70,25 @@ int main (int argc, char** argv) {
 
     /* Informações do planeta. */
     leitura = scanf ("%f %f", &world.radius, &world.mass);
+    
+    /* Inicialização da janela e das imagens */
+
+    w = InitGraph (W, H, "Space");
+
+    bg = ReadPic (w, "img/scenery/space.xpm",  NULL);
+
+    world.img = ReadPic (w, "img/scenery/planet.xpm", NULL);
+    world.msk = NewMask (w, world.radius * 2, world.radius * 2);
+    world.aux = ReadPic (w, "img/scenery/planetMask.xpm", world.msk);
 
     /* Tempo total de simulação. */
     leitura = scanf ("%f", &T);
 
     /* Informações da primeira nave. */
-    leitura = scanf ("%s", player1.name);
-    leitura = scanf ("%f", &player1.mass);
-    leitura = scanf ("%f %f", &player1.posX, &player1.posY);
-    leitura = scanf ("%f %f", &player1.velX, &player1.velY);
+    initPlayer (&player1, 1, w);
 
     /* Informações da segunda nave. */
-    leitura = scanf ("%s", player2.name);
-    leitura = scanf ("%f", &player2.mass);
-    leitura = scanf ("%f %f", &player2.posX, &player2.posY);
-    leitura = scanf ("%f %f", &player2.velX, &player2.velY);
+    initPlayer (&player2, 2, w);
 
     /* Informações dos projéteis. */
     leitura = scanf ("%d", &numberOfProj);
@@ -91,92 +102,6 @@ int main (int argc, char** argv) {
         leitura = scanf ("%f %f", &bullets[i].velX, &bullets[i].velY);
         bullets[i].aceX = bullets[i].aceY = 0.0;
     }
-
-    /* Inicialização da janela e das imagens */
-
-    w = InitGraph (W, H, "Space");
-
-    bg = ReadPic (w, "img/scenery/space.xpm",  NULL);
-
-    world.img = ReadPic (w, "img/scenery/planet.xpm", NULL);
-    world.msk = NewMask (w, world.radius * 2, world.radius * 2);
-    world.aux = ReadPic (w, "img/scenery/planetMask.xpm", world.msk);
-
-    /* Definindo as imagens do player1. */ 
-    player1.img[0] =  ReadPic (w, "img/playerOne/playerOne01.xpm", NULL);
-    player1.img[1] =  ReadPic (w, "img/playerOne/playerOne02.xpm", NULL);
-    player1.img[2] =  ReadPic (w, "img/playerOne/playerOne03.xpm", NULL);
-    player1.img[3] =  ReadPic (w, "img/playerOne/playerOne04.xpm", NULL);
-    player1.img[4] =  ReadPic (w, "img/playerOne/playerOne05.xpm", NULL);
-    player1.img[5] =  ReadPic (w, "img/playerOne/playerOne06.xpm", NULL);
-    player1.img[6] =  ReadPic (w, "img/playerOne/playerOne07.xpm", NULL);
-    player1.img[7] =  ReadPic (w, "img/playerOne/playerOne08.xpm", NULL);
-    player1.img[8] =  ReadPic (w, "img/playerOne/playerOne09.xpm", NULL);
-    player1.img[9] =  ReadPic (w, "img/playerOne/playerOne10.xpm", NULL);
-    player1.img[10] = ReadPic (w, "img/playerOne/playerOne11.xpm", NULL);
-    player1.img[11] = ReadPic (w, "img/playerOne/playerOne12.xpm", NULL);
-    player1.img[12] = ReadPic (w, "img/playerOne/playerOne13.xpm", NULL);
-    player1.img[13] = ReadPic (w, "img/playerOne/playerOne14.xpm", NULL);
-    player1.img[14] = ReadPic (w, "img/playerOne/playerOne15.xpm", NULL);
-    player1.img[15] = ReadPic (w, "img/playerOne/playerOne16.xpm", NULL);
-
-    for (i = 0; i < 16; i++)
-        player1.msk[i] = NewMask (w, 46, 46);
-
-    player1.aux[0] =  ReadPic (w, "img/playerMask/playerMask01.xpm", player1.msk[0]);
-    player1.aux[1] =  ReadPic (w, "img/playerMask/playerMask02.xpm", player1.msk[1]);
-    player1.aux[2] =  ReadPic (w, "img/playerMask/playerMask03.xpm", player1.msk[2]);
-    player1.aux[3] =  ReadPic (w, "img/playerMask/playerMask04.xpm", player1.msk[3]);
-    player1.aux[4] =  ReadPic (w, "img/playerMask/playerMask05.xpm", player1.msk[4]);
-    player1.aux[5] =  ReadPic (w, "img/playerMask/playerMask06.xpm", player1.msk[5]);
-    player1.aux[6] =  ReadPic (w, "img/playerMask/playerMask07.xpm", player1.msk[6]);
-    player1.aux[7] =  ReadPic (w, "img/playerMask/playerMask08.xpm", player1.msk[7]);
-    player1.aux[8] =  ReadPic (w, "img/playerMask/playerMask09.xpm", player1.msk[8]);
-    player1.aux[9] =  ReadPic (w, "img/playerMask/playerMask10.xpm", player1.msk[9]);
-    player1.aux[10] = ReadPic (w, "img/playerMask/playerMask11.xpm", player1.msk[10]);
-    player1.aux[11] = ReadPic (w, "img/playerMask/playerMask12.xpm", player1.msk[11]);
-    player1.aux[12] = ReadPic (w, "img/playerMask/playerMask13.xpm", player1.msk[12]);
-    player1.aux[13] = ReadPic (w, "img/playerMask/playerMask14.xpm", player1.msk[13]);
-    player1.aux[14] = ReadPic (w, "img/playerMask/playerMask15.xpm", player1.msk[14]);
-    player1.aux[15] = ReadPic (w, "img/playerMask/playerMask16.xpm", player1.msk[15]);
-
-    /* Definindo as imagens do player2 */
-    player2.img[0] =  ReadPic (w, "img/playerTwo/playerTwo01.xpm", NULL);
-    player2.img[1] =  ReadPic (w, "img/playerTwo/playerTwo02.xpm", NULL);
-    player2.img[2] =  ReadPic (w, "img/playerTwo/playerTwo03.xpm", NULL);
-    player2.img[3] =  ReadPic (w, "img/playerTwo/playerTwo04.xpm", NULL);
-    player2.img[4] =  ReadPic (w, "img/playerTwo/playerTwo05.xpm", NULL);
-    player2.img[5] =  ReadPic (w, "img/playerTwo/playerTwo06.xpm", NULL);
-    player2.img[6] =  ReadPic (w, "img/playerTwo/playerTwo07.xpm", NULL);
-    player2.img[7] =  ReadPic (w, "img/playerTwo/playerTwo08.xpm", NULL);
-    player2.img[8] =  ReadPic (w, "img/playerTwo/playerTwo09.xpm", NULL);
-    player2.img[9] =  ReadPic (w, "img/playerTwo/playerTwo10.xpm", NULL);
-    player2.img[10] = ReadPic (w, "img/playerTwo/playerTwo11.xpm", NULL);
-    player2.img[11] = ReadPic (w, "img/playerTwo/playerTwo12.xpm", NULL);
-    player2.img[12] = ReadPic (w, "img/playerTwo/playerTwo13.xpm", NULL);
-    player2.img[13] = ReadPic (w, "img/playerTwo/playerTwo14.xpm", NULL);
-    player2.img[14] = ReadPic (w, "img/playerTwo/playerTwo15.xpm", NULL);
-    player2.img[15] = ReadPic (w, "img/playerTwo/playerTwo16.xpm", NULL);
-
-    for (i = 0; i < 16; i++)
-        player2.msk[i] = NewMask (w, 46, 46);
-
-    player2.aux[0] =  ReadPic (w, "img/playerMask/playerMask01.xpm", player2.msk[0]);
-    player2.aux[1] =  ReadPic (w, "img/playerMask/playerMask02.xpm", player2.msk[1]);
-    player2.aux[2] =  ReadPic (w, "img/playerMask/playerMask03.xpm", player2.msk[2]);
-    player2.aux[3] =  ReadPic (w, "img/playerMask/playerMask04.xpm", player2.msk[3]);
-    player2.aux[4] =  ReadPic (w, "img/playerMask/playerMask05.xpm", player2.msk[4]);
-    player2.aux[5] =  ReadPic (w, "img/playerMask/playerMask06.xpm", player2.msk[5]);
-    player2.aux[6] =  ReadPic (w, "img/playerMask/playerMask07.xpm", player2.msk[6]);
-    player2.aux[7] =  ReadPic (w, "img/playerMask/playerMask08.xpm", player2.msk[7]);
-    player2.aux[8] =  ReadPic (w, "img/playerMask/playerMask09.xpm", player2.msk[8]);
-    player2.aux[9] =  ReadPic (w, "img/playerMask/playerMask10.xpm", player2.msk[9]);
-    player2.aux[10] = ReadPic (w, "img/playerMask/playerMask11.xpm", player2.msk[10]);
-    player2.aux[11] = ReadPic (w, "img/playerMask/playerMask12.xpm", player2.msk[11]);
-    player2.aux[12] = ReadPic (w, "img/playerMask/playerMask13.xpm", player2.msk[12]);
-    player2.aux[13] = ReadPic (w, "img/playerMask/playerMask14.xpm", player2.msk[13]);
-    player2.aux[14] = ReadPic (w, "img/playerMask/playerMask15.xpm", player2.msk[14]);
-    player2.aux[15] = ReadPic (w, "img/playerMask/playerMask16.xpm", player2.msk[15]);
 
     /* Definindo as imagens dos projéteis. */
     bulletImg[0] =  ReadPic (w, "img/bullet/bullet01.xpm", NULL);

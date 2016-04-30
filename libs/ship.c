@@ -73,3 +73,87 @@ void showShip (ship player, WINDOW *w) {
     PutPic (w, player.img[index], 0, 0, 46, 46, x, y);
     UnSetMask (w);
 }
+
+void initPlayer (ship *p, int numberOfPlayer, WINDOW *w) {
+    int i;
+    scanf ("%s", p->name);
+    scanf ("%f", &p->mass);
+    scanf ("%f %f", &p->posX, &p->posY);
+    scanf ("%f %f", &p->velX, &p->velY);
+    p->aceX = p->aceY = 0.0;
+
+    for (i = 0; i < 16; i++)
+        p->msk[i] = NewMask (w, 46, 46);
+
+    if (numberOfPlayer == 1) {
+        p->img[0] =  ReadPic (w, "img/playerOne/playerOne01.xpm", NULL);
+        p->img[1] =  ReadPic (w, "img/playerOne/playerOne02.xpm", NULL);
+        p->img[2] =  ReadPic (w, "img/playerOne/playerOne03.xpm", NULL);
+        p->img[3] =  ReadPic (w, "img/playerOne/playerOne04.xpm", NULL);
+        p->img[4] =  ReadPic (w, "img/playerOne/playerOne05.xpm", NULL);
+        p->img[5] =  ReadPic (w, "img/playerOne/playerOne06.xpm", NULL);
+        p->img[6] =  ReadPic (w, "img/playerOne/playerOne07.xpm", NULL);
+        p->img[7] =  ReadPic (w, "img/playerOne/playerOne08.xpm", NULL);
+        p->img[8] =  ReadPic (w, "img/playerOne/playerOne09.xpm", NULL);
+        p->img[9] =  ReadPic (w, "img/playerOne/playerOne10.xpm", NULL);
+        p->img[10] = ReadPic (w, "img/playerOne/playerOne11.xpm", NULL);
+        p->img[11] = ReadPic (w, "img/playerOne/playerOne12.xpm", NULL);
+        p->img[12] = ReadPic (w, "img/playerOne/playerOne13.xpm", NULL);
+        p->img[13] = ReadPic (w, "img/playerOne/playerOne14.xpm", NULL);
+        p->img[14] = ReadPic (w, "img/playerOne/playerOne15.xpm", NULL);
+        p->img[15] = ReadPic (w, "img/playerOne/playerOne16.xpm", NULL);
+
+        p->aux[0] =  ReadPic (w, "img/playerMask/playerMask01.xpm", p->msk[0]);
+        p->aux[1] =  ReadPic (w, "img/playerMask/playerMask02.xpm", p->msk[1]);
+        p->aux[2] =  ReadPic (w, "img/playerMask/playerMask03.xpm", p->msk[2]);
+        p->aux[3] =  ReadPic (w, "img/playerMask/playerMask04.xpm", p->msk[3]);
+        p->aux[4] =  ReadPic (w, "img/playerMask/playerMask05.xpm", p->msk[4]);
+        p->aux[5] =  ReadPic (w, "img/playerMask/playerMask06.xpm", p->msk[5]);
+        p->aux[6] =  ReadPic (w, "img/playerMask/playerMask07.xpm", p->msk[6]);
+        p->aux[7] =  ReadPic (w, "img/playerMask/playerMask08.xpm", p->msk[7]);
+        p->aux[8] =  ReadPic (w, "img/playerMask/playerMask09.xpm", p->msk[8]);
+        p->aux[9] =  ReadPic (w, "img/playerMask/playerMask10.xpm", p->msk[9]);
+        p->aux[10] = ReadPic (w, "img/playerMask/playerMask11.xpm", p->msk[10]);
+        p->aux[11] = ReadPic (w, "img/playerMask/playerMask12.xpm", p->msk[11]);
+        p->aux[12] = ReadPic (w, "img/playerMask/playerMask13.xpm", p->msk[12]);
+        p->aux[13] = ReadPic (w, "img/playerMask/playerMask14.xpm", p->msk[13]);
+        p->aux[14] = ReadPic (w, "img/playerMask/playerMask15.xpm", p->msk[14]);
+        p->aux[15] = ReadPic (w, "img/playerMask/playerMask16.xpm", p->msk[15]);
+    }
+
+    else {
+        p->img[0] =  ReadPic (w, "img/playerTwo/playerTwo01.xpm", NULL);
+        p->img[1] =  ReadPic (w, "img/playerTwo/playerTwo02.xpm", NULL);
+        p->img[2] =  ReadPic (w, "img/playerTwo/playerTwo03.xpm", NULL);
+        p->img[3] =  ReadPic (w, "img/playerTwo/playerTwo04.xpm", NULL);
+        p->img[4] =  ReadPic (w, "img/playerTwo/playerTwo05.xpm", NULL);
+        p->img[5] =  ReadPic (w, "img/playerTwo/playerTwo06.xpm", NULL);
+        p->img[6] =  ReadPic (w, "img/playerTwo/playerTwo07.xpm", NULL);
+        p->img[7] =  ReadPic (w, "img/playerTwo/playerTwo08.xpm", NULL);
+        p->img[8] =  ReadPic (w, "img/playerTwo/playerTwo09.xpm", NULL);
+        p->img[9] =  ReadPic (w, "img/playerTwo/playerTwo10.xpm", NULL);
+        p->img[10] = ReadPic (w, "img/playerTwo/playerTwo11.xpm", NULL);
+        p->img[11] = ReadPic (w, "img/playerTwo/playerTwo12.xpm", NULL);
+        p->img[12] = ReadPic (w, "img/playerTwo/playerTwo13.xpm", NULL);
+        p->img[13] = ReadPic (w, "img/playerTwo/playerTwo14.xpm", NULL);
+        p->img[14] = ReadPic (w, "img/playerTwo/playerTwo15.xpm", NULL);
+        p->img[15] = ReadPic (w, "img/playerTwo/playerTwo16.xpm", NULL);
+
+        p->aux[0] =  ReadPic (w, "img/playerMask/playerMask01.xpm", p->msk[0]);
+        p->aux[1] =  ReadPic (w, "img/playerMask/playerMask02.xpm", p->msk[1]);
+        p->aux[2] =  ReadPic (w, "img/playerMask/playerMask03.xpm", p->msk[2]);
+        p->aux[3] =  ReadPic (w, "img/playerMask/playerMask04.xpm", p->msk[3]);
+        p->aux[4] =  ReadPic (w, "img/playerMask/playerMask05.xpm", p->msk[4]);
+        p->aux[5] =  ReadPic (w, "img/playerMask/playerMask06.xpm", p->msk[5]);
+        p->aux[6] =  ReadPic (w, "img/playerMask/playerMask07.xpm", p->msk[6]);
+        p->aux[7] =  ReadPic (w, "img/playerMask/playerMask08.xpm", p->msk[7]);
+        p->aux[8] =  ReadPic (w, "img/playerMask/playerMask09.xpm", p->msk[8]);
+        p->aux[9] =  ReadPic (w, "img/playerMask/playerMask10.xpm", p->msk[9]);
+        p->aux[10] = ReadPic (w, "img/playerMask/playerMask11.xpm", p->msk[10]);
+        p->aux[11] = ReadPic (w, "img/playerMask/playerMask12.xpm", p->msk[11]);
+        p->aux[12] = ReadPic (w, "img/playerMask/playerMask13.xpm", p->msk[12]);
+        p->aux[13] = ReadPic (w, "img/playerMask/playerMask14.xpm", p->msk[13]);
+        p->aux[14] = ReadPic (w, "img/playerMask/playerMask15.xpm", p->msk[14]);
+        p->aux[15] = ReadPic (w, "img/playerMask/playerMask16.xpm", p->msk[15]);
+    }
+}
