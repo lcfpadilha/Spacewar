@@ -1,0 +1,31 @@
+Nomes: Gustavo Henrique Faustino Silva        Números USP: 9298960 
+       Leonardo de Carvalho F. P. Aguilar                  9298295
+       Luís Felipe de Melo Costa Silva                     9297961
+
+README
+
+Aqui apresentamos uma breve descrição sobre o nosso programa. Ele é composto por
+um módulo principal e outros seis módulos, que são:
+
+- spacewar.c: Módulo principal, que controla todos os outros. É responsável 
+pelas variáveis utilizadas na simulação. Ele as declara, atribui valores a elas,
+chama a função de simulação e depois desaloca e fecha o que é necessário.
+
+- simulation.c: Realiza a simulação da física. Enquanto isso, usa funções de 
+outros módulos para isso, como as funções que trabalham com o planeta, as naves 
+e com os projéteis (calculando e desenhando).
+
+- planet.c: Implementa a estrutura de dados que é o planeta na simulação e tem a 
+função que o desenha durante a simulação.
+
+- ship.c: Tem o mesmo que o planet.c, só que para as naves, mais as funções que 
+calculam aceleração e as que atualizam os dados das naves.
+
+- projectile.c: Análogo para os projéteis.
+
+- getIndex.c: Possui uma única função, que determina a direção para qual a nave 
+ou os projéteis estão. Por ser utilizada por mais de um módulo (ship.c e 
+projectile.c), a função ficou em um módulo separado.
+
+- xwc.c: Biblioteca de funções de desenho, concedida pelo professor.
+

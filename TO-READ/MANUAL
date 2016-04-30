@@ -1,0 +1,48 @@
+Nomes: Gustavo Henrique Faustino Silva        Números USP: 9298960 
+       Leonardo de Carvalho F. P. Aguilar                  9298295
+       Luís Felipe de Melo Costa Silva                     9297961
+
+Manual de Usuário para SPACEWAR
+
+- SPACEWAR é, até agora, um simulador de espaço sideral. Simula 2 naves e alguns
+projéteis ao redor de um planeta.
+
+PARA USAR
+
+- Você deve compilar os arquivos. Basta rodar o Makefile no terminal, obviamen-
+te, na pasta onde eles estão, assim:
+
+$ make
+
+- Depois disso, já pode executar o programa, da seguinte forma:
+
+$ ./spacewar t < entrada
+
+- Onde t é o parâmetro que representa de quanto em quanto tempo as simulações
+serão geradas e entrada é um arquivo de texto com o seguinte conteúdo:
+A entrada será fornecida em um arquivo com o seguinte formato:
+
+	- Na primeira linha estão os parâmetros globais, separados por espaço:
+		1. Tamanho do planeta (raio).
+		2. Massa do planeta.
+		3. Tempo total de simulação.
+	
+	- Na segunda linha está a descrição da primeira nave, com os seguintes 
+	campos separados por espaço:
+		1. nome — nome da nave, para referência posterior.
+		2. massa — massa da nave.
+		3. pos x — coordenada x da posição da nave.
+		4. pos y — coordenada y da posição da nave.
+		5. vel x — componente x da velocidade da nave.
+		6. vel y — componente y da velocidade da nave.
+	
+	- A terceira linha descreve a segunda nave, da mesma forma.
+	- A quarta linha indicará o número de projéteis e a duração (tempo de
+	vida) deles.
+	- As linhas seguintes conterão a descrição de cada projétil, da mesma
+	forma que nas naves, mas sem o campo nome.
+
+- Você também pode usar a entrada padrão! Fique à vontade!
+
+- Depois disso o programa gerará uma janela onde você poderá ver a simulação com
+os corpos a cada instante t até o tempo total de simulação!
