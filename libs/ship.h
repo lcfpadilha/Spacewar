@@ -27,6 +27,7 @@
 // direção x), aceY, (análogo para Y), img, aux e msk (para a geração de 
 // imagens). As úlimas 3 são vetores com 16 posições, onde cada posição 
 // representa um ângulo (ver em img/player*). */
+
 typedef struct {
     char name[10];
     float mass, posX, posY, velX, velY, aceX, aceY;
@@ -51,6 +52,7 @@ ship increaseTimeShip (ship player, int maxX, int minX,
 /* Essa função imprime a nave player na tela w. */
 void showShip (ship player, WINDOW *w);
 
-void initPlayer (ship *p, int numberOfPlayer, WINDOW *w);
+/* Inicializa a nave p identificada por playerID com as imagens na tela w */
+void initPlayer (ship *p, int playerID, WINDOW *w);
 
 #endif

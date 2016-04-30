@@ -31,6 +31,7 @@ typedef struct {
 /* Função que imprime o planeta e o background na tela w.*/
 void showScene (planet world, WINDOW *w, PIC bg);
 
+/* Inicializa o planeta apontado por world, com as imagens na tela w*/
 void initPlanet (planet *world, WINDOW *w);
 
 #endif 

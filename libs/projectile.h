@@ -46,4 +46,12 @@ projectile increaseTimeProjectile (projectile p, int maxX, int minX,
 // bulletImg e bulletMsk, supondo que eles possuem 16 imagens. */
 void showBullet (projectile bullet, WINDOW *w, PIC bulletImg[], MASK bulletMsk[]);
 
+/* Recebe um ponteiro para n, um ponteiro para t e retorna um vetor de
+   projectile com n elementos com os valores recebidos da entrada padrão.*/
+projectile *initProj (int *n, float *t);
+
+/* Inicializa as 16 imagens dos projéteis e suas respectivas mascaras em
+   bulletImg e bulletMsk com auxilio da bulletAux na janela w.           */
+void initProjImage (PIC *bulletImg, PIC *bulletMsk, PIC *bulletAux, WINDOW *w);
+
 #endif

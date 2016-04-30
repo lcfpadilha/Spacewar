@@ -67,3 +67,64 @@ void showBullet (projectile bullet, WINDOW *w, PIC bulletImg[], MASK bulletMsk[]
     PutPic (w, bulletImg[index], 0, 0, 10, 10, x, y);
     UnSetMask (w);
 }
+
+projectile *initProj (int *n, float *t) {
+    int ret, i;
+    projectile *bullets;
+
+    ret = scanf ("%d", n);
+    ret = scanf ("%f", t);
+
+    bullets = malloc ((*n) * (sizeof (projectile)));
+
+    for (i = 0; i < (*n); i++) {
+        ret = scanf ("%f", &bullets[i].mass);
+        ret = scanf ("%f %f", &bullets[i].posX, &bullets[i].posY);
+        ret = scanf ("%f %f", &bullets[i].velX, &bullets[i].velY);
+        bullets[i].aceX = bullets[i].aceY = 0.0;
+    }
+
+    return bullets;
+}
+
+void initProjImage (PIC *bulletImg, PIC *bulletMsk, PIC *bulletAux, WINDOW *w) {
+    int i;
+
+    /* Definindo as imagens dos projéteis. */
+    bulletImg[0] =  ReadPic (w, "img/bullet/bullet01.xpm", NULL);
+    bulletImg[1] =  ReadPic (w, "img/bullet/bullet02.xpm", NULL);
+    bulletImg[2] =  ReadPic (w, "img/bullet/bullet03.xpm", NULL);
+    bulletImg[3] =  ReadPic (w, "img/bullet/bullet04.xpm", NULL);
+    bulletImg[4] =  ReadPic (w, "img/bullet/bullet05.xpm", NULL);
+    bulletImg[5] =  ReadPic (w, "img/bullet/bullet06.xpm", NULL);
+    bulletImg[6] =  ReadPic (w, "img/bullet/bullet07.xpm", NULL);
+    bulletImg[7] =  ReadPic (w, "img/bullet/bullet08.xpm", NULL);
+    bulletImg[8] =  ReadPic (w, "img/bullet/bullet09.xpm", NULL);
+    bulletImg[9] =  ReadPic (w, "img/bullet/bullet10.xpm", NULL);
+    bulletImg[10] = ReadPic (w, "img/bullet/bullet11.xpm", NULL);
+    bulletImg[11] = ReadPic (w, "img/bullet/bullet12.xpm", NULL);
+    bulletImg[12] = ReadPic (w, "img/bullet/bullet13.xpm", NULL);
+    bulletImg[13] = ReadPic (w, "img/bullet/bullet14.xpm", NULL);
+    bulletImg[14] = ReadPic (w, "img/bullet/bullet15.xpm", NULL);
+    bulletImg[15] = ReadPic (w, "img/bullet/bullet16.xpm", NULL);
+
+    for (i = 0; i < 16; i++)
+        bulletMsk[i] =  NewMask (w, 10, 10);
+
+    bulletAux[0] =  ReadPic (w, "img/bulletMask/bulletMask01.xpm", bulletMsk[0]);
+    bulletAux[1] =  ReadPic (w, "img/bulletMask/bulletMask02.xpm", bulletMsk[1]);
+    bulletAux[2] =  ReadPic (w, "img/bulletMask/bulletMask03.xpm", bulletMsk[2]);
+    bulletAux[3] =  ReadPic (w, "img/bulletMask/bulletMask04.xpm", bulletMsk[3]);
+    bulletAux[4] =  ReadPic (w, "img/bulletMask/bulletMask05.xpm", bulletMsk[4]);
+    bulletAux[5] =  ReadPic (w, "img/bulletMask/bulletMask06.xpm", bulletMsk[5]);
+    bulletAux[6] =  ReadPic (w, "img/bulletMask/bulletMask07.xpm", bulletMsk[6]);
+    bulletAux[7] =  ReadPic (w, "img/bulletMask/bulletMask08.xpm", bulletMsk[7]);
+    bulletAux[8] =  ReadPic (w, "img/bulletMask/bulletMask09.xpm", bulletMsk[8]);
+    bulletAux[9] =  ReadPic (w, "img/bulletMask/bulletMask10.xpm", bulletMsk[9]);
+    bulletAux[10] = ReadPic (w, "img/bulletMask/bulletMask11.xpm", bulletMsk[10]);
+    bulletAux[11] = ReadPic (w, "img/bulletMask/bulletMask12.xpm", bulletMsk[11]);
+    bulletAux[12] = ReadPic (w, "img/bulletMask/bulletMask13.xpm", bulletMsk[12]);
+    bulletAux[13] = ReadPic (w, "img/bulletMask/bulletMask14.xpm", bulletMsk[13]);
+    bulletAux[14] = ReadPic (w, "img/bulletMask/bulletMask15.xpm", bulletMsk[14]);
+    bulletAux[15] = ReadPic (w, "img/bulletMask/bulletMask16.xpm", bulletMsk[15]);
+}

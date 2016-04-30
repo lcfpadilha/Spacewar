@@ -74,17 +74,20 @@ void showShip (ship player, WINDOW *w) {
     UnSetMask (w);
 }
 
-void initPlayer (ship *p, int numberOfPlayer, WINDOW *w) {
+void initPlayer (ship *p, int playerID, WINDOW *w) {
     int i, ret;
     
+    /* Leitura dos dados do player */
     ret = scanf ("%s %f %f %f %f %f", p->name, &p->mass, &p->posX, &p->posY, &p->velX, &p->velY);
 
     p->aceX = p->aceY = 0.0;
-
+    
+    /* Inicializa as máscaras */
     for (i = 0; i < 16; i++)
         p->msk[i] = NewMask (w, 46, 46);
 
-    if (numberOfPlayer == 1) {
+    /* Inicializa as imagens do player 1*/
+    if (playerID == 1) {
         p->img[0] =  ReadPic (w, "img/playerOne/playerOne01.xpm", NULL);
         p->img[1] =  ReadPic (w, "img/playerOne/playerOne02.xpm", NULL);
         p->img[2] =  ReadPic (w, "img/playerOne/playerOne03.xpm", NULL);
@@ -120,6 +123,7 @@ void initPlayer (ship *p, int numberOfPlayer, WINDOW *w) {
         p->aux[15] = ReadPic (w, "img/playerMask/playerMask16.xpm", p->msk[15]);
     }
 
+    /* Inicializa as imagens do player 2 */
     else {
         p->img[0] =  ReadPic (w, "img/playerTwo/playerTwo01.xpm", NULL);
         p->img[1] =  ReadPic (w, "img/playerTwo/playerTwo02.xpm", NULL);
