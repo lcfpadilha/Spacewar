@@ -31,3 +31,13 @@ void showScene (planet world, WINDOW *w, PIC bg) {
     PutPic (w, world.img, 0, 0, radius * 2, radius * 2, x, y);
     UnSetMask (w);
 }
+
+void initPlanet (planet *world, WINDOW *w) {
+	/* Informações do planeta. */
+    scanf ("%f %f", &world->radius, &world->mass);
+
+    /* Imagens relacionadas ao planeta. */
+    world->img = ReadPic (w, "img/scenery/planet.xpm", NULL);
+    world->msk = NewMask (w, world->radius * 2, world->radius * 2);
+    world->aux = ReadPic (w, "img/scenery/planetMask.xpm", world->msk);
+}

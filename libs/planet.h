@@ -28,9 +28,9 @@ typedef struct {
     MASK msk;
 } planet;
 
-void initPlanetPics (planet x, WINDOW *w);
-
 /* Função que imprime o planeta e o background na tela w.*/
 void showScene (planet world, WINDOW *w, PIC bg);
+
+void initPlanet (planet *world, WINDOW *w);
 
 #endif 

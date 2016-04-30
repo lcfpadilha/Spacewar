@@ -75,11 +75,10 @@ void showShip (ship player, WINDOW *w) {
 }
 
 void initPlayer (ship *p, int numberOfPlayer, WINDOW *w) {
-    int i;
-    scanf ("%s", p->name);
-    scanf ("%f", &p->mass);
-    scanf ("%f %f", &p->posX, &p->posY);
-    scanf ("%f %f", &p->velX, &p->velY);
+    int i, ret;
+    
+    ret = scanf ("%s %f %f %f %f %f", p->name, &p->mass, &p->posX, &p->posY, &p->velX, &p->velY);
+
     p->aceX = p->aceY = 0.0;
 
     for (i = 0; i < 16; i++)

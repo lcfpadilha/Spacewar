@@ -68,29 +68,23 @@ int main (int argc, char** argv) {
     /* Parâmetro de intervalo de atualização. */
     t = atof (argv[1]);
 
-    /* Informações do planeta. */
-    leitura = scanf ("%f %f", &world.radius, &world.mass);
-    
-    /* Inicialização da janela e das imagens */
-
+    /* Inicialização da janela e o background */
     w = InitGraph (W, H, "Space");
-
     bg = ReadPic (w, "img/scenery/space.xpm",  NULL);
 
-    world.img = ReadPic (w, "img/scenery/planet.xpm", NULL);
-    world.msk = NewMask (w, world.radius * 2, world.radius * 2);
-    world.aux = ReadPic (w, "img/scenery/planetMask.xpm", world.msk);
+    /* Inicialização do planeta */
+    initPlanet (&world, w);
 
     /* Tempo total de simulação. */
     leitura = scanf ("%f", &T);
 
-    /* Informações da primeira nave. */
+    /* Inicialização da primeira nave. */
     initPlayer (&player1, 1, w);
 
-    /* Informações da segunda nave. */
+    /* Inicialização da segunda nave. */
     initPlayer (&player2, 2, w);
 
-    /* Informações dos projéteis. */
+    /* Inicialização dos projéteis. */
     leitura = scanf ("%d", &numberOfProj);
     leitura = scanf ("%f", &timeOfProj);
 
