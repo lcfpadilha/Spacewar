@@ -96,7 +96,7 @@ int main (int argc, char** argv) {
         accelerateShipToShip  (&player2, player1);
 
         /* Calculando a aceleração dos projeteis, se eles (ainda) existirem. */
-        if (spentTime < timeOfProj)
+        if (bullets != NULL && spentTime < timeOfProj)
             for (i = 0; i < numberOfProj; i++) {
                 accelerateShipToProj (&player1, bullets[i]);
                 accelerateShipToProj (&player2, bullets[i]);
@@ -109,6 +109,10 @@ int main (int argc, char** argv) {
                     if (i != j)
                         accelerateProjToProj (&bullets[i], bullets[j]);
             }
+        else {
+        	free (bullets);
+        	bullets = NULL;
+        }
 
         /* Mudando a posição dos objetos e imprimindo a atualização. */
         player1 = increaseTimeShip (player1, W/2, -W/2, H/2, -H/2, t);
@@ -139,7 +143,7 @@ int main (int argc, char** argv) {
     }
 
     /* Desalocando o espaço e fechando a janela. */
-    free (bullets);
+    if (spentTime >= timeOfProj) free (bullets);
     WDestroy(w);
     CloseGraph();
 
