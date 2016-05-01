@@ -16,6 +16,7 @@
 #include <math.h>
 #include "getIndex.h"
 #include "ship.h"
+#include "error.h"
 
 
 #define G 1.0        /* Constante gravitacional universal. */
@@ -99,7 +100,8 @@ void initPlayer (ship *p, int playerID, WINDOW *w) {
     
     /* Leitura dos dados do player */
     ret = scanf ("%s %f %f %f %f %f", p->name, &p->mass, &p->posX, &p->posY, &p->velX, &p->velY);
-
+    hasError (ret != 6);
+    
     p->aceX = p->aceY = 0.0;
     
     /* Inicializa as máscaras */

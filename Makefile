@@ -4,8 +4,8 @@ CFLAGS= -Wall -g -pedantic -O2
 all : spacewar
 
 ifndef NOXPM
-spacewar : spacewar.o libs/planet.o libs/ship.o libs/projectile.o libs/getIndex.o libs/xwc.o 
-	${CC} ${CFLAGS} -o spacewar spacewar.o libs/planet.o libs/ship.o libs/projectile.o libs/getIndex.o libs/xwc.o -lm -lXpm -lX11 
+spacewar : spacewar.o libs/planet.o libs/ship.o libs/projectile.o libs/getIndex.o libs/xwc.o  libs/error.o
+	${CC} ${CFLAGS} -o spacewar spacewar.o libs/planet.o libs/ship.o libs/projectile.o libs/getIndex.o libs/xwc.o libs/error.o -lm -lXpm -lX11 
 else
 spacewar :
 	echo Este programa só funciona com a biblioteca Xpm instalada
@@ -22,3 +22,6 @@ libs/projectile.o : libs/projectile.c
 libs/getIndex.o : libs/getIndex.c
 
 libs/xwc.o : libs/xwc.c
+
+libs/error.o : libs/error.c
+

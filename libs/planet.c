@@ -10,13 +10,14 @@
  *  Arquivo .c de planet.c
  *
  ******************************************************************************/ 
-
+#include <stdio.h>
 #include "planet.h"
+#include "error.h"
 
-#define W 720         // Largura da imagem.
-#define H 480         // Altura da imagem.
-#define CENTERX 360   // Centro x da imagem.
-#define CENTERY 240   // Centro y da imagem.
+#define W 720         /* Largura da imagem.  */
+#define H 480         /* Altura da imagem.   */
+#define CENTERX 360   /* Centro x da imagem. */
+#define CENTERY 240   /* Centro y da imagem. */
 
 void showScene (planet world, WINDOW *w, PIC bg) {
     int radius = world.radius;
@@ -33,8 +34,11 @@ void showScene (planet world, WINDOW *w, PIC bg) {
 }
 
 void initPlanet (planet *world, WINDOW *w) {
+    int ret;
+
 	/* Informações do planeta. */
-    scanf ("%f %f", &world->radius, &world->mass);
+    ret = scanf ("%f %f", &world->radius, &world->mass);
+    hasError (ret != 2);
 
     /* Imagens relacionadas ao planeta. */
     world->img = ReadPic (w, "img/scenery/planet.xpm", NULL);

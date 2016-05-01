@@ -20,6 +20,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <math.h>
+#include "libs/error.h"
 #include "libs/planet.h"
 #include "libs/ship.h"
 #include "libs/projectile.h"
@@ -67,6 +68,8 @@ int main (int argc, char** argv) {
     /* Tempo total de simulação. */
     ret = scanf ("%f", &T);
 
+    hasError (ret != 1);
+
     /* Inicialização da primeira nave. */
     initPlayer (&player1, 1, w);
 
@@ -93,7 +96,7 @@ int main (int argc, char** argv) {
         accelerateShipToShip  (&player2, player1);
 
         /* Calculando a aceleração dos projeteis, se eles (ainda) existirem. */
-        if (spentTime < timeOfProj) {
+        if (spentTime < timeOfProj)
             for (i = 0; i < numberOfProj; i++) {
                 accelerateShipToProj (&player1, bullets[i]);
                 accelerateShipToProj (&player2, bullets[i]);
@@ -106,7 +109,6 @@ int main (int argc, char** argv) {
                     if (i != j)
                         accelerateProjToProj (&bullets[i], bullets[j]);
             }
-        }
 
         /* Mudando a posição dos objetos e imprimindo a atualização. */
         player1 = increaseTimeShip (player1, W/2, -W/2, H/2, -H/2, t);

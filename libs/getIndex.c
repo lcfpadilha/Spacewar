@@ -13,7 +13,7 @@
 #include <math.h>
 #include "getIndex.h"
 
-#define PI 3.14159265  // Pi.
+#define PI 3.14159265  /* Pi. */
 
 int getIndexByOrientation (double velX, double velY) {
     double angle = atan (velY / velX) * 180.0 / PI;

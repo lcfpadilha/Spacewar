@@ -16,6 +16,7 @@
 #include <math.h>
 #include "getIndex.h"
 #include "projectile.h"
+#include "error.h"
 
 #define G 1.0        /* Constante gravitacional universal. */
 #define CENTERX 360  /* Centro x da imagem. */
@@ -91,15 +92,16 @@ projectile *initProj (int *n, float *t) {
     int ret, i;
     projectile *bullets;
 
-    ret = scanf ("%d", n);
-    ret = scanf ("%f", t);
+    ret = scanf ("%d %f", n, t);
+    hasError (ret != 2);
 
     bullets = malloc ((*n) * (sizeof (projectile)));
 
     for (i = 0; i < (*n); i++) {
         ret = scanf ("%f", &bullets[i].mass);
-        ret = scanf ("%f %f", &bullets[i].posX, &bullets[i].posY);
-        ret = scanf ("%f %f", &bullets[i].velX, &bullets[i].velY);
+        hasError (ret != 1);
+        ret = scanf ("%f %f %f %f", &bullets[i].posX, &bullets[i].posY, &bullets[i].velX, &bullets[i].velY);
+        hasError (ret != 4);
         bullets[i].aceX = bullets[i].aceY = 0.0;
     }
 
