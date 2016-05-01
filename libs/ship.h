@@ -12,7 +12,6 @@
  *
  ******************************************************************************/ 
 
-
 #ifndef XWC_H
     #define XWC_H
     #include "xwc.h"
@@ -20,7 +19,6 @@
 
 #ifndef SHIP_H
 #define SHIP_H
-
 /* Cada nave é declarada como uma estrutura que possui os campos name (nome, de 
 // até 10 caracteres), mass (massa), posX (coordenada x), posY (coordenada Y), 
 // velX (velocidade na direção x), velY (análogo para Y), aceX (aceleração na 
@@ -35,16 +33,27 @@ typedef struct {
     PIC aux[16];
     MASK msk[16];
 } ship;
+#include "projectile.h"
+#include "planet.h"
 
-/* Esta função recebe uma ship s, os reais mass, posX, posY e um char de comando
-   c. Devolve a aceleração gravitacional de s, no eixo dado por c (ou x ou y) em
-   relação a um corpo localizado na posicao x = posX e na posicao y = posY com 
-   uma massa mass. 
-*/
-float accelerateShip (ship s, float mass, float posX, float posY, char c);
+/* Recebe um ponteiro para ship player e um planet world e 
+   soma a aceleração atual de player (tanto no eixo x quanto 
+   no eixo y) com a aceleração gravitacional gerada por world. */
+void accelerateShipToWorld (ship *player, planet world);
+
+/* Recebe um ponteiro para ship player e um ship other e 
+   soma a aceleração atual de player (tanto no eixo x quanto 
+   no eixo y) com a aceleração gravitacional gerada por other. */
+void accelerateShipToShip (ship *player, ship other);
+
+/* Recebe um ponteiro para ship player e um projectile b e 
+   soma a aceleração atual de player (tanto no eixo x quanto 
+   no eixo y) com a aceleração gravitacional gerada por b. */
+void accelerateShipToProj (ship *player, projectile b);
 
 /* Esta função recebe uma ship player e um real dt. Devolve uma ship que 
-   representa player logo apos a variação de tempo dt.
+   representa player logo apos a variação de tempo dt, de tal forma que
+   suas coordenadas x e y variem entre minX e minY a maxX e maxY
 */
 ship increaseTimeShip (ship player, int maxX, int minX, 
                                     int maxY, int minY, float dt);

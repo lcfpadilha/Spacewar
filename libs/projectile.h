@@ -10,8 +10,7 @@
  *  Tem uma estrutura de bala, é responsável pelas funções de aceleração e 
  *  incremento de tempo delas, além de exibi-las na tela.
  *
- ******************************************************************************/ 
-
+ ******************************************************************************/
 #ifndef XWC_H
     #define XWC_H
     #include "xwc.h"
@@ -28,13 +27,23 @@ typedef struct {
     float mass, posX, posY, velX, velY, aceX, aceY;
 } projectile;
 
-/* Esta função recebe um projetile p, os reais mass, posX, posY e um char de 
-   comando c. Devolve a aceleração gravitacional de p, no eixo dado por c
-   (ou x ou y) em relação a um corpo localizado na posicao x = posX e na posicao
-   y = posY com uma massa mass.
-*/
-float accelerateProjectile (projectile p, float mass, float posX, float posY, 
-                            char c);
+#include "planet.h"
+#include "ship.h"
+
+/* Recebe um ponteiro para projectile bullet e um planet world e 
+   soma a aceleração atual de bullet (tanto no eixo x quanto 
+   no eixo y) com a aceleração gravitacional gerada por world. */
+void accelerateProjToWorld (projectile *bullet, planet world);
+
+/* Recebe um ponteiro para projectile bullet e um ship planet e 
+   soma a aceleração atual de bullet (tanto no eixo x quanto 
+   no eixo y) com a aceleração gravitacional gerada por player. */
+void accelerateProjToShip (projectile *bullet, ship player);
+
+/* Recebe um ponteiro para projectile bullet e um projectile other e 
+   soma a aceleração atual de bullet (tanto no eixo x quanto 
+   no eixo y) com a aceleração gravitacional gerada por other. */
+void accelerateProjToProj (projectile *bullet, projectile other);
 
 /* Esta função recebe um projectile p e um float dt. Devolve um projectile que 
    representa p logo apos a variação de tempo dt.

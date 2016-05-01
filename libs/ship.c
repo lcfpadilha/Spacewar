@@ -18,11 +18,13 @@
 #include "ship.h"
 
 
-#define G 1.0        // Constante gravitacional universal.
-#define CENTERX 360  // Centro x da imagem.
-#define CENTERY 240  // Centro y da imagem.
+#define G 1.0        /* Constante gravitacional universal. */
+#define CENTERX 360  /* Centro x da imagem. */
+#define CENTERY 240  /* Centro y da imagem. */
 
-float accelerateShip (ship s, float mass, float posX, float posY, char c) {
+/*      Funções privadas        */
+
+static float accelerateShip (ship s, float mass, float posX, float posY, char c) {
     float dx = posX - s.posX;
     float dy = posY - s.posY;
     float delta = sqrt (dx * dx + dy * dy);
@@ -30,6 +32,24 @@ float accelerateShip (ship s, float mass, float posX, float posY, char c) {
 
     if (c == 'x') return accel * dx / delta;
     return accel * dy / delta;
+}
+
+
+/*        Funções Públicas        */
+
+void accelerateShipToWorld (ship *player, planet world) {
+    player->aceX += accelerateShip (*player, world.mass, world.posX, world.posY, 'x');
+    player->aceY += accelerateShip (*player, world.mass, world.posX, world.posY, 'y');
+}
+
+void accelerateShipToShip (ship *player, ship other) {
+    player->aceX += accelerateShip (*player, other.mass, other.posX, other.posY, 'x');
+    player->aceY += accelerateShip (*player, other.mass, other.posX, other.posY, 'y');
+} 
+
+void accelerateShipToProj (ship *player, projectile b) {
+    player->aceX += accelerateShip (*player, b.mass, b.posX, b.posY, 'x');
+    player->aceY += accelerateShip (*player, b.mass, b.posX, b.posY, 'y');
 }
 
 ship increaseTimeShip (ship player, int maxX, int minX, 

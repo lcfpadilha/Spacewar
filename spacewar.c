@@ -23,17 +23,9 @@
 #include "libs/planet.h"
 #include "libs/ship.h"
 #include "libs/projectile.h"
-#include "libs/simulation.h"
 
-#define W 720  // Largura da janela.
-#define H 480  // Altura da janela.
-
-typedef struct {
-    planet world;
-    ship player1, player2;
-    int numberOfProj;
-    projectile *bullets;
-} objects;
+#define W 720  /* Largura da janela. */
+#define H 480  /* Altura da janela. */
 
 int main (int argc, char** argv) {
     /* Caso a biblioteca Xpm não esteja habilitada, o programa não funciona. */
@@ -42,7 +34,7 @@ int main (int argc, char** argv) {
     #else
     
     /* Declaração de variáveis */
-    int numberOfProj, i, j;
+    int numberOfProj, i, j, ret;
     float timeOfProj, t, T, spentTime;
 
     /* Declaração dos corpos que serão postos no espaço. */
@@ -73,7 +65,7 @@ int main (int argc, char** argv) {
     initPlanet (&world, w);
 
     /* Tempo total de simulação. */
-    scanf ("%f", &T);
+    ret = scanf ("%f", &T);
 
     /* Inicialização da primeira nave. */
     initPlayer (&player1, 1, w);
@@ -93,87 +85,26 @@ int main (int argc, char** argv) {
     /* Simulando o espaço. */
     while (spentTime < T) {
         /* Calculando a aceleração da nave pĺayer1. */
-        player1.aceX += accelerateShip (player1, world.mass, world.posX, 
-                                        world.posY, 'x');
-        player1.aceY += accelerateShip (player1, world.mass, world.posX, 
-                                        world.posY, 'y');
-
-        player1.aceX += accelerateShip (player1, player2.mass, player2.posX, 
-                                        player2.posY, 'x');
-        player1.aceY += accelerateShip (player1, player2.mass, player2.posX, 
-                                        player2.posY, 'y');
+        accelerateShipToWorld (&player1, world);
+        accelerateShipToShip  (&player1, player2);
 
         /*Calculando a aceleração da nave player2. */
-        player2.aceX += accelerateShip (player2, world.mass, world.posX, 
-                                        world.posY, 'x');
-        player2.aceY += accelerateShip (player2, world.mass, world.posX, 
-                                        world.posY, 'y');
-
-        player2.aceX += accelerateShip (player2, player1.mass, player1.posX, 
-                                        player1.posY, 'x');
-        player2.aceY += accelerateShip (player2, player1.mass, player1.posX, 
-                                        player1.posY, 'y');
+        accelerateShipToWorld (&player2, world);
+        accelerateShipToShip  (&player2, player1);
 
         /* Calculando a aceleração dos projeteis, se eles (ainda) existirem. */
         if (spentTime < timeOfProj) {
             for (i = 0; i < numberOfProj; i++) {
-                player1.aceX += accelerateShip (player1, bullets[i].mass, 
-                                                bullets[i].posX, 
-                                                bullets[i].posY, 'x');
-                player1.aceY += accelerateShip (player1, bullets[i].mass, 
-                                                bullets[i].posX, 
-                                                bullets[i].posY, 'y');
-            }
-            
-            for (i = 0; i < numberOfProj; i++) {
-                player2.aceX += accelerateShip (player2, bullets[i].mass, 
-                                                bullets[i].posX, 
-                                                bullets[i].posY, 'x');
-                player2.aceY += accelerateShip (player2, bullets[i].mass, 
-                                                bullets[i].posX, 
-                                                bullets[i].posY, 'y');
-            }
+                accelerateShipToProj (&player1, bullets[i]);
+                accelerateShipToProj (&player2, bullets[i]);
 
-            for (i = 0; i < numberOfProj; i++) {
-                bullets[i].aceX += accelerateProjectile (bullets[i], world.mass,
-                                                         world.posX, world.posY,
-                                                         'x');
-                bullets[i].aceY += accelerateProjectile (bullets[i], world.mass,
-                                                         world.posX, world.posY,
-                                                         'y');
+                accelerateProjToWorld (&bullets[i], world);
+                accelerateProjToShip  (&bullets[i], player1);
+                accelerateProjToShip  (&bullets[i], player2);
 
-                bullets[i].aceX += accelerateProjectile (bullets[i], 
-                                                         player1.mass, 
-                                                         player1.posX, 
-                                                         player1.posY, 'x');
-                bullets[i].aceY += accelerateProjectile (bullets[i], 
-                                                         player1.mass, 
-                                                         player1.posX, 
-                                                         player1.posY, 'y');
-
-                bullets[i].aceX += accelerateProjectile (bullets[i], 
-                                                         player2.mass, 
-                                                         player2.posX, 
-                                                         player2.posY, 'x');
-                bullets[i].aceY += accelerateProjectile (bullets[i], 
-                                                         player2.mass, 
-                                                         player2.posX, 
-                                                         player2.posY, 'y');
-
-                for (j = 0; j < numberOfProj; j++) {
-                    if (i != j) {
-                        bullets[i].aceX += accelerateProjectile (bullets[i], 
-                                                                 bullets[j].mass, 
-                                                                 bullets[j].posX, 
-                                                                 bullets[j].posY,
-                                                                 'x');
-                        bullets[i].aceY += accelerateProjectile (bullets[i], 
-                                                                 bullets[j].mass, 
-                                                                 bullets[j].posX, 
-                                                                 bullets[j].posY,
-                                                                 'y');
-                    }
-                }
+                for (j = 0; j < numberOfProj; j++)
+                    if (i != j)
+                        accelerateProjToProj (&bullets[i], bullets[j]);
             }
         }
 
@@ -189,8 +120,7 @@ int main (int argc, char** argv) {
         showShip (player2, w);
 
         for (i = 0; spentTime < timeOfProj && i < numberOfProj; i++) {
-            bullets[i] = increaseTimeProjectile (bullets[i], W/2, -W/2, H/2, 
-                                                 -H/2, t);
+            bullets[i] = increaseTimeProjectile (bullets[i], W/2, -W/2, H/2, -H/2, t);
             
             /* Mostrando os projeteis */
             showBullet (bullets[i], w, bulletImg, bulletMsk);

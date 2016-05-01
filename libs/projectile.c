@@ -17,11 +17,13 @@
 #include "getIndex.h"
 #include "projectile.h"
 
-#define G 1.0        // Constante gravitacional universal.
-#define CENTERX 360  // Centro x da imagem.
-#define CENTERY 240  // Centro y da imagem.
+#define G 1.0        /* Constante gravitacional universal. */
+#define CENTERX 360  /* Centro x da imagem. */
+#define CENTERY 240  /* Centro y da imagem. */
 
-float accelerateProjectile (projectile p, float mass, float posX, float posY, 
+/*      Funções privadas        */
+
+static float accelerateProjectile (projectile p, float mass, float posX, float posY, 
                             char c) {
     float dx = posX - p.posX;
     float dy = posY - p.posY;
@@ -30,6 +32,23 @@ float accelerateProjectile (projectile p, float mass, float posX, float posY,
 
     if (c == 'x') return accel * dx / delta;
     return accel * dy / delta;
+}
+
+/*      Funções públicas        */
+
+void accelerateProjToWorld (projectile *bullet, planet world) {
+    bullet->aceX += accelerateProjectile (*bullet, world.mass, world.posX, world.posY, 'x');
+    bullet->aceY += accelerateProjectile (*bullet, world.mass, world.posX, world.posY, 'y');
+}
+
+void accelerateProjToShip (projectile *bullet, ship player) {
+    bullet->aceX += accelerateProjectile (*bullet, player.mass, player.posX, player.posY, 'x');
+    bullet->aceY += accelerateProjectile (*bullet, player.mass, player.posX, player.posY, 'y');
+}
+
+void accelerateProjToProj (projectile *bullet, projectile other) {
+    bullet->aceX += accelerateProjectile (*bullet, other.mass, other.posX, other.posY, 'x');
+    bullet->aceY += accelerateProjectile (*bullet, other.mass, other.posX, other.posY, 'y');
 }
 
 projectile increaseTimeProjectile (projectile p, int maxX, int minX, 
