@@ -1,4 +1,4 @@
-Nomes: Gustavo Henrique Faustino Silva        Números USP: 9298960 
+Nomes: Gustavo Henrique Faustino Silva        Números USP: 9298260 
        Leonardo de Carvalho F. P. Aguilar                  9298295
        Luís Felipe de Melo Costa Silva                     9297961
 
@@ -7,25 +7,74 @@ README
 Aqui apresentamos uma breve descrição sobre o nosso programa. Ele é composto por
 um módulo principal e outros seis módulos, que são:
 
-- spacewar.c: Módulo principal, que controla todos os outros. É responsável 
-pelas variáveis utilizadas na simulação. Ele as declara, atribui valores a elas,
-chama a função de simulação e depois desaloca e fecha o que é necessário.
+- spacewar.c: Esse é o módulo principal do projeto. Ele é responsável por unir 
+todos os outros. Começa com a declaração dos corpos, que são o planeta, as 2 
+naves (para o player1 e player2) e o vetor de projéteis. Declara também as 
+variáveis de geração de imagens, além dos vetores que guardam as 
+imagens dos projéteis (por serem todos iguais, compartilham as mesmas 16 
+imagens) e outras variáveis descritas nele. Inicializa tudo (lendo e atribuindo 
+valores) e então começa a simulação física. Basicamente a simulação é feita
+calculando as variações de tempo e posição e então desenhando os corpos na tela
+até o tempo definido acabar.
 
-- simulation.c: Realiza a simulação da física. Enquanto isso, usa funções de 
-outros módulos para isso, como as funções que trabalham com o planeta, as naves 
-e com os projéteis (calculando e desenhando).
+- planet.c: Implementa a estrutura de dados que é o planeta. A struct planet tem
+os seguintes campos:
+	float
+		radius: raio do planeta;
+		mass: massa do planeta;
+		posX, posY: representam as coordenadas do planeta;
+    PIC 
+    	img, aux: são as imagens atribuídas a ele;
+    MASK 
+    	msk: máscara de imagem atribuída ao planeta.
+Neste módulo está a função que inicializa o planeta e a que o desenha durante a 
+simulação.
 
-- planet.c: Implementa a estrutura de dados que é o planeta na simulação e tem a 
-função que o desenha durante a simulação.
+- ship.c: Semelhante ao módulo acima, mas que trabalha com as naves. As naves
+foram implementadas em uma struct da seguinte forma:
+	char 
+	    name[10]: um vetor de caracteres (string) que guarda o nome da nave. 
+	              Note que o comprimento máximo é de 10 caracteres.
+    float 
+    	mass: massa da nave;
+    	posX, posY: representam um vetor de coordenadas para cada nave;
+    	velX, velY: vetor da velocidade;
+    	aceX, aceY: vetor da aceleração;
+    PIC 
+    	img[16], aux[16]: um vetor de ponteiros para imagens. A razão de termos 
+    	                  um vetor de imagens é que cada uma dessas está 
+    	                  rotacionada para certo ângulo. O ângulo é baseado na 
+    	                  direção do vetor de velocidade.
+    MASK 
+    	msk[16]: vetor de máscaras das imagens onde msk[i] é a máscara de img[i].
+Este módulo também possui outras funções que são: função de inicialização de 
+nave; função de aceleração em relação ao planeta; função de aceleração em 
+relação a outra nave; função de aceleração em relação aos projéteis; função de 
+atualização de informações após uma variação de tempo; e a função de desenho das
+naves na tela. Como temos duas naves, temos 2 conjuntos de imagens diferentes:
+um para a nave azul e outro para a nave vermelha.
 
-- ship.c: Tem o mesmo que o planet.c, só que para as naves, mais as funções que 
-calculam aceleração e as que atualizam os dados das naves.
+- projectile.c: Parecido com os dois módulos anteriores, mas para os projéteis.
+Cada projétil foi implementado como o seguinte:
+	float 
+		mass: massa de cada projétil;
+		posX, posY: representam um vetor de coordenadas para cada projétil;
+		velX, velY: vetor da velocidade;
+    	aceX, aceY: vetor da aceleração;
+Os projéteis foram implementados em um vetor de projéteis, pois podem ser muitos
+e suas estruturas são iguais.
+Este módulo ainda conta com as funções de inicialização, de aceleração em 
+relação ao planeta, de aceleração em relação às naves função de aceleração em 
+relação aos outros projéteis, de atualização de informações, e de desenho na 
+tela e de inicialização das imagens. Como dito acima, o módulo que cuida de 
+declarar as imagens é o módulo principal.
 
-- projectile.c: Análogo para os projéteis.
+- getIndex.c: módulo que possui a função utlizada pelos módulos ship.c e 
+projectile.c que devolve o ângulo referente à velocidade da nave, com isso, 
+obtém sua orientação. O resultado é um número de 0 a 15 que é relacionado com as 
+imagens declaradas para os corpos.
 
-- getIndex.c: Possui uma única função, que determina a direção para qual a nave 
-ou os projéteis estão. Por ser utilizada por mais de um módulo (ship.c e 
-projectile.c), a função ficou em um módulo separado.
+- xwc.c: Esse módulo é a biblioteca de funções que trabalham com geração de 
+imagens, disponibilizada no enunciado de exercício.
 
-- xwc.c: Biblioteca de funções de desenho, concedida pelo professor.
-
+- error.c: Módulo que indica se houve algum erro na leitura da entrada padrão.
