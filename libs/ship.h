@@ -1,5 +1,5 @@
 /******************************************************************************
- *  Nomes: Gustavo Henrique Faustino Silva        Números USP: 9298960 
+ *  Nomes: Gustavo Henrique Faustino Silva        Números USP: 9298260 
  *         Leonardo de Carvalho F. P. Aguilar                  9298295
  *         Luís Felipe de Melo Costa Silva                     9297961
  *
