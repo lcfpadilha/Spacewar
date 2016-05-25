@@ -1,5 +1,5 @@
 /******************************************************************************
- *  Nomes: Gustavo Henrique Faustino Silva        Números USP: 9298260 
+ *  Nomes: Gustavo Henrique Faustino Silva        Números USP: 9298960 
  *         Leonardo de Carvalho F. P. Aguilar                  9298295
  *         Luís Felipe de Melo Costa Silva                     9297961
  *
@@ -28,14 +28,16 @@
 #define W 720  /* Largura da janela. */
 #define H 480  /* Altura da janela. */
 
-#define UP1    111
-#define UP2    25
-#define DOWN1  116
-#define DOWN2  39
-#define LEFT1  113
-#define LEFT2  38
-#define RIGHT1 114
-#define RIGHT2 40
+#define ACC1    25
+#define RIGHT1 40
+#define LEFT1  38
+#define FIRE1  39
+
+#define ACC2    111
+#define FIRE2  116
+#define LEFT2  113
+#define RIGHT2 114
+
 
 #define FALSE 0
 #define TRUE 1
@@ -49,8 +51,8 @@ int main (int argc, char** argv) {
     /* Declaração de variáveis */
     int numberOfProj, i, j, ret;
     float timeOfProj, t, T, spentTime;
-    int up1Press = FALSE, down1Press = FALSE, left1Press = FALSE, right1Press = FALSE;
-    int up2Press = FALSE, down2Press = FALSE, left2Press = FALSE, right2Press = FALSE;
+    int acc1Press = FALSE, fire1Press = FALSE, left1Press = FALSE, right1Press = FALSE;
+    int acc2Press = FALSE, fire2Press = FALSE, left2Press = FALSE, right2Press = FALSE;
 
     /* Declaração dos corpos que serão postos no espaço. */
     planet world;
@@ -112,11 +114,11 @@ int main (int argc, char** argv) {
         /* Verifica se alguma tecla foi pressionada */
         if (WCheckKBD(w)) {
             kb = WGetKey(w);
-            if (kb == UP1) 
-                up1Press =   !up1Press;
+            if (kb == ACC1) 
+                acc1Press =   !acc1Press;
             
-            else if (kb == DOWN1) 
-                down1Press = !down1Press;
+            else if (kb == FIRE1) 
+                fire1Press = !fire1Press;
                 
             else if (kb == LEFT1) 
                 left1Press = !left1Press;
@@ -124,11 +126,11 @@ int main (int argc, char** argv) {
             else if (kb == RIGHT1) 
                 right1Press = !right1Press;
             
-            else if (kb == UP2) 
-                up2Press = !up2Press;
+            else if (kb == ACC2) 
+                acc2Press = !acc2Press;
             
-            else if (kb == DOWN2) 
-                down2Press = !down2Press;
+            else if (kb == FIRE2) 
+                fire2Press = !fire2Press;
             
             else if (kb == LEFT2) 
                 left2Press = !left2Press;
@@ -136,12 +138,12 @@ int main (int argc, char** argv) {
             else if (kb == RIGHT2) 
                 right2Press = !right2Press;
         }
-        if (up1Press) {
+        if (acc1Press) {
             player1.aceY += 150 * sin (player1.direction);
             player1.aceX += 150 * cos (player1.direction);
         }
         
-        if (down1Press) {
+        if (fire1Press) {
             player1.aceY -= 150 * sin (player1.direction);
             player1.aceX -= 150 * cos (player1.direction);
         }
@@ -152,12 +154,12 @@ int main (int argc, char** argv) {
         if (right1Press) 
             player1.direction -= M_PI / 20;
     
-        if (up2Press) {
+        if (acc2Press) {
             player2.aceY += 150 * sin (player2.direction);
             player2.aceX += 150 * cos (player2.direction);
         }
     
-        if (down2Press) {
+        if (fire2Press) {
             player2.aceY -= 150 * sin (player2.direction);
             player2.aceX -= 150 * cos (player2.direction);
         }

@@ -73,7 +73,6 @@ ship increaseTimeShip (ship player, int maxX, int minX,
     new.aceY = player.aceY;
     new.direction = player.direction;
     while (new.direction > 2 * M_PI || new.direction <= 0.0) {
-        printf("%f\n", new.direction);
         if (new.direction > 2 * M_PI)
             new.direction = new.direction - 2 * M_PI;
         else 
@@ -120,7 +119,7 @@ void initPlayer (ship *p, int playerID, WINDOW *w) {
 
     /* Inicializa as imagens do player 1 e a sua direção*/
     if (playerID == 1) {
-        p->direction = M_PI;
+        p->direction = 2 * M_PI;
         p->img[0] =  ReadPic (w, "img/playerOne/playerOne01.xpm", NULL);
         p->img[1] =  ReadPic (w, "img/playerOne/playerOne02.xpm", NULL);
         p->img[2] =  ReadPic (w, "img/playerOne/playerOne03.xpm", NULL);
@@ -158,7 +157,7 @@ void initPlayer (ship *p, int playerID, WINDOW *w) {
 
     /* Inicializa as imagens do player 2 */
     else {
-        p->direction = 2 * M_PI;
+        p->direction = M_PI;
         p->img[0] =  ReadPic (w, "img/playerTwo/playerTwo01.xpm", NULL);
         p->img[1] =  ReadPic (w, "img/playerTwo/playerTwo02.xpm", NULL);
         p->img[2] =  ReadPic (w, "img/playerTwo/playerTwo03.xpm", NULL);
