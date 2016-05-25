@@ -293,19 +293,24 @@ PIC MountPic(WINDOW *w, char **data, MASK m)
 
 void InitKBD(WINDOW *w)
 {
-  /*  XSelectInput (display, w->ptr.window, KeyPressMask|KeyReleaseMask);*/
-  XSelectInput (display, w->ptr.window, KeyPressMask);
+  XSelectInput (display, w->ptr.window, KeyPressMask|KeyReleaseMask);
+  /* XSelectInput (display, w->ptr.window, KeyPressMask);  */
 }
 
 KeySym key;
 
 int WCheckKBD(WINDOW *w)
 {
+  
   int r;
   XEvent xev;
-
+  /* Ligamos e desligamos o autorepeat para nao bugar o usuário*/
+  XAutoRepeatOff(display);
+  
   r = XCheckWindowEvent(display,w->ptr.window, KeyPressMask|KeyReleaseMask, &xev);
   if (r) XPutBackEvent(display, &xev);
+
+  XAutoRepeatOn(display);
   return r;
 }
 

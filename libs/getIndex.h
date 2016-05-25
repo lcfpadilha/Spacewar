@@ -16,6 +16,6 @@
 /* Essa função devolve o ângulo de um retângulo cujo cateto oposto é velY e 
 // cateto adjacente é velY. Isso serve para escolha da imagem adequada à 
 // velocidade do corpo. */
-int getIndexByOrientation (double velX, double velY);
+int getIndexByOrientation (double orientation);
 
 #endif

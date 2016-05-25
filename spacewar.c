@@ -28,6 +28,18 @@
 #define W 720  /* Largura da janela. */
 #define H 480  /* Altura da janela. */
 
+#define UP1    111
+#define UP2    25
+#define DOWN1  116
+#define DOWN2  39
+#define LEFT1  113
+#define LEFT2  38
+#define RIGHT1 114
+#define RIGHT2 40
+
+#define FALSE 0
+#define TRUE 1
+
 int main (int argc, char** argv) {
     /* Caso a biblioteca Xpm não esteja habilitada, o programa não funciona. */
     #ifdef NOXPM 
@@ -37,6 +49,8 @@ int main (int argc, char** argv) {
     /* Declaração de variáveis */
     int numberOfProj, i, j, ret;
     float timeOfProj, t, T, spentTime;
+    int up1Press = FALSE, down1Press = FALSE, left1Press = FALSE, right1Press = FALSE;
+    int up2Press = FALSE, down2Press = FALSE, left2Press = FALSE, right2Press = FALSE;
 
     /* Declaração dos corpos que serão postos no espaço. */
     planet world;
@@ -48,6 +62,9 @@ int main (int argc, char** argv) {
     PIC bg, bulletImg[16], bulletAux[16];
     MASK bulletMsk[16];
 
+    /* Declaração de váriaveis para uso de controle */
+    KeyCode kb;
+
     /* Inicialização de variáveis relacionadas à física do jogo */
     world.radius = world.mass = world.posX = world.posY = 0;
     player1.mass = player1.posX = player1.posY = 0;
@@ -58,8 +75,13 @@ int main (int argc, char** argv) {
     /* Parâmetro de intervalo de atualização. */
     t = atof (argv[1]);
 
-    /* Inicialização da janela e o background */
+    /* Inicialização da janela */
     w = InitGraph (W, H, "Space");
+
+    /* Inicialização do teclado */
+    InitKBD(w);
+
+    /* Inicialização da imagem de fundo */
     bg = ReadPic (w, "img/scenery/space.xpm",  NULL);
 
     /* Inicialização do planeta */
@@ -87,6 +109,64 @@ int main (int argc, char** argv) {
 
     /* Simulando o espaço. */
     while (spentTime < T) {
+        /* Verifica se alguma tecla foi pressionada */
+        if (WCheckKBD(w)) {
+            kb = WGetKey(w);
+            if (kb == UP1) 
+                up1Press =   !up1Press;
+            
+            else if (kb == DOWN1) 
+                down1Press = !down1Press;
+                
+            else if (kb == LEFT1) 
+                left1Press = !left1Press;
+            
+            else if (kb == RIGHT1) 
+                right1Press = !right1Press;
+            
+            else if (kb == UP2) 
+                up2Press = !up2Press;
+            
+            else if (kb == DOWN2) 
+                down2Press = !down2Press;
+            
+            else if (kb == LEFT2) 
+                left2Press = !left2Press;
+            
+            else if (kb == RIGHT2) 
+                right2Press = !right2Press;
+        }
+        if (up1Press) {
+            player1.aceY += 150 * sin (player1.direction);
+            player1.aceX += 150 * cos (player1.direction);
+        }
+        
+        if (down1Press) {
+            player1.aceY -= 150 * sin (player1.direction);
+            player1.aceX -= 150 * cos (player1.direction);
+        }
+        
+        if (left1Press) 
+            player1.direction += M_PI / 20;
+        
+        if (right1Press) 
+            player1.direction -= M_PI / 20;
+    
+        if (up2Press) {
+            player2.aceY += 150 * sin (player2.direction);
+            player2.aceX += 150 * cos (player2.direction);
+        }
+    
+        if (down2Press) {
+            player2.aceY -= 150 * sin (player2.direction);
+            player2.aceX -= 150 * cos (player2.direction);
+        }
+
+        if (left2Press)
+            player2.direction += M_PI / 20;
+        
+        if (right2Press)
+            player2.direction -= M_PI / 20;
         /* Calculando a aceleração da nave pĺayer1. */
         accelerateShipToWorld (&player1, world);
         accelerateShipToShip  (&player1, player2);

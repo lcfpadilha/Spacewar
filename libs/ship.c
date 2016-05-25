@@ -11,6 +11,7 @@
  *
  ******************************************************************************/ 
 
+#include <unistd.h>
 #include <stdio.h>
 #include <string.h>
 #include <math.h>
@@ -70,6 +71,14 @@ ship increaseTimeShip (ship player, int maxX, int minX,
     }
     new.aceX = player.aceX;
     new.aceY = player.aceY;
+    new.direction = player.direction;
+    while (new.direction > 2 * M_PI || new.direction <= 0.0) {
+        printf("%f\n", new.direction);
+        if (new.direction > 2 * M_PI)
+            new.direction = new.direction - 2 * M_PI;
+        else 
+            new.direction = new.direction + 2 * M_PI;
+    }
 
     /* Ajustando posição caso tenha excedido o tamanho máximo ou mínimo */
     while (new.posX < minX || new.posX > maxX) {
@@ -88,8 +97,8 @@ ship increaseTimeShip (ship player, int maxX, int minX,
 void showShip (ship player, WINDOW *w) {
     int x = CENTERX + player.posX - 23;
     int y = CENTERY - player.posY - 23;
-    int index = getIndexByOrientation (player.velX, player.velY);
-
+    int index = getIndexByOrientation (player.direction);
+    
     SetMask (w, player.msk[index]);
     PutPic (w, player.img[index], 0, 0, 46, 46, x, y);
     UnSetMask (w);
@@ -102,14 +111,16 @@ void initPlayer (ship *p, int playerID, WINDOW *w) {
     ret = scanf ("%s %f %f %f %f %f", p->name, &p->mass, &p->posX, &p->posY, &p->velX, &p->velY);
     hasError (ret != 6);
     
+    /* Aceleração iniciada com 0 */
     p->aceX = p->aceY = 0.0;
     
     /* Inicializa as máscaras */
     for (i = 0; i < 16; i++)
         p->msk[i] = NewMask (w, 46, 46);
 
-    /* Inicializa as imagens do player 1*/
+    /* Inicializa as imagens do player 1 e a sua direção*/
     if (playerID == 1) {
+        p->direction = M_PI;
         p->img[0] =  ReadPic (w, "img/playerOne/playerOne01.xpm", NULL);
         p->img[1] =  ReadPic (w, "img/playerOne/playerOne02.xpm", NULL);
         p->img[2] =  ReadPic (w, "img/playerOne/playerOne03.xpm", NULL);
@@ -147,6 +158,7 @@ void initPlayer (ship *p, int playerID, WINDOW *w) {
 
     /* Inicializa as imagens do player 2 */
     else {
+        p->direction = 2 * M_PI;
         p->img[0] =  ReadPic (w, "img/playerTwo/playerTwo01.xpm", NULL);
         p->img[1] =  ReadPic (w, "img/playerTwo/playerTwo02.xpm", NULL);
         p->img[2] =  ReadPic (w, "img/playerTwo/playerTwo03.xpm", NULL);

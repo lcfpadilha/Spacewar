@@ -11,23 +11,12 @@
  ******************************************************************************/ 
 
 #include <math.h>
+#include <stdio.h>
 #include "getIndex.h"
 
-#define PI 3.14159265  /* Pi. */
 
-int getIndexByOrientation (double velX, double velY) {
-    double angle = atan (velY / velX) * 180.0 / PI;
-
-    if (velX > 0 && velY >= 0)
-        return (int) angle / 22.5;
-    else if (velX < 0 && velY >= 0) 
-        return (int) (180 + angle) / 22.5;
-    else if (velX < 0 && velY < 0) 
-        return (int) (180 + angle) / 22.5;
-    else if (velX > 0 && velY < 0) 
-        return (int) (360 + angle) / 22.5;
-    else if (velX == 0 && velY > 0)
-        return 4;
-    else
-        return 12;
+int getIndexByOrientation (double orientation) {
+    double angle = orientation * 180.0 / M_PI;
+    
+    return (int) angle / 22.5;
 }

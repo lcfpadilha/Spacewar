@@ -22,13 +22,15 @@
 /* Cada nave é declarada como uma estrutura que possui os campos name (nome, de 
 // até 10 caracteres), mass (massa), posX (coordenada x), posY (coordenada Y), 
 // velX (velocidade na direção x), velY (análogo para Y), aceX (aceleração na 
-// direção x), aceY, (análogo para Y), img, aux e msk (para a geração de 
+// direção x), aceY, (análogo para Y), direction (angulo formado pela direção 
+// da nave e o eixo x em radianos), img, aux e msk (para a geração de 
 // imagens). As úlimas 3 são vetores com 16 posições, onde cada posição 
 // representa um ângulo (ver em img/player*). */
 
 typedef struct {
     char name[10];
     float mass, posX, posY, velX, velY, aceX, aceY;
+    float direction;
     PIC img[16];
     PIC aux[16];
     MASK msk[16];
