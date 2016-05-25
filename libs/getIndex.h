@@ -18,4 +18,6 @@
 // velocidade do corpo. */
 int getIndexByOrientation (double orientation);
 
+int getBulletIndexByOrientation (double velX, double velY);
+
 #endif

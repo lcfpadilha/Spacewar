@@ -80,7 +80,7 @@ projectile increaseTimeProjectile (projectile p, int maxX, int minX,
 void showBullet (projectile bullet, WINDOW *w, PIC bulletImg[], MASK bulletMsk[]) {
     int x = CENTERX + bullet.posX - 5;
     int y = CENTERY - bullet.posY - 5;
-    int index = getIndexByOrientation (bullet.velX, bullet.velY);
+    int index = getBulletIndexByOrientation (bullet.velX, bullet.velY);
 
     /* Desenhando o projétil. */
     SetMask (w, bulletMsk[index]);
