@@ -56,7 +56,7 @@ projectile *initProj (int *n) {
     ret = scanf ("%d %f", n, &t);
     hasError (ret != 2);
 
-    size = 100;
+    size = 5;
     bullets = malloc (size * (sizeof (projectile)));
 
     for (i = 0; i < (*n); i++) {
@@ -71,15 +71,21 @@ projectile *initProj (int *n) {
     return bullets;
 }
 
-void shoot (projectile *bullets, int n, float x, float y, float vx, float vy) {
+void shoot (projectile *bullets, int n, float x, float y, float dirX, float dirY) {
     if (size == n)
         bullets = resize (2 * size, bullets);
-    bullets[n].posX = x;
-    bullets[n].posY = y;
-    bullets[n].velX = vx;
-    bullets[n].velY = vy;
+    bullets[n].posX = x + 30;
+    bullets[n].posY = y + 30;
+    bullets[n].velX = dirX * 100;
+    bullets[n].velY = dirY * 100;
     bullets[n].aceX = bullets[n].aceY = 0.0;
     bullets[n].lifeTime = t;
+}
+
+void deleteBullet (projectile *bullets, int n, int index) {
+    int i;
+    for (i = index + 1; i < n; i++)
+        bullets[i - 1] = bullets [i];
 }
 
 void accelerateProjToWorld (projectile *bullet, planet world) {
@@ -110,11 +116,11 @@ projectile increaseTimeProjectile (projectile p, int maxX, int minX,
     new.lifeTime = p.lifeTime - dt;
     /* Ajustando posição caso tenha excedido o tamanho máximo ou mínimo */
     while (new.posX < minX || new.posX > maxX) {
-        if      (new.posX > maxX) new.posX = new.posX - maxX + minY;
+        if      (new.posX > maxX) new.posX = new.posX - maxX + minX;
         else if (new.posX < minX) new.posX = maxX - minX + new.posX;
     }
 
-    while (new.posY < minY || new.posY > maxX) {
+    while (new.posY < minY || new.posY > maxY) {
         if      (new.posY > maxY) new.posY = new.posY - maxY + minY;
         else if (new.posY < minY) new.posY = maxY - minY + new.posY;
     }

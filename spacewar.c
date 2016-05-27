@@ -130,7 +130,7 @@ int main (int argc, char** argv) {
                 acc2Press = !acc2Press;
             
             else if (kb == FIRE2) 
-                fire2Press = !fire2Press;
+                shoot (bullets, numberOfProj++, player2.posX, player2.posY, 150 * sin (player1.direction), player2.velY);
             
             else if (kb == LEFT2) 
                 left2Press = !left2Press;
@@ -143,10 +143,9 @@ int main (int argc, char** argv) {
             player1.aceX += 150 * cos (player1.direction);
         }
         
-        if (fire1Press) {
-            player1.aceY -= 150 * sin (player1.direction);
-            player1.aceX -= 150 * cos (player1.direction);
-        }
+        if (fire1Press) 
+            shoot (bullets, numberOfProj++, player1.posX, player1.posY, 
+                            cos (player1.direction), sin (player1.direction));
         
         if (left1Press) 
             player1.direction += M_PI / 20;
@@ -158,16 +157,16 @@ int main (int argc, char** argv) {
             player2.aceY += 150 * sin (player2.direction);
             player2.aceX += 150 * cos (player2.direction);
         }
-        if (fire2Press) {
-            player2.aceY -= 150 * sin (player2.direction);
-            player2.aceX -= 150 * cos (player2.direction);
-        }
+        if (fire2Press)
+            shoot (bullets, numberOfProj++, player2.posX, player2.posY, 
+                            cos (player2.direction), sin (player2.direction));
 
         if (left2Press)
             player2.direction += M_PI / 20;
         
         if (right2Press)
             player2.direction -= M_PI / 20;
+
         /* Calculando a aceleração da nave pĺayer1. */
         accelerateShipToWorld (&player1, world);
         accelerateShipToShip  (&player1, player2);
@@ -177,23 +176,17 @@ int main (int argc, char** argv) {
         accelerateShipToShip  (&player2, player1);
 
         /* Calculando a aceleração dos projeteis, se eles (ainda) existirem. */
-        if (numberOfProj > 0 && bullets[numberOfProj - 1].lifeTime > 0)
-            for (i = 0; i < numberOfProj; i++) {
-                accelerateShipToProj (&player1, bullets[i]);
-                accelerateShipToProj (&player2, bullets[i]);
+        for (i = 0; i < numberOfProj; i++) {
+            accelerateShipToProj (&player1, bullets[i]);
+            accelerateShipToProj (&player2, bullets[i]);
 
-                accelerateProjToWorld (&bullets[i], world);
-                accelerateProjToShip  (&bullets[i], player1);
-                accelerateProjToShip  (&bullets[i], player2);
+            accelerateProjToWorld (&bullets[i], world);
+            accelerateProjToShip  (&bullets[i], player1);
+            accelerateProjToShip  (&bullets[i], player2);
 
-                for (j = 0; j < numberOfProj; j++)
-                    if (i != j)
-                        accelerateProjToProj (&bullets[i], bullets[j]);
-            }
-        else {
-            numberOfProj = 0;
-        	free (bullets);
-        	bullets = NULL;
+            for (j = 0; j < numberOfProj; j++)
+                if (i != j)
+                    accelerateProjToProj (&bullets[i], bullets[j]);
         }
 
         /* Mudando a posição dos objetos e imprimindo a atualização. */
@@ -207,12 +200,15 @@ int main (int argc, char** argv) {
         showShip (player1, w);
         showShip (player2, w);
 
-        for (i = 0; i < numberOfProj && bullets[i].lifeTime > 0; i++) {
-            bullets[i] = increaseTimeProjectile (bullets[i], W/2, -W/2, H/2, -H/2, t);
-            
-            /* Mostrando os projeteis */
-            showBullet (bullets[i], w, bulletImg, bulletMsk);
-            bullets[i].aceX = bullets[i].aceY = 0.0;
+        for (i = 0; i < numberOfProj; i++) {
+            if (bullets[i].lifeTime > 0) {
+                bullets[i] = increaseTimeProjectile (bullets[i], W/2, -W/2, H/2, -H/2, t);
+                
+                /* Mostrando os projeteis */
+                showBullet (bullets[i], w, bulletImg, bulletMsk);
+                bullets[i].aceX = bullets[i].aceY = 0.0;
+            }
+            else deleteBullet (bullets, numberOfProj--, i);
         }
         player1.aceX = player1.aceY = 0.0;
         player2.aceX = player2.aceY = 0.0;

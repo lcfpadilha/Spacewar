@@ -38,6 +38,9 @@ typedef struct {
 #include "projectile.h"
 #include "planet.h"
 
+/* Inicializa a nave p identificada por playerID com as imagens na tela w */
+void initPlayer (ship *p, int playerID, WINDOW *w);
+
 /* Recebe um ponteiro para ship player e um planet world e 
    soma a aceleração atual de player (tanto no eixo x quanto 
    no eixo y) com a aceleração gravitacional gerada por world. */
@@ -53,6 +56,12 @@ void accelerateShipToShip (ship *player, ship other);
    no eixo y) com a aceleração gravitacional gerada por b. */
 void accelerateShipToProj (ship *player, projectile b);
 
+int hasCollidedShip (ship player, ship other);
+
+int hasCollidedPlanet (ship player, planet world);
+
+int hasCollidedProj (ship player, projectile *bullets);
+
 /* Esta função recebe uma ship player e um real dt. Devolve uma ship que 
    representa player logo apos a variação de tempo dt, de tal forma que
    suas coordenadas x e y variem entre minX e minY a maxX e maxY
@@ -62,10 +71,5 @@ ship increaseTimeShip (ship player, int maxX, int minX,
 
 /* Essa função imprime a nave player na tela w. */
 void showShip (ship player, WINDOW *w);
-
-/* Inicializa a nave p identificada por playerID com as imagens na tela w */
-void initPlayer (ship *p, int playerID, WINDOW *w);
-
-int hasCollided (ship player, planet world, ship other);
 
 #endif

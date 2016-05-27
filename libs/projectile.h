@@ -35,10 +35,12 @@ typedef struct {
    projectile com n elementos com os valores recebidos da entrada padrão.*/
 projectile *initProj (int *n);
 
-/* Recebe um vetor de projectiles com n - 1 elementos inicializados, e cria mais
+/* Recebe um vetor de projectiles com 0..n - 1 elementos inicializados, e cria mais
    mais um projectile na posição n do vetor e com valor de posX = x, posY = y
    velX = vx + 100 e velY = vy + 100.                                         */
-void shoot (projectile *bullets, int n, float x, float y, float vx, float vy);
+void shoot (projectile *bullets, int n, float x, float y, float dirX, float dirY);
+
+void deleteBullet (projectile *bullets, int n, int index);
 
 /* Recebe um ponteiro para projectile bullet e um planet world e 
    soma a aceleração atual de bullet (tanto no eixo x quanto 
