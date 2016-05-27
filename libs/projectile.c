@@ -12,6 +12,7 @@
  ******************************************************************************/ 
 
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 #include <math.h>
 #include "getIndex.h"
@@ -23,6 +24,8 @@
 #define CENTERY 240  /* Centro y da imagem. */
 
 /*      Funções privadas        */
+static float t;  /* tempo de vida de cada projétil  */
+static int size; /* tamanho do array de projectile  */
 
 static float accelerateProjectile (projectile p, float mass, float posX, float posY, 
                             char c) {
@@ -35,7 +38,49 @@ static float accelerateProjectile (projectile p, float mass, float posX, float p
     return accel * dy / delta;
 }
 
+static projectile *resize (int max, projectile *old) {
+    int i;
+    projectile *new;
+    new = malloc (max * sizeof (projectile));
+    for (i = 0; i < max / 2; i++)
+        new[i] = old[i];
+    free (old);
+    return new;
+}
+
 /*      Funções públicas        */
+projectile *initProj (int *n) {
+    int ret, i;
+    projectile *bullets;
+
+    ret = scanf ("%d %f", n, &t);
+    hasError (ret != 2);
+
+    size = 100;
+    bullets = malloc (size * (sizeof (projectile)));
+
+    for (i = 0; i < (*n); i++) {
+        ret = scanf ("%f", &bullets[i].mass);
+        hasError (ret != 1);
+        ret = scanf ("%f %f %f %f", &bullets[i].posX, &bullets[i].posY, &bullets[i].velX, &bullets[i].velY);
+        hasError (ret != 4);
+        bullets[i].aceX = bullets[i].aceY = 0.0;
+        bullets[i].lifeTime = t;
+    }
+
+    return bullets;
+}
+
+void shoot (projectile *bullets, int n, float x, float y, float vx, float vy) {
+    if (size == n)
+        bullets = resize (2 * size, bullets);
+    bullets[n].posX = x;
+    bullets[n].posY = y;
+    bullets[n].velX = vx;
+    bullets[n].velY = vy;
+    bullets[n].aceX = bullets[n].aceY = 0.0;
+    bullets[n].lifeTime = t;
+}
 
 void accelerateProjToWorld (projectile *bullet, planet world) {
     bullet->aceX += accelerateProjectile (*bullet, world.mass, world.posX, world.posY, 'x');
@@ -86,28 +131,6 @@ void showBullet (projectile bullet, WINDOW *w, PIC bulletImg[], MASK bulletMsk[]
     SetMask (w, bulletMsk[index]);
     PutPic (w, bulletImg[index], 0, 0, 10, 10, x, y);
     UnSetMask (w);
-}
-
-projectile *initProj (int *n) {
-    int ret, i;
-    float t;
-    projectile *bullets;
-
-    ret = scanf ("%d %f", n, &t);
-    hasError (ret != 2);
-
-    bullets = malloc ((*n) * (sizeof (projectile)));
-
-    for (i = 0; i < (*n); i++) {
-        ret = scanf ("%f", &bullets[i].mass);
-        hasError (ret != 1);
-        ret = scanf ("%f %f %f %f", &bullets[i].posX, &bullets[i].posY, &bullets[i].velX, &bullets[i].velY);
-        hasError (ret != 4);
-        bullets[i].aceX = bullets[i].aceY = 0.0;
-        bullets[i].lifeTime = t;
-    }
-
-    return bullets;
 }
 
 void initProjImage (PIC *bulletImg, PIC *bulletMsk, PIC *bulletAux, WINDOW *w) {
