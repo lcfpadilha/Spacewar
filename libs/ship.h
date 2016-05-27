@@ -66,4 +66,6 @@ void showShip (ship player, WINDOW *w);
 /* Inicializa a nave p identificada por playerID com as imagens na tela w */
 void initPlayer (ship *p, int playerID, WINDOW *w);
 
+int hasCollided (ship player, planet world, ship other);
+
 #endif

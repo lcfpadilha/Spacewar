@@ -25,6 +25,7 @@
 // direção x), aceY, (análogo para Y). */
 typedef struct {
     float mass, posX, posY, velX, velY, aceX, aceY;
+    float lifeTime;
 } projectile;
 
 #include "planet.h"
@@ -57,7 +58,7 @@ void showBullet (projectile bullet, WINDOW *w, PIC bulletImg[], MASK bulletMsk[]
 
 /* Recebe um ponteiro para n, um ponteiro para t e retorna um vetor de
    projectile com n elementos com os valores recebidos da entrada padrão.*/
-projectile *initProj (int *n, float *t);
+projectile *initProj (int *n);
 
 /* Inicializa as 16 imagens dos projéteis e suas respectivas mascaras em
    bulletImg e bulletMsk com auxilio da bulletAux na janela w.           */

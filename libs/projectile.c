@@ -62,7 +62,7 @@ projectile increaseTimeProjectile (projectile p, int maxX, int minX,
     new.posY = p.posY + new.velY * dt;
     new.aceX = p.aceX;
     new.aceY = p.aceY;
-
+    new.lifeTime = p.lifeTime - dt;
     /* Ajustando posição caso tenha excedido o tamanho máximo ou mínimo */
     while (new.posX < minX || new.posX > maxX) {
         if      (new.posX > maxX) new.posX = new.posX - maxX + minY;
@@ -88,11 +88,12 @@ void showBullet (projectile bullet, WINDOW *w, PIC bulletImg[], MASK bulletMsk[]
     UnSetMask (w);
 }
 
-projectile *initProj (int *n, float *t) {
+projectile *initProj (int *n) {
     int ret, i;
+    float t;
     projectile *bullets;
 
-    ret = scanf ("%d %f", n, t);
+    ret = scanf ("%d %f", n, &t);
     hasError (ret != 2);
 
     bullets = malloc ((*n) * (sizeof (projectile)));
@@ -103,6 +104,7 @@ projectile *initProj (int *n, float *t) {
         ret = scanf ("%f %f %f %f", &bullets[i].posX, &bullets[i].posY, &bullets[i].velX, &bullets[i].velY);
         hasError (ret != 4);
         bullets[i].aceX = bullets[i].aceY = 0.0;
+        bullets[i].lifeTime = t;
     }
 
     return bullets;

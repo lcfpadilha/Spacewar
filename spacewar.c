@@ -28,19 +28,19 @@
 #define W 720  /* Largura da janela. */
 #define H 480  /* Altura da janela. */
 
-#define ACC1    25
+#define ACC1   25
 #define RIGHT1 40
 #define LEFT1  38
 #define FIRE1  39
 
-#define ACC2    111
+#define ACC2   111
 #define FIRE2  116
 #define LEFT2  113
 #define RIGHT2 114
 
 
 #define FALSE 0
-#define TRUE 1
+#define TRUE  1
 
 int main (int argc, char** argv) {
     /* Caso a biblioteca Xpm não esteja habilitada, o programa não funciona. */
@@ -50,7 +50,7 @@ int main (int argc, char** argv) {
     
     /* Declaração de variáveis */
     int numberOfProj, i, j, ret;
-    float timeOfProj, t, T, spentTime;
+    float t, T, spentTime;
     int acc1Press = FALSE, fire1Press = FALSE, left1Press = FALSE, right1Press = FALSE;
     int acc2Press = FALSE, fire2Press = FALSE, left2Press = FALSE, right2Press = FALSE;
 
@@ -101,7 +101,7 @@ int main (int argc, char** argv) {
     initPlayer (&player2, 2, w);
 
     /* Inicialização dos projéteis. */
-    bullets = initProj (&numberOfProj, &timeOfProj);
+    bullets = initProj (&numberOfProj);
 
     /* Inicialização das imagens dos projéteis. */
     initProjImage (bulletImg, bulletMsk, bulletAux, w);
@@ -158,7 +158,6 @@ int main (int argc, char** argv) {
             player2.aceY += 150 * sin (player2.direction);
             player2.aceX += 150 * cos (player2.direction);
         }
-    
         if (fire2Press) {
             player2.aceY -= 150 * sin (player2.direction);
             player2.aceX -= 150 * cos (player2.direction);
@@ -178,7 +177,7 @@ int main (int argc, char** argv) {
         accelerateShipToShip  (&player2, player1);
 
         /* Calculando a aceleração dos projeteis, se eles (ainda) existirem. */
-        if (bullets != NULL && spentTime < timeOfProj)
+        if (numberOfProj > 0 && bullets[numberOfProj - 1].lifeTime > 0)
             for (i = 0; i < numberOfProj; i++) {
                 accelerateShipToProj (&player1, bullets[i]);
                 accelerateShipToProj (&player2, bullets[i]);
@@ -192,6 +191,7 @@ int main (int argc, char** argv) {
                         accelerateProjToProj (&bullets[i], bullets[j]);
             }
         else {
+            numberOfProj = 0;
         	free (bullets);
         	bullets = NULL;
         }
@@ -199,7 +199,7 @@ int main (int argc, char** argv) {
         /* Mudando a posição dos objetos e imprimindo a atualização. */
         player1 = increaseTimeShip (player1, W/2, -W/2, H/2, -H/2, t);
         player2 = increaseTimeShip (player2, W/2, -W/2, H/2, -H/2, t);
-
+        
         /* Mostrando o cenário. */
         showScene (world, w, bg);
 
@@ -207,7 +207,7 @@ int main (int argc, char** argv) {
         showShip (player1, w);
         showShip (player2, w);
 
-        for (i = 0; spentTime < timeOfProj && i < numberOfProj; i++) {
+        for (i = 0; i < numberOfProj && bullets[i].lifeTime > 0; i++) {
             bullets[i] = increaseTimeProjectile (bullets[i], W/2, -W/2, H/2, -H/2, t);
             
             /* Mostrando os projeteis */
@@ -217,6 +217,29 @@ int main (int argc, char** argv) {
         player1.aceX = player1.aceY = 0.0;
         player2.aceX = player2.aceY = 0.0;
 
+        /* Verifica colisão das naves e exibe na saída padrão o resultado. */
+        if (hasCollided (player1, world, player2) && hasCollided (player2, world, player1)) {
+            printf("As duas naves colidiram, empate!\n");
+            while (1)
+                if (WCheckKBD(w) && WGetKey(w) == 9)
+                    break;
+            break;
+        }
+        else if (hasCollided (player2, world, player1)) {
+            printf("Player 2 Perdeu :(\n");
+            while (1)
+                if (WCheckKBD(w) && WGetKey(w) == 9)
+                    break;
+            break;
+        }
+        else if (hasCollided (player1, world, player2)) {
+            printf("Player 1 Perdeu :(\n");
+            while (1)
+                if (WCheckKBD(w) && WGetKey(w) == 9)
+                    break;
+            break;
+        }
+
         /* Mostrando as coisas na tela por t segundos */
         usleep (t * 1000000);
 
@@ -225,7 +248,7 @@ int main (int argc, char** argv) {
     }
 
     /* Desalocando o espaço e fechando a janela. */
-    if (spentTime >= timeOfProj) free (bullets);
+    if (numberOfProj > 0) free (bullets);
     WDestroy(w);
     CloseGraph();
 

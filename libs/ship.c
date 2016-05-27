@@ -81,11 +81,11 @@ ship increaseTimeShip (ship player, int maxX, int minX,
 
     /* Ajustando posição caso tenha excedido o tamanho máximo ou mínimo */
     while (new.posX < minX || new.posX > maxX) {
-        if      (new.posX > maxX) new.posX = new.posX - maxX + minY;
+        if      (new.posX > maxX) new.posX = new.posX - maxX + minX;
         else if (new.posX < minX) new.posX = maxX - minX + new.posX;
     }
 
-    while (new.posY < minY || new.posY > maxX) {
+    while (new.posY < minY || new.posY > maxY) {
         if      (new.posY > maxY) new.posY = new.posY - maxY + minY;
         else if (new.posY < minY) new.posY = maxY - minY + new.posY;
     }
@@ -192,4 +192,15 @@ void initPlayer (ship *p, int playerID, WINDOW *w) {
         p->aux[14] = ReadPic (w, "img/playerMask/playerMask15.xpm", p->msk[14]);
         p->aux[15] = ReadPic (w, "img/playerMask/playerMask16.xpm", p->msk[15]);
     }
+}
+
+int hasCollided (ship player, planet world, ship other) {
+    int dxToWorld = world.posX - player.posX;
+    int dyToWorld = world.posY - player.posY;
+    int dxToOther = other.posX - player.posX;
+    int dyToOther = other.posY - player.posY;
+    int distToWorld = sqrt (dxToWorld * dxToWorld + dyToWorld * dyToWorld);
+    int distToOther = sqrt (dxToOther * dxToOther + dyToOther * dyToOther);
+
+    return (distToWorld <= 23 + world.radius) || (distToOther <= 46);
 }
