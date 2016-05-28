@@ -22,7 +22,7 @@
 #define G 1.0        /* Constante gravitacional universal. */
 #define CENTERX 360  /* Centro x da imagem. */
 #define CENTERY 240  /* Centro y da imagem. */
-#define MAX_VEL 250
+#define MAX_VEL 300  /* Velocidade maxima.   */
 
 /*      Funções privadas        */
 static float t;  /* tempo de vida de cada projétil  */
@@ -57,7 +57,7 @@ projectile *initProj (int *n) {
     ret = scanf ("%d %f", n, &t);
     hasError (ret != 2);
 
-    size = 5;
+    size = 100;
     bullets = malloc (size * (sizeof (projectile)));
 
     for (i = 0; i < (*n); i++) {
@@ -72,18 +72,19 @@ projectile *initProj (int *n) {
     return bullets;
 }
 
-void shoot (projectile *bullets, int n, ship *player) {
+void shoot (projectile *bullets, int n, ship player) {
     if (size == n) {
         bullets = resize (size, bullets);
         size = 2 * size;
     }
-    bullets[n].posX = player->posX + cos (player->direction) * 30;
-    bullets[n].posY = player->posY + sin (player->direction) * 30;
-    bullets[n].velX = cos (player->direction) * 200;
-    bullets[n].velY = sin (player->direction) * 200;
+    bullets[n].posX = player.posX + cos (player.direction) * 30;
+    bullets[n].posY = player.posY + sin (player.direction) * 30;
+    bullets[n].velX = cos (player.direction) * 200;
+    bullets[n].velY = sin (player.direction) * 200;
     bullets[n].mass = 1.0;
     bullets[n].aceX = bullets[n].aceY = 0.0;
     bullets[n].lifeTime = t;
+    strcpy (bullets[n].playerID, player.name);
 }
 
 void deleteBullet (projectile *bullets, int n, int index) {
@@ -120,6 +121,7 @@ projectile increaseTimeProjectile (projectile p, int maxX, int minX,
     new.aceX = p.aceX;
     new.aceY = p.aceY;
     new.lifeTime = p.lifeTime - dt;
+    strcpy (new.playerID, p.playerID);
     /* Ajustando posição caso tenha excedido o tamanho máximo ou mínimo */
     while (new.posX < minX || new.posX > maxX) {
         if      (new.posX > maxX) new.posX = new.posX - maxX + minX;

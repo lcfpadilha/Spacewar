@@ -37,7 +37,8 @@ int main (int argc, char** argv) {
     #else
     
     /* Declaração de variáveis */
-    int numberOfProj, i, j, ret, collideP1 = FALSE, collideP2 = FALSE;
+    int numberOfProj, i, j, ret; 
+    int changeIndex = FALSE, collideP1 = FALSE, collideP2 = FALSE;
     float t, T, spentTime;
 
     /* Declaração dos corpos que serão postos no espaço. */
@@ -95,7 +96,7 @@ int main (int argc, char** argv) {
     /* Simulando o espaço. */
     while (spentTime < T && !collideP1 && !collideP2) {
         /* Verifica se alguma tecla foi pressionada */
-        movePlayer (&player1, &player2, bullets, &numberOfProj, w);
+        movePlayer (&player1, &player2, bullets, &numberOfProj, w, t);
 
         /* Calculando a aceleração da nave pĺayer1. */
         accelerateShipToWorld (&player1, world);
@@ -128,23 +129,36 @@ int main (int argc, char** argv) {
         /* Mostrando as naves na tela. */
         showShip (player1, w);
         showShip (player2, w);
-
-        for (i = 0; i < numberOfProj; i++) {
-            if (bullets[i].lifeTime > 0) {
+        i = 0;
+        while (i < numberOfProj) {
+            if (bullets[i].lifeTime <= 0 || projCollided (bullets[i], world)) 
+                deleteBullet (bullets, numberOfProj--, i);
+            else {
+                changeIndex = TRUE;
                 bullets[i] = increaseTimeProjectile (bullets[i], W/2, -W/2, H/2, -H/2, t);
-                
-                if (projCollided (bullets[i], world))
+            
+                if (hasCollidedProj (player1, bullets[i])) {
+                    player1.life -= 34;
+                    if (player1.life <= 0)
+                        collideP1 = TRUE;
                     deleteBullet (bullets, numberOfProj--, i);
-                if (hasCollidedProj (player1, bullets[i])) 
-                    collideP1 = TRUE;
-                else if (hasCollidedProj (player2, bullets[i])) 
-                    collideP2 = TRUE;
+                    changeIndex = FALSE;
+                }
+                else if (hasCollidedProj (player2, bullets[i])) {
+                    player2.life -= 34;
+                    if (player2.life <= 0)
+                        collideP1 = TRUE;
+                    deleteBullet (bullets, numberOfProj--, i);
+                    changeIndex = FALSE;
+                }
 
                 /* Mostrando os projeteis */
-                showBullet (bullets[i], w, bulletImg, bulletMsk);
-                bullets[i].aceX = bullets[i].aceY = 0.0;
+                if (changeIndex) {
+                    showBullet (bullets[i], w, bulletImg, bulletMsk);
+                    bullets[i].aceX = bullets[i].aceY = 0.0;
+                    i++;
+                }
             }
-            else deleteBullet (bullets, numberOfProj--, i);
         }
 
         player1.aceX = player1.aceY = 0.0;

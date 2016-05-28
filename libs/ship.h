@@ -30,7 +30,7 @@
 typedef struct {
     char name[10];
     float mass, posX, posY, velX, velY, aceX, aceY;
-    float direction, timeForCharge;
+    float direction, timeForCharge, life;
     int charge;
     PIC img[16];
     PIC aux[16];
@@ -38,7 +38,7 @@ typedef struct {
 } ship;
 #include "projectile.h"
 #include "planet.h"
-
+ 
 /* Inicializa a nave p identificada por playerID com as imagens na tela w */
 void initPlayer (ship *p, int playerID, WINDOW *w);
 

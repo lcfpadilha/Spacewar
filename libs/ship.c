@@ -23,7 +23,8 @@
 #define G 1.0        /* Constante gravitacional universal. */
 #define CENTERX 360  /* Centro x da imagem. */
 #define CENTERY 240  /* Centro y da imagem. */
-#define MAX_VEL 200 /* Velocidade máxima da nave*/
+#define MAX_VEL 240  /* Velocidade máxima da nave*/
+#define MAX_CHARGE 6  /* Carga máxima de tiros. */
 
 /*      Funções privadas        */
 static float accelerateShip (ship s, float mass, float posX, float posY, char c) {
@@ -49,8 +50,11 @@ void initPlayer (ship *p, int playerID, WINDOW *w) {
     p->aceX = p->aceY = 0.0;
     
     /* Carga de tiros inicializada com 1*/
-    p->charge = 4;
+    p->charge = MAX_CHARGE;
     p->timeForCharge = 0.0;
+
+    /* Vida da nave  */
+    p->life = 100.0;
 
     /* Inicializa as máscaras */
     for (i = 0; i < 16; i++)
@@ -168,8 +172,7 @@ int hasCollidedProj (ship player, projectile bullet) {
     int dx   = bullet.posX - player.posX;
     int dy   = bullet.posY - player.posY;
     int dist = sqrt (dx * dx + dy * dy);
-
-    return dist <= 28;
+    return strcmp (player.name, bullet.playerID) != 0 && dist <= 28;
 }
 
 ship increaseTimeShip (ship player, int maxX, int minX, 
@@ -184,24 +187,22 @@ ship increaseTimeShip (ship player, int maxX, int minX,
     if (new.velY > MAX_VEL) new.velY = MAX_VEL;
     new.posX = player.posX + new.velX * dt;
     new.posY = player.posY + new.velY * dt;
+    new.life = player.life;
     for (i = 0; i < 16; i++) {
         new.img[i] = player.img[i];
         new.aux[i] = player.aux[i];
         new.msk[i] = player.msk[i];
     }
-    new.aceX = player.aceX;
-    new.aceY = player.aceY;
-    if (player.charge < 4) {
+    new.aceX   = player.aceX;
+    new.aceY   = player.aceY;
+    new.charge = player.charge;
+    new.timeForCharge = 0.0;
+    if (player.charge < MAX_CHARGE) {
         new.timeForCharge = player.timeForCharge + dt;
-        if (new.timeForCharge >= 1.0) {
-            new.charge = player.charge + 1;
+        if (new.timeForCharge >= 2.0) {
+            new.charge = MAX_CHARGE;
             new.timeForCharge = 0.0;
         }
-        else new.charge = player.charge;
-    }
-    else {
-        new.charge = player.charge;
-        new.timeForCharge = 0.0;
     }
 
     new.direction = player.direction;

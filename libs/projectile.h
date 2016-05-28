@@ -26,6 +26,7 @@
 typedef struct {
     float mass, posX, posY, velX, velY, aceX, aceY;
     float lifeTime;
+    char playerID[10];
 } projectile;
 
 #include "planet.h"
@@ -38,7 +39,7 @@ projectile *initProj (int *n);
 /* Recebe um vetor de projectiles com 0..n - 1 elementos inicializados, e cria mais
    mais um projectile na posição n do vetor e com valor de posX = x, posY = y
    velX = vx + 100 e velY = vy + 100.                                         */
-void shoot (projectile *bullets, int n, ship *player);
+void shoot (projectile *bullets, int n, ship player);
 
 void deleteBullet (projectile *bullets, int n, int index);
 

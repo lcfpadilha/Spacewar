@@ -23,7 +23,7 @@
 #define TRUE  1
 
 void initDetection (WINDOW *w);
-void movePlayer (ship *player1, ship *player2, projectile *bullets, int *n, WINDOW *w);
+void movePlayer (ship *player1, ship *player2, projectile *bullets, int *n, WINDOW *w, float t);
 void  quitDetection (WINDOW *w);
 
 #endif

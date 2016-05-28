@@ -8,6 +8,7 @@
  *  Dependências:  ship.h xwc.h math.h
  *
  ******************************************************************************/
+#include <stdio.h>
 #include <math.h>
 #include "controller.h"
 #include "ship.h"
@@ -27,15 +28,20 @@
 /* Variáveis privadas */
 static int acc1Press, fire1Press, left1Press, right1Press;
 static int acc2Press, fire2Press, left2Press, right2Press; 
+static float time, timeP1, timeP2;
 
 void initDetection (WINDOW *w) {
     InitKBD(w);
     acc1Press = fire1Press = left1Press = right1Press = FALSE;
     acc2Press = fire2Press = left2Press = right2Press = FALSE;
+    time = 0.0;
+    timeP1 = time - 0.2;
+    timeP2 = time - 0.2;
 }
 
-void movePlayer (ship *player1, ship *player2, projectile *bullets, int *n, WINDOW *w) {
+void movePlayer (ship *player1, ship *player2, projectile *bullets, int *n, WINDOW *w, float t) {
     KeyCode kb;
+    time += t;
     if (WCheckKBD(w)) {
         kb = WGetKey(w);
         if (kb == ACC1) 
@@ -64,14 +70,15 @@ void movePlayer (ship *player1, ship *player2, projectile *bullets, int *n, WIND
     }
 
     if (acc1Press) {
-        player1->aceY += 150 * sin (player1->direction);
-        player1->aceX += 150 * cos (player1->direction);
+        player1->aceY += 180 * sin (player1->direction);
+        player1->aceX += 180 * cos (player1->direction);
     }
     
-    if (fire1Press && player1->charge > 0) {
-        shoot (bullets, *n, player1);
+    if (fire1Press && time - timeP1 > 0.2 && player1->charge > 0) {
+        shoot (bullets, *n, *player1);
         *n = *n + 1;
         player1->charge--;
+        timeP1 = time;
     }
     
     if (left1Press) 
@@ -81,13 +88,14 @@ void movePlayer (ship *player1, ship *player2, projectile *bullets, int *n, WIND
         player1->direction -= M_PI / 20;
 
     if (acc2Press) {
-        player2->aceY += 150 * sin (player2->direction);
-        player2->aceX += 150 * cos (player2->direction);
+        player2->aceY += 180 * sin (player2->direction);
+        player2->aceX += 180 * cos (player2->direction);
     }
-    if (fire2Press && player2->charge > 0) {
-        shoot (bullets, *n, player2);
+    if (fire2Press && time - timeP2 > 0.2 && player2->charge > 0) {
+        shoot (bullets, *n, *player2);
         *n = *n + 1;
         player2->charge--;
+        timeP2 = time;
     }
 
     if (left2Press)
