@@ -38,7 +38,7 @@ projectile *initProj (int *n);
 /* Recebe um vetor de projectiles com 0..n - 1 elementos inicializados, e cria mais
    mais um projectile na posição n do vetor e com valor de posX = x, posY = y
    velX = vx + 100 e velY = vy + 100.                                         */
-void shoot (projectile *bullets, int n, float x, float y, float dirX, float dirY);
+void shoot (projectile *bullets, int n, ship *player);
 
 void deleteBullet (projectile *bullets, int n, int index);
 
@@ -63,12 +63,14 @@ void accelerateProjToProj (projectile *bullet, projectile other);
 projectile increaseTimeProjectile (projectile p, int maxX, int minX, 
                                                  int maxY, int minY, float dt);
 
-/* Função que mostra a bala bullet na janela w usando as imagens do vetor 
-// bulletImg e bulletMsk, supondo que eles possuem 16 imagens. */
-void showBullet (projectile bullet, WINDOW *w, PIC bulletImg[], MASK bulletMsk[]);
+int projCollided (projectile bullet, planet world);
 
 /* Inicializa as 16 imagens dos projéteis e suas respectivas mascaras em
    bulletImg e bulletMsk com auxilio da bulletAux na janela w.           */
 void initProjImage (PIC *bulletImg, PIC *bulletMsk, PIC *bulletAux, WINDOW *w);
+
+/* Função que mostra a bala bullet na janela w usando as imagens do vetor 
+// bulletImg e bulletMsk, supondo que eles possuem 16 imagens. */
+void showBullet (projectile bullet, WINDOW *w, PIC bulletImg[], MASK bulletMsk[]);
 
 #endif

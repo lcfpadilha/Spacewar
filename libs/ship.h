@@ -30,7 +30,8 @@
 typedef struct {
     char name[10];
     float mass, posX, posY, velX, velY, aceX, aceY;
-    float direction;
+    float direction, timeForCharge;
+    int charge;
     PIC img[16];
     PIC aux[16];
     MASK msk[16];
@@ -60,7 +61,7 @@ int hasCollidedShip (ship player, ship other);
 
 int hasCollidedPlanet (ship player, planet world);
 
-int hasCollidedProj (ship player, projectile *bullets);
+int hasCollidedProj (ship player, projectile bullet);
 
 /* Esta função recebe uma ship player e um real dt. Devolve uma ship que 
    representa player logo apos a variação de tempo dt, de tal forma que

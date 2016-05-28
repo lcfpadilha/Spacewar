@@ -23,9 +23,9 @@
 #define G 1.0        /* Constante gravitacional universal. */
 #define CENTERX 360  /* Centro x da imagem. */
 #define CENTERY 240  /* Centro y da imagem. */
+#define MAX_VEL 200 /* Velocidade máxima da nave*/
 
 /*      Funções privadas        */
-
 static float accelerateShip (ship s, float mass, float posX, float posY, char c) {
     float dx = posX - s.posX;
     float dy = posY - s.posY;
@@ -38,71 +38,6 @@ static float accelerateShip (ship s, float mass, float posX, float posY, char c)
 
 
 /*        Funções Públicas        */
-
-void accelerateShipToWorld (ship *player, planet world) {
-    player->aceX += accelerateShip (*player, world.mass, world.posX, world.posY, 'x');
-    player->aceY += accelerateShip (*player, world.mass, world.posX, world.posY, 'y');
-}
-
-void accelerateShipToShip (ship *player, ship other) {
-    player->aceX += accelerateShip (*player, other.mass, other.posX, other.posY, 'x');
-    player->aceY += accelerateShip (*player, other.mass, other.posX, other.posY, 'y');
-} 
-
-void accelerateShipToProj (ship *player, projectile b) {
-    player->aceX += accelerateShip (*player, b.mass, b.posX, b.posY, 'x');
-    player->aceY += accelerateShip (*player, b.mass, b.posX, b.posY, 'y');
-}
-
-ship increaseTimeShip (ship player, int maxX, int minX, 
-                                    int maxY, int minY, float dt) {
-    int i;
-    ship new;
-    strcpy (new.name, player.name);
-    new.mass = player.mass;
-    new.velX = player.velX + player.aceX * dt;
-    new.velY = player.velY + player.aceY * dt;
-    new.posX = player.posX + new.velX * dt;
-    new.posY = player.posY + new.velY * dt;
-    for (i = 0; i < 16; i++) {
-        new.img[i] = player.img[i];
-        new.aux[i] = player.aux[i];
-        new.msk[i] = player.msk[i];
-    }
-    new.aceX = player.aceX;
-    new.aceY = player.aceY;
-    new.direction = player.direction;
-    while (new.direction > 2 * M_PI || new.direction <= 0.0) {
-        if (new.direction > 2 * M_PI)
-            new.direction = new.direction - 2 * M_PI;
-        else 
-            new.direction = new.direction + 2 * M_PI;
-    }
-
-    /* Ajustando posição caso tenha excedido o tamanho máximo ou mínimo */
-    while (new.posX < minX || new.posX > maxX) {
-        if      (new.posX > maxX) new.posX = new.posX - maxX + minX;
-        else if (new.posX < minX) new.posX = maxX - minX + new.posX;
-    }
-
-    while (new.posY < minY || new.posY > maxY) {
-        if      (new.posY > maxY) new.posY = new.posY - maxY + minY;
-        else if (new.posY < minY) new.posY = maxY - minY + new.posY;
-    }
-
-    return new;
-}
-
-void showShip (ship player, WINDOW *w) {
-    int x = CENTERX + player.posX - 23;
-    int y = CENTERY - player.posY - 23;
-    int index = getIndexByOrientation (player.direction);
-    
-    SetMask (w, player.msk[index]);
-    PutPic (w, player.img[index], 0, 0, 46, 46, x, y);
-    UnSetMask (w);
-}
-
 void initPlayer (ship *p, int playerID, WINDOW *w) {
     int i, ret;
     
@@ -113,6 +48,10 @@ void initPlayer (ship *p, int playerID, WINDOW *w) {
     /* Aceleração iniciada com 0 */
     p->aceX = p->aceY = 0.0;
     
+    /* Carga de tiros inicializada com 1*/
+    p->charge = 4;
+    p->timeForCharge = 0.0;
+
     /* Inicializa as máscaras */
     for (i = 0; i < 16; i++)
         p->msk[i] = NewMask (w, 46, 46);
@@ -194,13 +133,105 @@ void initPlayer (ship *p, int playerID, WINDOW *w) {
     }
 }
 
-int hasCollided (ship player, planet world, ship other) {
-    int dxToWorld = world.posX - player.posX;
-    int dyToWorld = world.posY - player.posY;
-    int dxToOther = other.posX - player.posX;
-    int dyToOther = other.posY - player.posY;
-    int distToWorld = sqrt (dxToWorld * dxToWorld + dyToWorld * dyToWorld);
-    int distToOther = sqrt (dxToOther * dxToOther + dyToOther * dyToOther);
+void accelerateShipToWorld (ship *player, planet world) {
+    player->aceX += accelerateShip (*player, world.mass, world.posX, world.posY, 'x');
+    player->aceY += accelerateShip (*player, world.mass, world.posX, world.posY, 'y');
+}
 
-    return (distToWorld <= 23 + world.radius) || (distToOther <= 46);
+void accelerateShipToShip (ship *player, ship other) {
+    player->aceX += accelerateShip (*player, other.mass, other.posX, other.posY, 'x');
+    player->aceY += accelerateShip (*player, other.mass, other.posX, other.posY, 'y');
+} 
+
+void accelerateShipToProj (ship *player, projectile b) {
+    player->aceX += accelerateShip (*player, b.mass, b.posX, b.posY, 'x');
+    player->aceY += accelerateShip (*player, b.mass, b.posX, b.posY, 'y');
+}
+
+int hasCollidedShip (ship player, ship other) {
+    int dx   = other.posX - player.posX;
+    int dy   = other.posY - player.posY;
+    int dist = sqrt (dx * dx + dy * dy);
+
+    return dist <= 46;
+}
+
+int hasCollidedPlanet (ship player, planet world) {
+    int dx   = world.posX - player.posX;
+    int dy   = world.posY - player.posY;
+    int dist = sqrt (dx * dx + dy * dy);
+
+    return dist <= 23 + world.radius;
+}
+
+int hasCollidedProj (ship player, projectile bullet) {
+    int dx   = bullet.posX - player.posX;
+    int dy   = bullet.posY - player.posY;
+    int dist = sqrt (dx * dx + dy * dy);
+
+    return dist <= 28;
+}
+
+ship increaseTimeShip (ship player, int maxX, int minX, 
+                                    int maxY, int minY, float dt) {
+    int i;
+    ship new;
+    strcpy (new.name, player.name);
+    new.mass = player.mass;
+    new.velX = player.velX + player.aceX * dt;
+    new.velY = player.velY + player.aceY * dt;
+    if (new.velX > MAX_VEL) new.velX = MAX_VEL;
+    if (new.velY > MAX_VEL) new.velY = MAX_VEL;
+    new.posX = player.posX + new.velX * dt;
+    new.posY = player.posY + new.velY * dt;
+    for (i = 0; i < 16; i++) {
+        new.img[i] = player.img[i];
+        new.aux[i] = player.aux[i];
+        new.msk[i] = player.msk[i];
+    }
+    new.aceX = player.aceX;
+    new.aceY = player.aceY;
+    if (player.charge < 4) {
+        new.timeForCharge = player.timeForCharge + dt;
+        if (new.timeForCharge >= 1.0) {
+            new.charge = player.charge + 1;
+            new.timeForCharge = 0.0;
+        }
+        else new.charge = player.charge;
+    }
+    else {
+        new.charge = player.charge;
+        new.timeForCharge = 0.0;
+    }
+
+    new.direction = player.direction;
+    while (new.direction > 2 * M_PI || new.direction <= 0.0) {
+        if (new.direction > 2 * M_PI)
+            new.direction = new.direction - 2 * M_PI;
+        else 
+            new.direction = new.direction + 2 * M_PI;
+    }
+
+    /* Ajustando posição caso tenha excedido o tamanho máximo ou mínimo */
+    while (new.posX < minX || new.posX > maxX) {
+        if      (new.posX > maxX) new.posX = new.posX - maxX + minX;
+        else if (new.posX < minX) new.posX = maxX - minX + new.posX;
+    }
+
+    while (new.posY < minY || new.posY > maxY) {
+        if      (new.posY > maxY) new.posY = new.posY - maxY + minY;
+        else if (new.posY < minY) new.posY = maxY - minY + new.posY;
+    }
+
+    return new;
+}
+
+void showShip (ship player, WINDOW *w) {
+    int x = CENTERX + player.posX - 23;
+    int y = CENTERY - player.posY - 23;
+    int index = getIndexByOrientation (player.direction);
+    
+    SetMask (w, player.msk[index]);
+    PutPic (w, player.img[index], 0, 0, 46, 46, x, y);
+    UnSetMask (w);
 }

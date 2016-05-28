@@ -24,23 +24,11 @@
 #include "libs/planet.h"
 #include "libs/ship.h"
 #include "libs/projectile.h"
+#include "libs/controller.h"
 
 #define W 720  /* Largura da janela. */
 #define H 480  /* Altura da janela. */
 
-#define ACC1   25
-#define RIGHT1 40
-#define LEFT1  38
-#define FIRE1  39
-
-#define ACC2   111
-#define FIRE2  116
-#define LEFT2  113
-#define RIGHT2 114
-
-
-#define FALSE 0
-#define TRUE  1
 
 int main (int argc, char** argv) {
     /* Caso a biblioteca Xpm não esteja habilitada, o programa não funciona. */
@@ -49,10 +37,8 @@ int main (int argc, char** argv) {
     #else
     
     /* Declaração de variáveis */
-    int numberOfProj, i, j, ret;
+    int numberOfProj, i, j, ret, collideP1 = FALSE, collideP2 = FALSE;
     float t, T, spentTime;
-    int acc1Press = FALSE, fire1Press = FALSE, left1Press = FALSE, right1Press = FALSE;
-    int acc2Press = FALSE, fire2Press = FALSE, left2Press = FALSE, right2Press = FALSE;
 
     /* Declaração dos corpos que serão postos no espaço. */
     planet world;
@@ -63,9 +49,6 @@ int main (int argc, char** argv) {
     WINDOW *w;
     PIC bg, bulletImg[16], bulletAux[16];
     MASK bulletMsk[16];
-
-    /* Declaração de váriaveis para uso de controle */
-    KeyCode kb;
 
     /* Inicialização de variáveis relacionadas à física do jogo */
     world.radius = world.mass = world.posX = world.posY = 0;
@@ -80,8 +63,8 @@ int main (int argc, char** argv) {
     /* Inicialização da janela */
     w = InitGraph (W, H, "Space");
 
-    /* Inicialização do teclado */
-    InitKBD(w);
+    /* Inicialização da controller */
+    initDetection (w);
 
     /* Inicialização da imagem de fundo */
     bg = ReadPic (w, "img/scenery/space.xpm",  NULL);
@@ -110,62 +93,9 @@ int main (int argc, char** argv) {
     spentTime = 0.0;
 
     /* Simulando o espaço. */
-    while (spentTime < T) {
+    while (spentTime < T && !collideP1 && !collideP2) {
         /* Verifica se alguma tecla foi pressionada */
-        if (WCheckKBD(w)) {
-            kb = WGetKey(w);
-            if (kb == ACC1) 
-                acc1Press =   !acc1Press;
-            
-            else if (kb == FIRE1) 
-                fire1Press = !fire1Press;
-                
-            else if (kb == LEFT1) 
-                left1Press = !left1Press;
-            
-            else if (kb == RIGHT1) 
-                right1Press = !right1Press;
-            
-            else if (kb == ACC2) 
-                acc2Press = !acc2Press;
-            
-            else if (kb == FIRE2) 
-                shoot (bullets, numberOfProj++, player2.posX, player2.posY, 150 * sin (player1.direction), player2.velY);
-            
-            else if (kb == LEFT2) 
-                left2Press = !left2Press;
-            
-            else if (kb == RIGHT2) 
-                right2Press = !right2Press;
-        }
-        if (acc1Press) {
-            player1.aceY += 150 * sin (player1.direction);
-            player1.aceX += 150 * cos (player1.direction);
-        }
-        
-        if (fire1Press) 
-            shoot (bullets, numberOfProj++, player1.posX, player1.posY, 
-                            cos (player1.direction), sin (player1.direction));
-        
-        if (left1Press) 
-            player1.direction += M_PI / 20;
-        
-        if (right1Press) 
-            player1.direction -= M_PI / 20;
-    
-        if (acc2Press) {
-            player2.aceY += 150 * sin (player2.direction);
-            player2.aceX += 150 * cos (player2.direction);
-        }
-        if (fire2Press)
-            shoot (bullets, numberOfProj++, player2.posX, player2.posY, 
-                            cos (player2.direction), sin (player2.direction));
-
-        if (left2Press)
-            player2.direction += M_PI / 20;
-        
-        if (right2Press)
-            player2.direction -= M_PI / 20;
+        movePlayer (&player1, &player2, bullets, &numberOfProj, w);
 
         /* Calculando a aceleração da nave pĺayer1. */
         accelerateShipToWorld (&player1, world);
@@ -188,7 +118,6 @@ int main (int argc, char** argv) {
                 if (i != j)
                     accelerateProjToProj (&bullets[i], bullets[j]);
         }
-
         /* Mudando a posição dos objetos e imprimindo a atualização. */
         player1 = increaseTimeShip (player1, W/2, -W/2, H/2, -H/2, t);
         player2 = increaseTimeShip (player2, W/2, -W/2, H/2, -H/2, t);
@@ -204,37 +133,30 @@ int main (int argc, char** argv) {
             if (bullets[i].lifeTime > 0) {
                 bullets[i] = increaseTimeProjectile (bullets[i], W/2, -W/2, H/2, -H/2, t);
                 
+                if (projCollided (bullets[i], world))
+                    deleteBullet (bullets, numberOfProj--, i);
+                if (hasCollidedProj (player1, bullets[i])) 
+                    collideP1 = TRUE;
+                else if (hasCollidedProj (player2, bullets[i])) 
+                    collideP2 = TRUE;
+
                 /* Mostrando os projeteis */
                 showBullet (bullets[i], w, bulletImg, bulletMsk);
                 bullets[i].aceX = bullets[i].aceY = 0.0;
             }
             else deleteBullet (bullets, numberOfProj--, i);
         }
+
         player1.aceX = player1.aceY = 0.0;
         player2.aceX = player2.aceY = 0.0;
 
         /* Verifica colisão das naves e exibe na saída padrão o resultado. */
-        if (hasCollided (player1, world, player2) && hasCollided (player2, world, player1)) {
-            printf("As duas naves colidiram, empate!\n");
-            while (1)
-                if (WCheckKBD(w) && WGetKey(w) == 9)
-                    break;
-            break;
-        }
-        else if (hasCollided (player2, world, player1)) {
-            printf("Player 2 Perdeu :(\n");
-            while (1)
-                if (WCheckKBD(w) && WGetKey(w) == 9)
-                    break;
-            break;
-        }
-        else if (hasCollided (player1, world, player2)) {
-            printf("Player 1 Perdeu :(\n");
-            while (1)
-                if (WCheckKBD(w) && WGetKey(w) == 9)
-                    break;
-            break;
-        }
+        if (hasCollidedShip (player1, player2)) 
+            collideP1 = collideP2 = TRUE;
+        else if (hasCollidedPlanet (player1, world)) 
+            collideP1 = TRUE;
+        else if (hasCollidedPlanet (player2, world)) 
+            collideP2 = TRUE;
 
         /* Mostrando as coisas na tela por t segundos */
         usleep (t * 1000000);
@@ -242,9 +164,15 @@ int main (int argc, char** argv) {
         /* Aumentando o tempo que passou. */
         spentTime += t;
     }
-
+    if (collideP1 && collideP2)
+        printf ("As duas naves colidiram, empate :(\n");
+    else if (collideP1)
+        printf("A nave 1 explodiu!\n");
+    else if (collideP2)
+        printf("A nave 2 exploriu\n");
+    quitDetection (w);
     /* Desalocando o espaço e fechando a janela. */
-    if (numberOfProj > 0) free (bullets);
+    free (bullets);
     WDestroy(w);
     CloseGraph();
 

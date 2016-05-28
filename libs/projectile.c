@@ -22,6 +22,7 @@
 #define G 1.0        /* Constante gravitacional universal. */
 #define CENTERX 360  /* Centro x da imagem. */
 #define CENTERY 240  /* Centro y da imagem. */
+#define MAX_VEL 250
 
 /*      Funções privadas        */
 static float t;  /* tempo de vida de cada projétil  */
@@ -41,8 +42,8 @@ static float accelerateProjectile (projectile p, float mass, float posX, float p
 static projectile *resize (int max, projectile *old) {
     int i;
     projectile *new;
-    new = malloc (max * sizeof (projectile));
-    for (i = 0; i < max / 2; i++)
+    new = malloc (2 * max * sizeof (projectile));
+    for (i = 0; i < max; i++)
         new[i] = old[i];
     free (old);
     return new;
@@ -71,13 +72,16 @@ projectile *initProj (int *n) {
     return bullets;
 }
 
-void shoot (projectile *bullets, int n, float x, float y, float dirX, float dirY) {
-    if (size == n)
-        bullets = resize (2 * size, bullets);
-    bullets[n].posX = x + 30;
-    bullets[n].posY = y + 30;
-    bullets[n].velX = dirX * 100;
-    bullets[n].velY = dirY * 100;
+void shoot (projectile *bullets, int n, ship *player) {
+    if (size == n) {
+        bullets = resize (size, bullets);
+        size = 2 * size;
+    }
+    bullets[n].posX = player->posX + cos (player->direction) * 30;
+    bullets[n].posY = player->posY + sin (player->direction) * 30;
+    bullets[n].velX = cos (player->direction) * 200;
+    bullets[n].velY = sin (player->direction) * 200;
+    bullets[n].mass = 1.0;
     bullets[n].aceX = bullets[n].aceY = 0.0;
     bullets[n].lifeTime = t;
 }
@@ -109,6 +113,8 @@ projectile increaseTimeProjectile (projectile p, int maxX, int minX,
     new.mass = p.mass;
     new.velX = p.velX + p.aceX * dt;
     new.velY = p.velY + p.aceY * dt;
+    if (new.velX > MAX_VEL) new.velX = MAX_VEL;
+    if (new.velY > MAX_VEL) new.velY = MAX_VEL;
     new.posX = p.posX + new.velX * dt;
     new.posY = p.posY + new.velY * dt;
     new.aceX = p.aceX;
@@ -124,19 +130,15 @@ projectile increaseTimeProjectile (projectile p, int maxX, int minX,
         if      (new.posY > maxY) new.posY = new.posY - maxY + minY;
         else if (new.posY < minY) new.posY = maxY - minY + new.posY;
     }
-
     return new;
 }
 
-void showBullet (projectile bullet, WINDOW *w, PIC bulletImg[], MASK bulletMsk[]) {
-    int x = CENTERX + bullet.posX - 5;
-    int y = CENTERY - bullet.posY - 5;
-    int index = getBulletIndexByOrientation (bullet.velX, bullet.velY);
+int projCollided (projectile bullet, planet world) {
+    int dx   = world.posX - bullet.posX;
+    int dy   = world.posY - bullet.posY;
+    int dist = sqrt (dx * dx + dy * dy);
 
-    /* Desenhando o projétil. */
-    SetMask (w, bulletMsk[index]);
-    PutPic (w, bulletImg[index], 0, 0, 10, 10, x, y);
-    UnSetMask (w);
+    return dist <= 5 + world.radius;
 }
 
 void initProjImage (PIC *bulletImg, PIC *bulletMsk, PIC *bulletAux, WINDOW *w) {
@@ -179,4 +181,15 @@ void initProjImage (PIC *bulletImg, PIC *bulletMsk, PIC *bulletAux, WINDOW *w) {
     bulletAux[13] = ReadPic (w, "img/bulletMask/bulletMask14.xpm", bulletMsk[13]);
     bulletAux[14] = ReadPic (w, "img/bulletMask/bulletMask15.xpm", bulletMsk[14]);
     bulletAux[15] = ReadPic (w, "img/bulletMask/bulletMask16.xpm", bulletMsk[15]);
+}
+
+void showBullet (projectile bullet, WINDOW *w, PIC bulletImg[], MASK bulletMsk[]) {
+    int x = CENTERX + bullet.posX - 5;
+    int y = CENTERY - bullet.posY - 5;
+    int index = getBulletIndexByOrientation (bullet.velX, bullet.velY);
+
+    /* Desenhando o projétil. */
+    SetMask (w, bulletMsk[index]);
+    PutPic (w, bulletImg[index], 0, 0, 10, 10, x, y);
+    UnSetMask (w);
 }
