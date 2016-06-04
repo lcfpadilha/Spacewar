@@ -73,4 +73,6 @@ ship increaseTimeShip (ship player, int maxX, int minX,
 /* Essa função imprime a nave player na tela w. */
 void showShip (ship player, WINDOW *w);
 
+void showShipLife (ship player1, ship player2, WINDOW *w);
+
 #endif

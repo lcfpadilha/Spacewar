@@ -23,6 +23,7 @@
 #define LEFT2  113
 #define RIGHT2 114
 
+#define ENTER 36
 #define QUIT   9
 
 /* Variáveis privadas */
@@ -67,6 +68,8 @@ void movePlayer (ship *player1, ship *player2, projectile *bullets, int *n, WIND
         
         else if (kb == RIGHT2) 
             right2Press = !right2Press;
+        else if (kb == ENTER)
+            enterCheck (w, 3);
     }
 
     if (acc1Press) {
@@ -109,4 +112,14 @@ void quitDetection (WINDOW *w) {
     while (1)
         if (WCheckKBD(w) && WGetKey(w) == QUIT)
             break;
+}
+
+void enterCheck (WINDOW *w, int total) {
+    int cont = 0;
+    while (1) { 
+        if (WCheckKBD(w) && WGetKey(w) == ENTER) {
+            cont++;
+            if (cont == total) break;
+        }
+    }
 }

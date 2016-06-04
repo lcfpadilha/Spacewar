@@ -236,3 +236,13 @@ void showShip (ship player, WINDOW *w) {
     PutPic (w, player.img[index], 0, 0, 46, 46, x, y);
     UnSetMask (w);
 }
+
+void showShipLife (ship player1, ship player2, WINDOW *w) {
+    int p1Life = (int) (100.0 - 1.5 * player1.life);
+    int p2Life = (int) (100.0 - 1.5 * player2.life);
+    WFillRect(w, 48, 10, 152, 10, WNamedColor("Red"));
+    WFillRect(w, 528, 10, 152, 10, WNamedColor("Blue"));
+
+    WFillRect(w, 199 - p1Life, 11, p1Life, 8, WNamedColor("Black"));
+    WFillRect(w, 679 - p2Life, 11, p2Life, 8, WNamedColor("Black"));
+}

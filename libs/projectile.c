@@ -39,11 +39,11 @@ static float accelerateProjectile (projectile p, float mass, float posX, float p
     return accel * dy / delta;
 }
 
-static projectile *resize (int max, projectile *old) {
+static projectile *resize (int max, int size, projectile *old) {
     int i;
     projectile *new;
-    new = malloc (2 * max * sizeof (projectile));
-    for (i = 0; i < max; i++)
+    new = malloc (max * sizeof (projectile));
+    for (i = 0; i < size; i++)
         new[i] = old[i];
     free (old);
     return new;
@@ -73,8 +73,8 @@ projectile *initProj (int *n) {
 }
 
 void shoot (projectile *bullets, int n, ship player) {
-    if (size == n) {
-        bullets = resize (size, bullets);
+    if (size == n - 1) {
+        bullets = resize (2 * size, size, bullets);
         size = 2 * size;
     }
     bullets[n].posX = player.posX + cos (player.direction) * 30;
@@ -110,29 +110,29 @@ void accelerateProjToProj (projectile *bullet, projectile other) {
 
 projectile increaseTimeProjectile (projectile p, int maxX, int minX, 
                                                  int maxY, int minY, float dt) {
-    projectile new;
-    new.mass = p.mass;
-    new.velX = p.velX + p.aceX * dt;
-    new.velY = p.velY + p.aceY * dt;
-    if (new.velX > MAX_VEL) new.velX = MAX_VEL;
-    if (new.velY > MAX_VEL) new.velY = MAX_VEL;
-    new.posX = p.posX + new.velX * dt;
-    new.posY = p.posY + new.velY * dt;
-    new.aceX = p.aceX;
-    new.aceY = p.aceY;
-    new.lifeTime = p.lifeTime - dt;
-    strcpy (new.playerID, p.playerID);
+    projectile *new = malloc (sizeof (projectile));
+    new->mass = p.mass;
+    new->velX = p.velX + p.aceX * dt;
+    new->velY = p.velY + p.aceY * dt;
+    if (new->velX > MAX_VEL) new->velX = MAX_VEL;
+    if (new->velY > MAX_VEL) new->velY = MAX_VEL;
+    new->posX = p.posX + new->velX * dt;
+    new->posY = p.posY + new->velY * dt;
+    new->aceX = p.aceX;
+    new->aceY = p.aceY;
+    new->lifeTime = p.lifeTime - dt;
+    strcpy (new->playerID, p.playerID);
     /* Ajustando posição caso tenha excedido o tamanho máximo ou mínimo */
-    while (new.posX < minX || new.posX > maxX) {
-        if      (new.posX > maxX) new.posX = new.posX - maxX + minX;
-        else if (new.posX < minX) new.posX = maxX - minX + new.posX;
+    while (new->posX < minX || new->posX > maxX) {
+        if      (new->posX > maxX) new->posX = new->posX - maxX + minX;
+        else if (new->posX < minX) new->posX = maxX - minX + new->posX;
     }
 
-    while (new.posY < minY || new.posY > maxY) {
-        if      (new.posY > maxY) new.posY = new.posY - maxY + minY;
-        else if (new.posY < minY) new.posY = maxY - minY + new.posY;
+    while (new->posY < minY || new->posY > maxY) {
+        if      (new->posY > maxY) new->posY = new->posY - maxY + minY;
+        else if (new->posY < minY) new->posY = maxY - minY + new->posY;
     }
-    return new;
+    return *new;
 }
 
 int projCollided (projectile bullet, planet world) {

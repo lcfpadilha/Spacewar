@@ -62,7 +62,7 @@ int main (int argc, char** argv) {
     t = atof (argv[1]);
 
     /* Inicialização da janela */
-    w = InitGraph (W, H, "Space");
+    w = InitGraph (W, H, "Spacewar");
 
     /* Inicialização da controller */
     initDetection (w);
@@ -92,6 +92,10 @@ int main (int argc, char** argv) {
 
     /* Tempo gasto até agora. */
     spentTime = 0.0;
+
+    /* Inicia as imagens de fundo e espera o usuário digitar enter */
+    showScene (world, w, bg);
+    enterCheck (w, 3);
 
     /* Simulando o espaço. */
     while (spentTime < T && !collideP1 && !collideP2) {
@@ -130,13 +134,18 @@ int main (int argc, char** argv) {
         showShip (player1, w);
         showShip (player2, w);
         i = 0;
+
+        /* Mostrando todos os projéteis que ainda estão vivos */
         while (i < numberOfProj) {
+            /* Deleta aqueles que nao existem mais */
             if (bullets[i].lifeTime <= 0 || projCollided (bullets[i], world)) 
                 deleteBullet (bullets, numberOfProj--, i);
             else {
                 changeIndex = TRUE;
                 bullets[i] = increaseTimeProjectile (bullets[i], W/2, -W/2, H/2, -H/2, t);
-            
+                
+                /* Se algum colidiu com alguma nave, deleta o projétil e ainda retira vida
+                   da respectiva nave.                                                   */
                 if (hasCollidedProj (player1, bullets[i])) {
                     player1.life -= 34;
                     if (player1.life <= 0)
@@ -147,7 +156,7 @@ int main (int argc, char** argv) {
                 else if (hasCollidedProj (player2, bullets[i])) {
                     player2.life -= 34;
                     if (player2.life <= 0)
-                        collideP1 = TRUE;
+                        collideP2 = TRUE;
                     deleteBullet (bullets, numberOfProj--, i);
                     changeIndex = FALSE;
                 }
@@ -160,7 +169,7 @@ int main (int argc, char** argv) {
                 }
             }
         }
-
+        showShipLife (player1, player2, w);
         player1.aceX = player1.aceY = 0.0;
         player2.aceX = player2.aceY = 0.0;
 
@@ -183,10 +192,11 @@ int main (int argc, char** argv) {
     else if (collideP1)
         printf("A nave 1 explodiu!\n");
     else if (collideP2)
-        printf("A nave 2 exploriu\n");
+        printf("A nave 2 explodiu\n");
     quitDetection (w);
     /* Desalocando o espaço e fechando a janela. */
     free (bullets);
+    bullets = NULL;
     WDestroy(w);
     CloseGraph();
 
