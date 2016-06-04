@@ -29,6 +29,7 @@
 #define W 720  /* Largura da janela. */
 #define H 480  /* Altura da janela. */
 
+void showMainMenu (WINDOW *w);
 
 int main (int argc, char** argv) {
     /* Caso a biblioteca Xpm não esteja habilitada, o programa não funciona. */
@@ -94,7 +95,7 @@ int main (int argc, char** argv) {
     spentTime = 0.0;
 
     /* Inicia as imagens de fundo e espera o usuário digitar enter */
-    showScene (world, w, bg);
+    showMainMenu (w);
     enterCheck (w, 3);
 
     /* Simulando o espaço. */
@@ -170,6 +171,7 @@ int main (int argc, char** argv) {
             }
         }
         showShipLife (player1, player2, w);
+
         player1.aceX = player1.aceY = 0.0;
         player2.aceX = player2.aceY = 0.0;
 
@@ -202,4 +204,10 @@ int main (int argc, char** argv) {
 
     #endif
     return EXIT_SUCCESS;
+}
+
+void showMainMenu (WINDOW *w) {
+    PIC menu = ReadPic (w, "img/etc/spacewar.xpm", NULL);
+    PutPic (w, menu, 0, 0, 720, 480, 0, 0);
+    FreePic (menu);
 }
