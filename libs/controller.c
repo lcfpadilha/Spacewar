@@ -11,6 +11,7 @@
 #include <stdio.h>
 #include <math.h>
 #include "controller.h"
+#include "scenes.h"
 #include "ship.h"
 
 #define ACC1   25
@@ -68,8 +69,10 @@ void movePlayer (ship *player1, ship *player2, projectile *bullets, int *n, WIND
         
         else if (kb == RIGHT2) 
             right2Press = !right2Press;
-        else if (kb == ENTER)
+        else if (kb == ENTER) {
+            showPause (w);
             enterCheck (w, 3);
+        }
     }
 
     if (acc1Press) {

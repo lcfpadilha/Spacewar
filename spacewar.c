@@ -20,16 +20,15 @@
 #include <stdlib.h>
 #include <string.h>
 #include <math.h>
-#include "libs/error.h"
-#include "libs/planet.h"
-#include "libs/ship.h"
-#include "libs/projectile.h"
 #include "libs/controller.h"
+#include "libs/error.h"
+#include "libs/scenes.h"
+#include "libs/ship.h"
+#include "libs/planet.h"
+#include "libs/projectile.h"
 
 #define W 720  /* Largura da janela. */
 #define H 480  /* Altura da janela. */
-
-void showMainMenu (WINDOW *w);
 
 int main (int argc, char** argv) {
     /* Caso a biblioteca Xpm não esteja habilitada, o programa não funciona. */
@@ -190,11 +189,11 @@ int main (int argc, char** argv) {
         spentTime += t;
     }
     if (collideP1 && collideP2)
-        printf ("As duas naves colidiram, empate :(\n");
+        showTie (w);
     else if (collideP1)
-        printf("A nave 1 explodiu!\n");
+        showPlayer2Wins (w);
     else if (collideP2)
-        printf("A nave 2 explodiu\n");
+        showPlayer1Wins (w);
     quitDetection (w);
     /* Desalocando o espaço e fechando a janela. */
     free (bullets);
@@ -204,10 +203,4 @@ int main (int argc, char** argv) {
 
     #endif
     return EXIT_SUCCESS;
-}
-
-void showMainMenu (WINDOW *w) {
-    PIC menu = ReadPic (w, "img/etc/spacewar.xpm", NULL);
-    PutPic (w, menu, 0, 0, 720, 480, 0, 0);
-    FreePic (menu);
 }
