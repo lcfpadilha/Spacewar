@@ -76,6 +76,7 @@ int main (int argc, char** argv) {
     /* Tempo total de simulação. */
     ret = scanf ("%f", &T);
 
+    /* Verificando se tudo foi certo. */
     hasError (ret != 1);
 
     /* Inicialização da primeira nave. */
