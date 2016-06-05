@@ -22,19 +22,20 @@ $ ./spacewar
 
 - O jogo tem 2 jogadores, que são controlados assim:
 	
-	PLAYER 1: [W] - ACELERAÇÃO
-	          [A] - ESQUERDA
-	          [S] - TIRO
-	          [D] - DIREITA
+	PLAYER 1 (nave vermelha): [W] - ACELERAÇÃO
+	          				  [A] - ESQUERDA
+	          				  [S] - TIRO
+	          				  [D] - DIREITA
 
-	PLAYER 2: [CIMA] - ACELERAÇÃO
-	          [ESQUERDA] - ESQUERDA
-	          [BAIXO] - TIRO
-	          [DIREITA] - DIREITA
-
+	PLAYER 2 (nave azul):     [CIMA] - ACELERAÇÃO
+	          			      [ESQUERDA] - ESQUERDA
+	          			      [BAIXO] - TIRO
+	          			      [DIREITA] - DIREITA
+- A sua nave possui 6 tiros seguidos e o tempo de espera para recarga é de 2 segundo,
+então, aproveite com cuidado eles!
 - Para que haja um vencedor é necessário que uma das naves exploda. Isso pode 
 acontecer de três maneiras: 
-	1) Uma nave recebe muitos tiros da outra nave.
+	1) Uma nave recebe três tiros da outra nave.
 	2) A nave se choca com o planeta.
 	3) As naves se chocam. Nesse caso, acontece o empate.
 

@@ -14,42 +14,43 @@ variáveis de geração de imagens. Inicializa tudo (lendo e atribuindo
 valores) e então começa o jogo (simulação física) quando o usuário pressiona
 enter. Basicamente a simulação é feita calculando as variações de tempo e 
 posição (a partir das entradas do teclado) e então desenhando os corpos na tela 
-até o tempo definido acabar ou o jogo acabar.
+até o jogo acabar (uma ou as duas naves explodirem).
 
 - planet.c: Implementa a estrutura de dados que é o planeta. A struct planet tem
 os seguintes campos:
-	float
-		radius: raio do planeta;
-		mass: massa do planeta;
-		posX, posY: representam as coordenadas do planeta;
+    float
+        radius: raio do planeta;
+        mass: massa do planeta;
+        posX, posY: representam as coordenadas do planeta;
     PIC 
-    	img, aux: são as imagens atribuídas a ele;
+        img, aux: são as imagens atribuídas a ele;
     MASK 
-    	msk: máscara de imagem atribuída ao planeta.
+        msk: máscara de imagem atribuída ao planeta.
 Neste módulo está a função que inicializa o planeta e a que o desenha durante a 
 simulação.
 
 - ship.c: Semelhante ao módulo acima, mas que trabalha com as naves. As naves
 foram implementadas em uma struct da seguinte forma:
-	char 
-	    name[10]: um vetor de caracteres (string) que guarda o nome da nave. 
-	              Note que o comprimento máximo é de 10 caracteres.
+    char 
+        name[10]: um vetor de caracteres (string) que guarda o nome da nave. 
+                  Note que o comprimento máximo é de 10 caracteres.
     float 
-    	mass: massa da nave;
-    	posX, posY: representam um vetor de coordenadas para cada nave;
-    	velX, velY: vetor da velocidade;
-    	aceX, aceY: vetor da aceleração;
+        mass: massa da nave;
+        posX, posY: representam um vetor de coordenadas para cada nave;
+        velX, velY: vetor da velocidade (vale ressaltar que a velocidade máxima
+                    em cada eixo é de 240);
+        aceX, aceY: vetor da aceleração;
         direction: ângulo formado pela direção da nave e o eixo x em radianos;
-        timeForCharge: tempo para a recarga dos tiros (algo próximo de 1s).
+        timeForCharge: tempo para a recarga dos tiros (2 segundos).
                        A nave tem 6 tiros, então ela precisa recarregar.
         life: vida da nave.
     PIC 
-    	img[16], aux[16]: um vetor de ponteiros para imagens. A razão de termos 
-    	                  um vetor de imagens é que cada uma dessas está 
-    	                  rotacionada para certo ângulo. O ângulo é baseado na 
-    	                  direção do vetor de velocidade.
+        img[16], aux[16]: um vetor de ponteiros para imagens. A razão de termos 
+                          um vetor de imagens é que cada uma dessas está 
+                          rotacionada para certo ângulo. O ângulo é baseado na 
+                          direção do vetor de velocidade.
     MASK 
-    	msk[16]: vetor de máscaras das imagens onde msk[i] é a máscara de img[i].
+        msk[16]: vetor de máscaras das imagens onde msk[i] é a máscara de img[i].
 Este módulo também possui outras funções que são: função de inicialização de 
 nave; função de aceleração em relação ao planeta; função de aceleração em 
 relação a outra nave; função de aceleração em relação aos projéteis; função de 
@@ -61,11 +62,12 @@ outro para a nave vermelha.
 
 - projectile.c: Parecido com os dois módulos anteriores, mas para os projéteis.
 Cada projétil foi implementado como o seguinte:
-	float 
-		mass: massa de cada projétil;
-		posX, posY: representam um vetor de coordenadas para cada projétil;
-		velX, velY: vetor da velocidade;
-    	aceX, aceY: vetor da aceleração;
+    float 
+        mass: massa de cada projétil;
+        posX, posY: representam um vetor de coordenadas para cada projétil;
+        velX, velY: vetor da velocidade (assim como para as naves, os projeteis
+                    possuem velocidade máxima de 300);
+        aceX, aceY: vetor da aceleração;
         lifeTime: tempo de vida do projétil.
     char
         playerID[10]: nome da nave que disparou o projétil. Isso impede que
@@ -78,9 +80,6 @@ relação às naves, função de aceleração em relação aos outros projéteis
 atualização de informações, detecção de colisão, inicialização de imagens, e de 
 desenho na tela. 
 
-- OBS: Nos dois módulos acima está definida a constante gravitacional universal,
-definida como 1, arbitrariamente.
-
 - getIndex.c: módulo que possui funções utlizadas pelos módulos ship.c e 
 projectile.c que devolve o ângulo referente à velocidade da nave, com isso, 
 obtém sua orientação. O resultado é um número de 0 a 15 que é relacionado com as 
@@ -88,8 +87,6 @@ imagens declaradas para os corpos.
 
 - xwc.c: Esse módulo é a biblioteca de funções que trabalham com geração de 
 imagens, disponibilizada no enunciado do exercício.
-
-- error.c: Módulo que indica se houve algum erro na leitura da entrada padrão.
 
 - scenes.c: Esse módulo possui funções que são responsáveis por algumas telas do
 jogo. São elas: mostrar o menu principal, tela de pause, tela de empate e tela
@@ -99,3 +96,8 @@ de vitória (uma para cada jogador).
 jogo. Tem as seguintes funções: inicializar detecção do teclado, mover as naves, 
 verificar quando tem que fechar a janela do jogo, e de verificar leitura do 
 [enter].
+
+OBS.: O motivo do uso algumas constantes, como a constante gravitacional (1.0), 
+a massa do planeta (2400000.0), a massa das naves (5500.0), dos projeteis (1.0), 
+além das velocidades máximas e o impulso dado quando pressionado a tecla, foi 
+exclusivamente pensado para melhor experiência do usuário, espero que gostem!
