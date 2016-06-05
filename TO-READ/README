@@ -78,6 +78,9 @@ relação às naves, função de aceleração em relação aos outros projéteis
 atualização de informações, detecção de colisão, inicialização de imagens, e de 
 desenho na tela. 
 
+- OBS: Nos dois módulos acima está definida a constante gravitacional universal,
+definida como 1, arbitrariamente.
+
 - getIndex.c: módulo que possui funções utlizadas pelos módulos ship.c e 
 projectile.c que devolve o ângulo referente à velocidade da nave, com isso, 
 obtém sua orientação. O resultado é um número de 0 a 15 que é relacionado com as 
