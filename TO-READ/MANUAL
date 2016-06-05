@@ -4,10 +4,10 @@ Nomes: Gustavo Henrique Faustino Silva        Números USP: 9298260
 
 Manual de Usuário para SPACEWAR
 
-- SPACEWAR é, até agora, um simulador de espaço sideral. Simula 2 naves e alguns
-projéteis ao redor de um planeta.
+- SPACEWAR é um jogo que se passa no espaço sideral. Tem 2 naves ao redor de um 
+planeta, que tentam vencer uma batalha contra a outra.
 
-PARA USAR
+PARA JOGAR
 
 - Você deve compilar os arquivos. Basta rodar o Makefile no terminal, obviamen-
 te, na pasta onde eles estão, assim:
@@ -44,5 +44,24 @@ A entrada será fornecida em um arquivo com o seguinte formato:
 
 - Você também pode usar a entrada padrão! Fique à vontade!
 
-- Depois disso o programa gerará uma janela onde você poderá ver a simulação com
-os corpos a cada instante t até o tempo total de simulação!
+- Então o jogo começa. Pressione a tecla [enter] para jogar!
+
+- O jogo tem 2 jogadores, que são controlados assim:
+	
+	PLAYER 1: [W] - ACELERAÇÃO
+	          [A] - ESQUERDA
+	          [S] - TIRO
+	          [D] - DIREITA
+
+	PLAYER 2: [CIMA] - ACELERAÇÃO
+	          [ESQUERDA] - ESQUERDA
+	          [BAIXO] - TIRO
+	          [DIREITA] - DIREITA
+
+- Para que haja um vencedor é necessário que uma das naves exploda. Isso pode 
+acontecer de três maneiras: 
+	1) Uma nave recebe três tiros da outra nave.
+	2) A nave se choca com o planeta.
+	3) As naves se chocam. Nesse caso, acontece o empate.
+
+- BOA DIVERSÃO!

@@ -5,17 +5,16 @@ Nomes: Gustavo Henrique Faustino Silva        Números USP: 9298260
 README
 
 Aqui apresentamos uma breve descrição sobre o nosso programa. Ele é composto por
-um módulo principal e outros seis módulos, que são:
+um módulo principal e outros oito módulos, que são:
 
 - spacewar.c: Esse é o módulo principal do projeto. Ele é responsável por unir 
 todos os outros. Começa com a declaração dos corpos, que são o planeta, as 2 
 naves (para o player1 e player2) e o vetor de projéteis. Declara também as 
-variáveis de geração de imagens, além dos vetores que guardam as 
-imagens dos projéteis (por serem todos iguais, compartilham as mesmas 16 
-imagens) e outras variáveis descritas nele. Inicializa tudo (lendo e atribuindo 
-valores) e então começa a simulação física. Basicamente a simulação é feita
-calculando as variações de tempo e posição e então desenhando os corpos na tela
-até o tempo definido acabar.
+variáveis de geração de imagens. Inicializa tudo (lendo e atribuindo 
+valores) e então começa o jogo (simulação física) quando o usuário pressiona
+enter. Basicamente a simulação é feita calculando as variações de tempo e 
+posição (a partir das entradas do teclado) e então desenhando os corpos na tela 
+até o tempo definido acabar ou o jogo acabar.
 
 - planet.c: Implementa a estrutura de dados que é o planeta. A struct planet tem
 os seguintes campos:
@@ -40,6 +39,10 @@ foram implementadas em uma struct da seguinte forma:
     	posX, posY: representam um vetor de coordenadas para cada nave;
     	velX, velY: vetor da velocidade;
     	aceX, aceY: vetor da aceleração;
+        direction: ângulo formado pela direção da nave e o eixo x em radianos;
+        timeForCharge: tempo para a recarga dos tiros (algo próximo de 1s).
+                       A nave tem 6 tiros, então ela precisa recarregar.
+        life: vida da nave.
     PIC 
     	img[16], aux[16]: um vetor de ponteiros para imagens. A razão de termos 
     	                  um vetor de imagens é que cada uma dessas está 
@@ -50,9 +53,11 @@ foram implementadas em uma struct da seguinte forma:
 Este módulo também possui outras funções que são: função de inicialização de 
 nave; função de aceleração em relação ao planeta; função de aceleração em 
 relação a outra nave; função de aceleração em relação aos projéteis; função de 
-atualização de informações após uma variação de tempo; e a função de desenho das
-naves na tela. Como temos duas naves, temos 2 conjuntos de imagens diferentes:
-um para a nave azul e outro para a nave vermelha.
+atualização de informações após uma variação de tempo; função que verifica
+colisão com outra nave; função que detecta colisão com o planeta; função que 
+verifica colisão com o projétil; e a função de desenho das naves na tela. Como 
+temos duas naves, temos 2 conjuntos de imagens diferentes: um para a nave azul e
+outro para a nave vermelha.
 
 - projectile.c: Parecido com os dois módulos anteriores, mas para os projéteis.
 Cada projétil foi implementado como o seguinte:
@@ -61,20 +66,33 @@ Cada projétil foi implementado como o seguinte:
 		posX, posY: representam um vetor de coordenadas para cada projétil;
 		velX, velY: vetor da velocidade;
     	aceX, aceY: vetor da aceleração;
-Os projéteis foram implementados em um vetor de projéteis, pois podem ser muitos
-e suas estruturas são iguais.
-Este módulo ainda conta com as funções de inicialização, de aceleração em 
-relação ao planeta, de aceleração em relação às naves função de aceleração em 
-relação aos outros projéteis, de atualização de informações, e de desenho na 
-tela e de inicialização das imagens. Como dito acima, o módulo que cuida de 
-declarar as imagens é o módulo principal.
+        lifeTime: tempo de vida do projétil.
+    char
+        playerID[10]: nome da nave que disparou o projétil. Isso impede que
+                      a nave que disparou o projétil seja atingida por ele.
+Os projéteis foram implementados em um vetor de projéteis, pois podem ser muitos,
+suas estruturas são iguais e os cálculos são análogos.
+Este módulo ainda conta com as funções de inicialização, criação de projétil, 
+deleção de projétil, de aceleração em relação ao planeta, de aceleração em 
+relação às naves, função de aceleração em relação aos outros projéteis, de 
+atualização de informações, detecção de colisão, inicialização de imagens, e de 
+desenho na tela. 
 
-- getIndex.c: módulo que possui a função utlizada pelos módulos ship.c e 
+- getIndex.c: módulo que possui funções utlizadas pelos módulos ship.c e 
 projectile.c que devolve o ângulo referente à velocidade da nave, com isso, 
 obtém sua orientação. O resultado é um número de 0 a 15 que é relacionado com as 
 imagens declaradas para os corpos.
 
 - xwc.c: Esse módulo é a biblioteca de funções que trabalham com geração de 
-imagens, disponibilizada no enunciado de exercício.
+imagens, disponibilizada no enunciado do exercício.
 
 - error.c: Módulo que indica se houve algum erro na leitura da entrada padrão.
+
+- scenes.c: Esse módulo possui funções que são responsáveis por algumas telas do
+jogo. São elas: mostrar o menu principal, tela de pause, tela de empate e tela
+de vitória (uma para cada jogador).
+
+- controller.c: Módulo que cuida das funções de leitura do teclado durante o 
+jogo. Tem as seguintes funções: inicializar detecção do teclado, mover as naves, 
+verificar quando tem que fechar a janela do jogo, e de verificar leitura do 
+[enter].
