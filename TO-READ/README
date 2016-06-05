@@ -100,4 +100,4 @@ verificar quando tem que fechar a janela do jogo, e de verificar leitura do
 OBS.: O motivo do uso algumas constantes, como a constante gravitacional (1.0), 
 a massa do planeta (2400000.0), a massa das naves (5500.0), dos projeteis (1.0), 
 além das velocidades máximas e o impulso dado quando pressionado a tecla, foi 
-exclusivamente pensado para melhor experiência do usuário, espero que gostem!
+exclusivamente pensado para melhor experiência do usuário, esperamos que gostem!
