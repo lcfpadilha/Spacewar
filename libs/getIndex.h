@@ -18,6 +18,8 @@
 // velocidade do corpo. */
 int getIndexByOrientation (double orientation);
 
+/* Análoga à função acima, mas em um caso específico para os projéteis, 
+// onde recebe as velocidades x e y. */
 int getBulletIndexByOrientation (double velX, double velY);
 
 #endif

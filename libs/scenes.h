@@ -16,10 +16,22 @@
 #ifndef SCENES_H
 #define SCENES_H
 
+/* As funções abaixo mostram telas específicas do jogo, como são descritas
+// abaixo: */
+
+/* Tela inicial. */
 void showMainMenu (WINDOW *w);
+
+/* Tela de pause. */
 void showPause (WINDOW *w);
+
+/* Tela de "PLAYER 1 WINS". */
 void showPlayer1Wins (WINDOW *w);
+
+/* Tela de "PLAYER 2 WINS." */
 void showPlayer2Wins (WINDOW *w);
+
+/* Tela exibida quando há um empate. */
 void showTie (WINDOW *w);
 
 #endif

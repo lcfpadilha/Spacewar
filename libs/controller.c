@@ -47,7 +47,7 @@ void movePlayer (ship *player1, ship *player2, projectile *bullets, int *n, WIND
     if (WCheckKBD(w)) {
         kb = WGetKey(w);
         if (kb == ACC1) 
-            acc1Press =   !acc1Press;
+            acc1Press = !acc1Press;
         
         else if (kb == FIRE1) 
             fire1Press = !fire1Press;

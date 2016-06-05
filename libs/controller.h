@@ -22,9 +22,17 @@
 #define FALSE 0
 #define TRUE  1
 
+/* Função que inicializa a detecção dos comandos do teclado. */
 void initDetection (WINDOW *w);
+
+/* Recebe um comando do teclado e executa a ação correspondente ao movimento 
+// da nave esperado. */
 void movePlayer (ship *player1, ship *player2, projectile *bullets, int *n, WINDOW *w, float t);
+
+/* Detecta se é o momento de fechar a janela. */
 void quitDetection (WINDOW *w);
+
+/* Verifica se a tecla pressionada é a tecla [enter]. */
 void enterCheck (WINDOW *w, int total);
 
 #endif

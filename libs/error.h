@@ -14,7 +14,7 @@
 #define ERROR_H
 
 /* Recebe um inteiro i que representa um booleano. Se este for true (igual a 1)
-//imprime na tela um aviso e fecha o programa.*/
+// imprime na tela um aviso e fecha o programa. */
 void hasError (int i);
 
 #endif
