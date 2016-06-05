@@ -17,15 +17,14 @@
 #include <math.h>
 #include "getIndex.h"
 #include "projectile.h"
-#include "error.h"
 
 #define G 1.0        /* Constante gravitacional universal. */
 #define CENTERX 360  /* Centro x da imagem. */
 #define CENTERY 240  /* Centro y da imagem. */
 #define MAX_VEL 300  /* Velocidade maxima.   */
+#define LIFE_T  2.0  /* Tempo de vida de um projétil */
 
-/*      Funções privadas        */
-static float t;  /* tempo de vida de cada projétil  */
+/*      Funções e variáveis privadas        */
 static int size; /* tamanho do array de projectile  */
 
 static float accelerateProjectile (projectile p, float mass, float posX, float posY, 
@@ -50,24 +49,11 @@ static projectile *resize (int max, int size, projectile *old) {
 }
 
 /*      Funções públicas        */
-projectile *initProj (int *n) {
-    int ret, i;
+projectile *initProj () {
     projectile *bullets;
-
-    ret = scanf ("%d %f", n, &t);
-    hasError (ret != 2);
 
     size = 100;
     bullets = malloc (size * (sizeof (projectile)));
-
-    for (i = 0; i < (*n); i++) {
-        ret = scanf ("%f", &bullets[i].mass);
-        hasError (ret != 1);
-        ret = scanf ("%f %f %f %f", &bullets[i].posX, &bullets[i].posY, &bullets[i].velX, &bullets[i].velY);
-        hasError (ret != 4);
-        bullets[i].aceX = bullets[i].aceY = 0.0;
-        bullets[i].lifeTime = t;
-    }
 
     return bullets;
 }
@@ -83,7 +69,7 @@ void shoot (projectile *bullets, int n, ship player) {
     bullets[n].velY = sin (player.direction) * 200;
     bullets[n].mass = 1.0;
     bullets[n].aceX = bullets[n].aceY = 0.0;
-    bullets[n].lifeTime = t;
+    bullets[n].lifeTime = LIFE_T;
     strcpy (bullets[n].playerID, player.name);
 }
 
@@ -194,4 +180,13 @@ void showBullet (projectile bullet, WINDOW *w, PIC bulletImg[], MASK bulletMsk[]
     SetMask (w, bulletMsk[index]);
     PutPic (w, bulletImg[index], 0, 0, 10, 10, x, y);
     UnSetMask (w);
+}
+
+void freeBulletImg (PIC bulletImg[], MASK bulletMsk[], PIC bulletAux[]) {
+    int i;
+    for (i = 0; i < 16; i++) {
+        FreePic (bulletImg[i]);
+        FreePic (bulletMsk[i]);
+        FreePic (bulletAux[i]);
+    }
 }

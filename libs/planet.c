@@ -12,12 +12,22 @@
  ******************************************************************************/ 
 #include <stdio.h>
 #include "planet.h"
-#include "error.h"
 
 #define W 720         /* Largura da imagem.  */
 #define H 480         /* Altura da imagem.   */
 #define CENTERX 360   /* Centro x da imagem. */
 #define CENTERY 240   /* Centro y da imagem. */
+
+void initPlanet (planet *world, WINDOW *w) {
+    /* Informações do planeta. */
+    world->radius = 100.0;
+    world->mass   = 2400000.0;
+
+    /* Imagens relacionadas ao planeta. */
+    world->img = ReadPic (w, "img/scenery/planet.xpm", NULL);
+    world->msk = NewMask (w, world->radius * 2, world->radius * 2);
+    world->aux = ReadPic (w, "img/scenery/planetMask.xpm", world->msk);
+}
 
 void showScene (planet world, WINDOW *w, PIC bg) {
     int radius = world.radius;
@@ -33,15 +43,8 @@ void showScene (planet world, WINDOW *w, PIC bg) {
     UnSetMask (w);
 }
 
-void initPlanet (planet *world, WINDOW *w) {
-    int ret;
-
-	/* Informações do planeta. */
-    ret = scanf ("%f %f", &world->radius, &world->mass);
-    hasError (ret != 2);
-
-    /* Imagens relacionadas ao planeta. */
-    world->img = ReadPic (w, "img/scenery/planet.xpm", NULL);
-    world->msk = NewMask (w, world->radius * 2, world->radius * 2);
-    world->aux = ReadPic (w, "img/scenery/planetMask.xpm", world->msk);
+void freePlanet (planet *world) {
+    FreePic (world->img);
+    FreePic (world->msk);
+    FreePic (world->aux);
 }

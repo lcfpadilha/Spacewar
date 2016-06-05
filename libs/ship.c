@@ -17,7 +17,6 @@
 #include <math.h>
 #include "getIndex.h"
 #include "ship.h"
-#include "error.h"
 
 
 #define G 1.0        /* Constante gravitacional universal. */
@@ -40,11 +39,12 @@ static float accelerateShip (ship s, float mass, float posX, float posY, char c)
 
 /*        Funções Públicas        */
 void initPlayer (ship *p, int playerID, WINDOW *w) {
-    int i, ret;
-    
+    int i;
     /* Leitura dos dados do player */
-    ret = scanf ("%s %f %f %f %f %f", p->name, &p->mass, &p->posX, &p->posY, &p->velX, &p->velY);
-    hasError (ret != 6);
+    p->mass = 5500.0;
+    p->posY = 0.0;
+    p->velX = 0.0;
+    p->velY = 0.0;
     
     /* Aceleração iniciada com 0 */
     p->aceX = p->aceY = 0.0;
@@ -62,6 +62,8 @@ void initPlayer (ship *p, int playerID, WINDOW *w) {
 
     /* Inicializa as imagens do player 1 e a sua direção*/
     if (playerID == 1) {
+        strcpy (p->name, "P1");
+        p->posX = -240.0;
         p->direction = 2 * M_PI;
         p->img[0] =  ReadPic (w, "img/playerOne/playerOne01.xpm", NULL);
         p->img[1] =  ReadPic (w, "img/playerOne/playerOne02.xpm", NULL);
@@ -100,6 +102,8 @@ void initPlayer (ship *p, int playerID, WINDOW *w) {
 
     /* Inicializa as imagens do player 2 */
     else {
+        strcpy (p->name, "P2");
+        p->posX = 240.0;
         p->direction = M_PI;
         p->img[0] =  ReadPic (w, "img/playerTwo/playerTwo01.xpm", NULL);
         p->img[1] =  ReadPic (w, "img/playerTwo/playerTwo02.xpm", NULL);
@@ -238,11 +242,23 @@ void showShip (ship player, WINDOW *w) {
 }
 
 void showShipLife (ship player1, ship player2, WINDOW *w) {
-    int p1Life = (int) (100.0 - 1.5 * player1.life);
-    int p2Life = (int) (100.0 - 1.5 * player2.life);
+    int p1Life = (int) (150.0 - 1.5 * player1.life);
+    int p2Life = (int) (150.0 - 1.5 * player2.life);
+    if (p1Life > 150) p1Life = 150;
+    if (p2Life > 150) p2Life = 150;
+
     WFillRect(w, 48, 10, 152, 10, WNamedColor("Red"));
     WFillRect(w, 528, 10, 152, 10, WNamedColor("Blue"));
 
     WFillRect(w, 199 - p1Life, 11, p1Life, 8, WNamedColor("Black"));
     WFillRect(w, 679 - p2Life, 11, p2Life, 8, WNamedColor("Black"));
+}
+
+void freeShip (ship player) {
+    int i;
+    for (i = 0; i < 16; i++) {
+        FreePic (player.img[i]);
+        FreePic (player.aux[i]);
+        FreePic (player.msk[i]);
+    }
 }

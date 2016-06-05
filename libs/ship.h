@@ -79,4 +79,7 @@ void showShip (ship player, WINDOW *w);
 /* Exibe na janela o quanto de vida cada nave tem. */
 void showShipLife (ship player1, ship player2, WINDOW *w);
 
+/* Libera as imagens da nave player. */
+void freeShip (ship player);
+
 #endif

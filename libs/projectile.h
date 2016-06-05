@@ -33,13 +33,11 @@ typedef struct {
 #include "planet.h"
 #include "ship.h"
 
-/* Recebe um ponteiro para n, um ponteiro para t e retorna um vetor de
-// projectile com n elementos com os valores recebidos da entrada padrão.*/
-projectile *initProj (int *n);
+/* Inicializa um vetor de projectiles.*/
+projectile *initProj ();
 
 /* Recebe um vetor de projectiles com 0..n - 1 elementos inicializados, e cria mais
-// mais um projectile na posição n do vetor e com valor de posX = x, posY = y
-// velX = vx + 100 e velY = vy + 100.                                         */
+// mais um projectile disparado por player na posição n do vetor .               */
 void shoot (projectile *bullets, int n, ship player);
 
 /* Libera o espaço ocupado por um projétil de índice index. */
@@ -76,5 +74,8 @@ void initProjImage (PIC *bulletImg, PIC *bulletMsk, PIC *bulletAux, WINDOW *w);
 /* Função que mostra a bala bullet na janela w usando as imagens do vetor 
 // bulletImg e bulletMsk, supondo que eles possuem 16 imagens. */
 void showBullet (projectile bullet, WINDOW *w, PIC bulletImg[], MASK bulletMsk[]);
+
+/* Libera as imagens de bullets. */
+void freeBulletImg (PIC bulletImg[], MASK bulletMsk[], PIC bulletAux[]);
 
 #endif

@@ -21,7 +21,6 @@
 #include <string.h>
 #include <math.h>
 #include "libs/controller.h"
-#include "libs/error.h"
 #include "libs/scenes.h"
 #include "libs/ship.h"
 #include "libs/planet.h"
@@ -37,9 +36,9 @@ int main (int argc, char** argv) {
     #else
     
     /* Declaração de variáveis */
-    int numberOfProj, i, j, ret; 
+    int numberOfProj, i, j; 
     int changeIndex = FALSE, collideP1 = FALSE, collideP2 = FALSE;
-    float t, T, spentTime;
+    float t;
 
     /* Declaração dos corpos que serão postos no espaço. */
     planet world;
@@ -59,7 +58,7 @@ int main (int argc, char** argv) {
     player2.velX = player2.velY = player2.aceX = player2.aceY = 0;
 
     /* Parâmetro de intervalo de atualização. */
-    t = atof (argv[1]);
+    t = 0.01666667;
 
     /* Inicialização da janela */
     w = InitGraph (W, H, "Spacewar");
@@ -73,12 +72,6 @@ int main (int argc, char** argv) {
     /* Inicialização do planeta */
     initPlanet (&world, w);
 
-    /* Tempo total de simulação. */
-    ret = scanf ("%f", &T);
-
-    /* Verificando se tudo foi certo. */
-    hasError (ret != 1);
-
     /* Inicialização da primeira nave. */
     initPlayer (&player1, 1, w);
 
@@ -86,20 +79,18 @@ int main (int argc, char** argv) {
     initPlayer (&player2, 2, w);
 
     /* Inicialização dos projéteis. */
-    bullets = initProj (&numberOfProj);
+    bullets = initProj ();
+    numberOfProj = 0;
 
     /* Inicialização das imagens dos projéteis. */
     initProjImage (bulletImg, bulletMsk, bulletAux, w);
-
-    /* Tempo gasto até agora. */
-    spentTime = 0.0;
 
     /* Inicia as imagens de fundo e espera o usuário digitar enter */
     showMainMenu (w);
     enterCheck (w, 3);
 
     /* Simulando o espaço. */
-    while (spentTime < T && !collideP1 && !collideP2) {
+    while (!collideP1 && !collideP2) {
         /* Verifica se alguma tecla foi pressionada */
         movePlayer (&player1, &player2, bullets, &numberOfProj, w, t);
 
@@ -111,7 +102,7 @@ int main (int argc, char** argv) {
         accelerateShipToWorld (&player2, world);
         accelerateShipToShip  (&player2, player1);
 
-        /* Calculando a aceleração dos projeteis, se eles (ainda) existirem. */
+        /* Calculando a aceleração dos projeteis ativos. */
         for (i = 0; i < numberOfProj; i++) {
             accelerateShipToProj (&player1, bullets[i]);
             accelerateShipToProj (&player2, bullets[i]);
@@ -145,8 +136,8 @@ int main (int argc, char** argv) {
                 changeIndex = TRUE;
                 bullets[i] = increaseTimeProjectile (bullets[i], W/2, -W/2, H/2, -H/2, t);
                 
-                /* Se algum colidiu com alguma nave, deleta o projétil e ainda retira vida
-                   da respectiva nave.                                                   */
+                /* Se algum colidiu com alguma nave, deleta o projétil e nao anda o índice,
+                  pois bullets[i] vai ser diferente e ainda retira vida da respectiva nave.*/
                 if (hasCollidedProj (player1, bullets[i])) {
                     player1.life -= 34;
                     if (player1.life <= 0)
@@ -170,12 +161,13 @@ int main (int argc, char** argv) {
                 }
             }
         }
+        /* Mostra a vida das naves na parte superior da tela */
         showShipLife (player1, player2, w);
 
         player1.aceX = player1.aceY = 0.0;
         player2.aceX = player2.aceY = 0.0;
 
-        /* Verifica colisão das naves e exibe na saída padrão o resultado. */
+        /* Verifica colisão das naves. */
         if (hasCollidedShip (player1, player2)) 
             collideP1 = collideP2 = TRUE;
         else if (hasCollidedPlanet (player1, world)) 
@@ -185,18 +177,23 @@ int main (int argc, char** argv) {
 
         /* Mostrando as coisas na tela por t segundos */
         usleep (t * 1000000);
-
-        /* Aumentando o tempo que passou. */
-        spentTime += t;
     }
+    /* Escolhe a cena de fim de jogo. */
     if (collideP1 && collideP2)
         showTie (w);
     else if (collideP1)
         showPlayer2Wins (w);
     else if (collideP2)
         showPlayer1Wins (w);
+
+    /* Para sair o usuário deve digitar ESC. */
     quitDetection (w);
+
     /* Desalocando o espaço e fechando a janela. */
+    FreePic (bg);
+    freeShip (player1);
+    freeShip (player2);
+    freeBulletImg (bulletImg, bulletMsk, bulletAux);
     free (bullets);
     bullets = NULL;
     WDestroy(w);

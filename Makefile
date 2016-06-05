@@ -4,7 +4,7 @@ CFLAGS= -Wall -g -pedantic -O2
 all : spacewar
 
 ifndef NOXPM
-spacewar : spacewar.o libs/controller.o libs/error.o libs/getIndex.o libs/planet.o libs/projectile.o libs/scenes.o libs/ship.o libs/xwc.o
+spacewar : spacewar.o libs/controller.o libs/getIndex.o libs/planet.o libs/projectile.o libs/scenes.o libs/ship.o libs/xwc.o
 	${CC} ${CFLAGS} -o spacewar $^ -lm -lXpm -lX11 
 else
 spacewar :
@@ -14,8 +14,6 @@ endif
 spacewar.o : spacewar.c
 
 libs/controller.o : libs/controller.c
-
-libs/error.o : libs/error.c
 
 libs/getIndex.o : libs/getIndex.c
 
