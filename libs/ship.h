@@ -32,11 +32,12 @@ typedef struct {
     char name[10];
     float mass, posX, posY, velX, velY, aceX, aceY;
     float direction, timeForCharge, life;
-    int charge;
+    int charge, shield, superShoot;
     PIC img[16];
     PIC aux[16];
     MASK msk[16];
 } ship;
+
 #include "projectile.h"
 #include "planet.h"
  

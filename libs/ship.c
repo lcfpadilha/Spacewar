@@ -25,6 +25,9 @@
 #define MAX_VEL 240  /* Velocidade máxima da nave*/
 #define MAX_CHARGE 6  /* Carga máxima de tiros. */
 
+#define FALSE 0
+#define TRUE 1
+
 /*      Funções privadas        */
 static float accelerateShip (ship s, float mass, float posX, float posY, char c) {
     float dx = posX - s.posX;
@@ -55,6 +58,10 @@ void initPlayer (ship *p, int playerID, WINDOW *w) {
 
     /* Vida da nave  */
     p->life = 100.0;
+
+    /* Inicializa os especiais com FALSE*/
+    p->shield = FALSE;
+    p->superShoot = FALSE;
 
     /* Inicializa as máscaras */
     for (i = 0; i < 16; i++)
@@ -199,8 +206,12 @@ ship increaseTimeShip (ship player, int maxX, int minX,
     }
     new.aceX   = player.aceX;
     new.aceY   = player.aceY;
+    new.shield = player.shield;
     new.charge = player.charge;
     new.timeForCharge = 0.0;
+    new.shield = player.shield;
+    new.superShoot = player.superShoot;
+
     if (player.charge < MAX_CHARGE) {
         new.timeForCharge = player.timeForCharge + dt;
         if (new.timeForCharge >= 2.0) {

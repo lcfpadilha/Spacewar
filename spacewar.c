@@ -133,9 +133,11 @@ int main (int argc, char** argv) {
         showShip (player1, w);
         showShip (player2, w);
         i = 0;
-        /* Mostrando o powerUp se houver. */
+
+        /* Mostrando o powerUp se houver e checando colisão. */
         showPowerUp (w);
-        checkPowerUpCollision (world, player1, player2);
+        checkPowerUpCollision (world, &player1, &player2, w);
+        
         /* Mostrando todos os projéteis que ainda estão vivos */
         while (i < numberOfProj) {
             /* Deleta aqueles que nao existem mais */

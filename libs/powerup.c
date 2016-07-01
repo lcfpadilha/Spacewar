@@ -12,6 +12,7 @@
 #include <time.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <unistd.h>
 #include "ship.h"
 #include "planet.h"
 #include "powerup.h"
@@ -27,6 +28,30 @@ typedef struct {
 static float t;
 static POWERUP *pu;
 
+/***********************      Funções privadas      *************************/
+static void showForo () {
+    printf ("FORO PRIVILGIADO!\n");
+}
+
+static void showDelacao () {
+    printf ("DELACAO PREMIADA!\n"); 
+}  
+
+static void showTriplex () {
+    printf ("TRIPLEX NO GUARUJA!\n");
+}
+
+static void selectPowerUp (ship *player, WINDOW *w) {
+    if (pu->type == 0)
+        showForo ();
+    else if (pu->type == 1)
+        showDelacao ();
+    else if (pu->type == 2)
+        showTriplex ();
+    sleep(2);
+} 
+
+/***********************      Funções públicas      *************************/
 void initPowerUp () {
     t = 0.0;
     pu = NULL;
@@ -61,7 +86,7 @@ void createPowerUp (planet world, float dt) {
     }
 }
 
-void checkPowerUpCollision (planet world, ship &player1, ship &player2) {
+void checkPowerUpCollision (planet world, ship *player1, ship *player2, WINDOW *w) {
     float dxPlanet;
     float dyPlanet;
     float dxP1;
@@ -73,19 +98,19 @@ void checkPowerUpCollision (planet world, ship &player1, ship &player2) {
         dyPlanet = world.posY - pu->posY;
         dxP1 = player1->posX - pu->posX;
         dyP1 = player1->posY - pu->posY;
-        dxP2 = player1->posX - pu->posX;
-        dyP2 = player1->posY - pu->posY;
+        dxP2 = player2->posX - pu->posX;
+        dyP2 = player2->posY - pu->posY;
         if (sqrt (dxPlanet * dxPlanet + dyPlanet * dyPlanet) < world.radius + PURADIUS) {
             free(pu);
             pu = NULL;
         }
         else if (sqrt (dxP1 * dxP1 + dyP1 * dyP1) < 23 + PURADIUS) {
-            printf("COLISAO COM PLAYER 1\n");
+            selectPowerUp (player1, w);
             free(pu);
             pu = NULL;
         }
         else if (sqrt (dxP2 * dxP2 + dyP2 * dyP2) < 23 + PURADIUS) {
-            printf("COLISAO COM PLAYER 2\n");
+            selectPowerUp (player2, w);
             free(pu);
             pu = NULL;
         }
@@ -93,12 +118,16 @@ void checkPowerUpCollision (planet world, ship &player1, ship &player2) {
 }
 
 void showPowerUp (WINDOW *w) {
+    int x;
+    int y;
     if (pu != NULL) {
+        x = 360 + pu->posX - PURADIUS;
+        y = 240 - pu->posY - PURADIUS;
         if (pu->type == 0)
-            WFillArc(w, 360 + pu->posX, 240 - pu->posY, 0, 360*64, 2 * PURADIUS, 2 * PURADIUS, WNamedColor("gold"));
+            WFillArc(w, x , y, 0, 360*64, 2 * PURADIUS, 2 * PURADIUS, WNamedColor("gold"));
         else if (pu->type == 1)
-            WFillArc(w, 360 + pu->posX, 240 - pu->posY, 0, 360*64, 2 * PURADIUS, 2 * PURADIUS, WNamedColor("DimGrey"));
+            WFillArc(w, x, y, 0, 360*64, 2 * PURADIUS, 2 * PURADIUS, WNamedColor("DimGrey"));
         else if (pu->type == 2)
-            WFillArc(w, 360 + pu->posX, 240 - pu->posY, 0, 360*64, 2 * PURADIUS, 2 * PURADIUS, WNamedColor("light green"));
+            WFillArc(w, x, y, 0, 360*64, 2 * PURADIUS, 2 * PURADIUS, WNamedColor("light green"));
     }
 }

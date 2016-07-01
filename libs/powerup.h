@@ -23,7 +23,7 @@ void initPowerUp ();
 
 void createPowerUp (planet world, float dt);
 
-void checkPowerUpCollision (planet world, ship player1, ship player2);
+void checkPowerUpCollision (planet world, ship *player1, ship *player2, WINDOW *w);
 
 void showPowerUp (WINDOW *w);
 
