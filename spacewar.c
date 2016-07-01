@@ -24,6 +24,7 @@
 #include "libs/scenes.h"
 #include "libs/ship.h"
 #include "libs/planet.h"
+#include "libs/powerup.h"
 #include "libs/projectile.h"
 
 #define W 720  /* Largura da janela. */
@@ -78,6 +79,9 @@ int main (int argc, char** argv) {
     /* Inicialização da segunda nave. */
     initPlayer (&player2, 2, w);
 
+    /* Inicialização dos power Ups*/
+    initPowerUp ();
+
     /* Inicialização dos projéteis. */
     bullets = initProj ();
     numberOfProj = 0;
@@ -93,6 +97,9 @@ int main (int argc, char** argv) {
     while (!collideP1 && !collideP2) {
         /* Verifica se alguma tecla foi pressionada */
         movePlayer (&player1, &player2, bullets, &numberOfProj, w, t);
+        
+        /* Cria um powerUp ou movimenta o já existente */
+        createPowerUp (world, t);
 
         /* Calculando a aceleração da nave pĺayer1. */
         accelerateShipToWorld (&player1, world);
@@ -126,7 +133,9 @@ int main (int argc, char** argv) {
         showShip (player1, w);
         showShip (player2, w);
         i = 0;
-
+        /* Mostrando o powerUp se houver. */
+        showPowerUp (w);
+        checkPowerUpCollision (world, player1, player2);
         /* Mostrando todos os projéteis que ainda estão vivos */
         while (i < numberOfProj) {
             /* Deleta aqueles que nao existem mais */
