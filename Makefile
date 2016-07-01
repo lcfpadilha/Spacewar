@@ -13,19 +13,19 @@ endif
 
 spacewar.o : spacewar.c
 
-libs/controller.o : libs/controller.c
+libs/controller.o : libs/controller.c libs/controller.h
 
-libs/getIndex.o : libs/getIndex.c
+libs/getIndex.o : libs/getIndex.c libs/getIndex.h
 
-libs/planet.o : libs/planet.c
+libs/planet.o : libs/planet.c libs/planet.h
 
-libs/powerup.o : libs/powerup.c
+libs/powerup.o : libs/powerup.c libs/powerup.h
 
-libs/projectile.o : libs/projectile.c
+libs/projectile.o : libs/projectile.c libs/projectile.h
 
-libs/scenes.o : libs/scenes.c
+libs/scenes.o : libs/scenes.c libs/scenes.h
 
-libs/ship.o : libs/ship.c
+libs/ship.o : libs/ship.c libs/ship.h
 
-libs/xwc.o : libs/xwc.c
+libs/xwc.o : libs/xwc.c libs/xwc.h
 

@@ -37,7 +37,7 @@ int main (int argc, char** argv) {
     #else
     
     /* Declaração de variáveis */
-    int numberOfProj, i, j; 
+    int numberOfProj, i, j, dmg; 
     int changeIndex = FALSE, collideP1 = FALSE, collideP2 = FALSE;
     float t;
 
@@ -132,11 +132,12 @@ int main (int argc, char** argv) {
         /* Mostrando as naves na tela. */
         showShip (player1, w);
         showShip (player2, w);
-        i = 0;
-
+        
         /* Mostrando o powerUp se houver e checando colisão. */
         showPowerUp (w);
         checkPowerUpCollision (world, &player1, &player2, w);
+
+        i = 0;
         
         /* Mostrando todos os projéteis que ainda estão vivos */
         while (i < numberOfProj) {
@@ -146,20 +147,27 @@ int main (int argc, char** argv) {
             else {
                 changeIndex = TRUE;
                 bullets[i] = increaseTimeProjectile (bullets[i], W/2, -W/2, H/2, -H/2, t);
-                
+                if (bullets[i].doubleDamage)
+                    dmg = 68;
+                else
+                    dmg = 34;
                 /* Se algum colidiu com alguma nave, deleta o projétil e nao anda o índice,
                   pois bullets[i] vai ser diferente e ainda retira vida da respectiva nave.*/
                 if (hasCollidedProj (player1, bullets[i])) {
-                    player1.life -= 34;
-                    if (player1.life <= 0)
-                        collideP1 = TRUE;
+                    if (!player1.shield) {
+                        player1.life -= dmg;
+                        if (player1.life <= 0)
+                            collideP1 = TRUE;
+                    }
                     deleteBullet (bullets, numberOfProj--, i);
                     changeIndex = FALSE;
                 }
                 else if (hasCollidedProj (player2, bullets[i])) {
-                    player2.life -= 34;
-                    if (player2.life <= 0)
-                        collideP2 = TRUE;
+                    if (!player2.shield) {
+                        player2.life -= dmg;
+                        if (player2.life <= 0)
+                            collideP2 = TRUE;
+                    }
                     deleteBullet (bullets, numberOfProj--, i);
                     changeIndex = FALSE;
                 }

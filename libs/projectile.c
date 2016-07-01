@@ -23,6 +23,9 @@
 #define CENTERY 240  /* Centro y da imagem. */
 #define MAX_VEL 300  /* Velocidade maxima.   */
 #define LIFE_T  2.0  /* Tempo de vida de um projétil */
+#define LIFE_T_SPECIAL 3.5 /* Temp de vida de um projetil especial */
+#define TRUE 1
+#define FALSE 0
 
 /*      Funções e variáveis privadas        */
 static int size; /* tamanho do array de projectile  */
@@ -67,9 +70,16 @@ void shoot (projectile *bullets, int n, ship player) {
     bullets[n].posY = player.posY + sin (player.direction) * 30;
     bullets[n].velX = cos (player.direction) * 200;
     bullets[n].velY = sin (player.direction) * 200;
-    bullets[n].mass = 1.0;
     bullets[n].aceX = bullets[n].aceY = 0.0;
     bullets[n].lifeTime = LIFE_T;
+    if (player.superShot) {
+        bullets[n].doubleDamage = TRUE;
+        bullets[n].mass = 200.0;
+    }
+    else {
+        bullets[n].doubleDamage = FALSE;
+        bullets[n].mass = 2.0;
+    }
     strcpy (bullets[n].playerID, player.name);
 }
 
@@ -106,6 +116,7 @@ projectile increaseTimeProjectile (projectile p, int maxX, int minX,
     new->posY = p.posY + new->velY * dt;
     new->aceX = p.aceX;
     new->aceY = p.aceY;
+    new->doubleDamage = p.doubleDamage;
     new->lifeTime = p.lifeTime - dt;
     strcpy (new->playerID, p.playerID);
     /* Ajustando posição caso tenha excedido o tamanho máximo ou mínimo */
@@ -180,6 +191,8 @@ void showBullet (projectile bullet, WINDOW *w, PIC bulletImg[], MASK bulletMsk[]
     SetMask (w, bulletMsk[index]);
     PutPic (w, bulletImg[index], 0, 0, 10, 10, x, y);
     UnSetMask (w);
+    if (bullet.doubleDamage) 
+        WArc(w, x, y, 0, 360*64, 10, 10, WNamedColor("DimGrey"));
 }
 
 void freeBulletImg (PIC bulletImg[], MASK bulletMsk[], PIC bulletAux[]) {

@@ -32,7 +32,8 @@ typedef struct {
     char name[10];
     float mass, posX, posY, velX, velY, aceX, aceY;
     float direction, timeForCharge, life;
-    int charge, shield, superShoot;
+    float timeForShield, timeForSS;
+    int charge, shield, superShot;
     PIC img[16];
     PIC aux[16];
     MASK msk[16];

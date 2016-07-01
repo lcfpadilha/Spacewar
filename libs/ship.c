@@ -19,11 +19,12 @@
 #include "ship.h"
 
 
-#define G 1.0        /* Constante gravitacional universal. */
+#define G 0.005        /* Constante gravitacional universal. */
 #define CENTERX 360  /* Centro x da imagem. */
 #define CENTERY 240  /* Centro y da imagem. */
 #define MAX_VEL 240  /* Velocidade máxima da nave*/
 #define MAX_CHARGE 6  /* Carga máxima de tiros. */
+#define TIME_FOR_SPECIAL 6.5 /* Tempo máximo de especiais*/
 
 #define FALSE 0
 #define TRUE 1
@@ -61,7 +62,9 @@ void initPlayer (ship *p, int playerID, WINDOW *w) {
 
     /* Inicializa os especiais com FALSE*/
     p->shield = FALSE;
-    p->superShoot = FALSE;
+    p->superShot = FALSE;
+    p->timeForSS = 0.0;
+    p->timeForShield = 0.0;
 
     /* Inicializa as máscaras */
     for (i = 0; i < 16; i++)
@@ -210,13 +213,31 @@ ship increaseTimeShip (ship player, int maxX, int minX,
     new.charge = player.charge;
     new.timeForCharge = 0.0;
     new.shield = player.shield;
-    new.superShoot = player.superShoot;
+    new.timeForShield = player.timeForShield;
+    new.superShot = player.superShot;
+    new.timeForSS = player.timeForSS;
 
     if (player.charge < MAX_CHARGE) {
         new.timeForCharge = player.timeForCharge + dt;
         if (new.timeForCharge >= 2.0) {
             new.charge = MAX_CHARGE;
             new.timeForCharge = 0.0;
+        }
+    }
+
+    if (new.shield) {
+        new.timeForShield += dt;
+        if (new.timeForShield >= TIME_FOR_SPECIAL) {
+            new.shield = FALSE;
+            new.timeForShield = 0.0;
+        }
+    }
+
+    if (new.superShot) {
+        new.timeForSS += dt;
+        if (new.timeForSS >= TIME_FOR_SPECIAL) {
+            new.superShot = FALSE;
+            new.timeForSS = 0.0;
         }
     }
 
@@ -250,6 +271,8 @@ void showShip (ship player, WINDOW *w) {
     SetMask (w, player.msk[index]);
     PutPic (w, player.img[index], 0, 0, 46, 46, x, y);
     UnSetMask (w);
+    if (player.shield) 
+        WArc(w, x, y, 0, 360*64, 50, 50, WNamedColor("gold"));
 }
 
 void showShipLife (ship player1, ship player2, WINDOW *w) {

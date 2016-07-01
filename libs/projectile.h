@@ -27,6 +27,7 @@
 typedef struct {
     float mass, posX, posY, velX, velY, aceX, aceY;
     float lifeTime;
+    int doubleDamage;
     char playerID[10];
 } projectile;
 
