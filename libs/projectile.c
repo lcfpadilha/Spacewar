@@ -191,6 +191,7 @@ void showBullet (projectile bullet, WINDOW *w, PIC bulletImg[], MASK bulletMsk[]
     SetMask (w, bulletMsk[index]);
     PutPic (w, bulletImg[index], 0, 0, 10, 10, x, y);
     UnSetMask (w);
+    /* Desenhando o superShot */
     if (bullet.doubleDamage) 
         WArc(w, x, y, 0, 360*64, 10, 10, WNamedColor("DimGrey"));
 }

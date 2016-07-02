@@ -5,7 +5,7 @@
  *
  *
  *  Arquivo:       powerup.c
- *  Dependências:  ship.h xwc.h
+ *  Funções necessárias para os power Ups do jogo.
  *
  ******************************************************************************/
 #include <math.h>
@@ -23,9 +23,9 @@ typedef struct {
     float posX, posY, velX, velY;
 } POWERUP;
 
-#define PU_RADIUS 7.5
-#define LIFE_TIME 7.0
-#define TIME_FOR_NEXT 4.5
+#define PU_RADIUS 7.5 /* raio da imagem do power Up*/
+#define LIFE_TIME 7.0 /* tempo que o power up fica na tela */
+#define TIME_FOR_NEXT 4.5 /* tempo de espera para o próximo power Up*/
 
 /*******************     Variáveis globais privadas     *********************/
 static float t;
@@ -85,7 +85,6 @@ void createPowerUp (planet world, float dt) {
             srand (time (NULL));
             pu = malloc (sizeof (POWERUP));
             pu->type = (int) (3 * (rand() / (float) RAND_MAX));
-            pu->type = 1;
             ang = 2 * M_PI * rand() / (float) RAND_MAX;
             pu->posX = (world.radius + 20.0) * cos (ang);
             pu->posY = (world.radius + 20.0)* sin (ang);

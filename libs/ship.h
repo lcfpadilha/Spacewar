@@ -25,9 +25,11 @@
 // velX (velocidade na direção x), velY (análogo para Y), aceX (aceleração na 
 // direção x), aceY, (análogo para Y), direction (ângulo formado pela direção 
 // da nave e o eixo x em radianos), timeForCharge (tempo para recarga dos tiros),
-// life(vida da nave) img, aux e msk (para a geração de imagens). As úlimas 3 são 
-// vetores com 16 posições, onde cada posição representa um ângulo 
-// (ver em img/player*). */
+// life(vida da nave), timeForShield (tempo do escudo da nave), timeForSS (tempo
+// do SuperShot), charge (carga de tirs da nave), shield (booleano que diz se há
+// escud ou nao), superShot (booleano que diz se há tiro mais forte ou nao) 
+// img, aux e msk (para a geração de imagens). As úlimas 3 são vetores com 
+// 16 posições, onde cada posição representa um ângulo (ver em img/player*). */
 typedef struct {
     char name[10];
     float mass, posX, posY, velX, velY, aceX, aceY;
