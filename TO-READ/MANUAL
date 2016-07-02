@@ -2,10 +2,12 @@ Nomes: Gustavo Henrique Faustino Silva        Números USP: 9298260
        Leonardo de Carvalho F. P. Aguilar                  9298295
        Luís Felipe de Melo Costa Silva                     9297961
 
-Manual de Usuário para SPACEWAR
+Manual de Usuário para SPACEWAR: BATTLE FOR BRASILIA
 
-- SPACEWAR é um jogo que se passa no espaço sideral. Tem 2 naves ao redor de um 
-planeta, que tentam vencer uma batalha contra a outra.
+- SPACEWAR: BATTLE FOR BRASILIA é um jogo que se passa no espaço sideral, próximo ao Planeta 
+Planaltus, onde a nave da raça Mortalldels combate contra a nave da raça Coxynias para o domínio
+do planeta! Você deve escolher uma raça e lutar bravamente contra seu inimigo, usando a sabedoria
+e o auxílio de sua raça que estará em solo Planaltico lançando melhorias para você!
 
 PARA JOGAR
 
@@ -20,27 +22,35 @@ $ ./spacewar
 
 - Então o jogo começa. Pressione a tecla [enter] para jogar!
 
-- O jogo tem 2 jogadores, que são controlados assim:
+- O jogo tem 2 jogadores, um para cada raça, que são controlados assim:
 	
-	PLAYER 1 (nave vermelha): [W] - ACELERAÇÃO
-	          				  [A] - ESQUERDA
-	          				  [S] - TIRO
-	          				  [D] - DIREITA
+	MORTADELS (nave vermelha): [W] - ACELERAÇÃO
+	          				   [A] - ESQUERDA
+	          				   [S] - TIRO
+	          				   [D] - DIREITA
 
-	PLAYER 2 (nave azul):     [CIMA] - ACELERAÇÃO
+	COXYNIAS (nave azul):     [CIMA] - ACELERAÇÃO
 	          			      [ESQUERDA] - ESQUERDA
 	          			      [BAIXO] - TIRO
 	          			      [DIREITA] - DIREITA
 - A sua nave possui 6 tiros seguidos e o tempo de espera para recarga é de 2 segundo,
 então, aproveite com cuidado eles!
+- Além disso, os habitantes do planeta Planaltus estarão constantemente interferindo
+na batalha, lançando PowerUps para os combatentes. Os PowerUps são:
+  * Foro Privilegiado: Garante escudo temporariamente.
+  * Delação Premiada: Dobra o dano dos tiros e aumenta a velocidade dos mesmos.
+  * Triplex no Guarujá: Regenera 100% da vida.
+- Como os Planaltuanos não gostam muito de respeitar leis, os PowerUps feito por 
+eles também não respeitam a lei da gravidade. Além disso, o efeito do Foro
+Privilegiado e da Delação Premiada duram 6.5 segundos. 
 - Para que haja um vencedor é necessário que uma das naves exploda. Isso pode 
 acontecer de três maneiras: 
-	1) Uma nave recebe três tiros da outra nave.
+	1) Uma nave recebe três tiros comuns da outra nave.
 	2) A nave se choca com o planeta.
 	3) As naves se chocam. Nesse caso, acontece o empate.
 
 - Para pausar o jogo, pressione [enter] a qualquer momento.
 
-- Para fechar a janela, pressione [esc].
+- Para fechar a janela, após o final do jogo, pressione [esc].
 
 - BOA DIVERSÃO!

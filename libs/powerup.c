@@ -33,24 +33,59 @@ static POWERUP *pu;
 
 /***********************      Funções privadas      *************************/
 static void selectPowerUp (ship *player, WINDOW *w) {
-    PIC img;
+    PIC info, infoAux, img;
+    MASK infoMASK;
+    /* Power Up Foro Privilegiado */
     if (pu->type == 0) {
-        img = ReadPic(w, "img/powerUps/foro.xpm", NULL);
-        PutPic(w, img, 0, 0, 250, 180, 235, 150);
+        img      = ReadPic (w, "img/powerUps/foro.xpm", NULL);
+        infoMASK = NewMask (w, 720, 480);
+        info     = ReadPic (w, "img/powerUps/foroInfo.xpm", NULL);
+        infoAux  = ReadPic (w, "img/powerUps/foroInfo_MASK.xpm", infoMASK);
+
+        PutPic(w, img, 0, 0, 250, 180, 235, 110);
+
+        SetMask (w, infoMASK);
+        PutPic (w, info, 0, 0, 720, 480, 0, 0);
+        UnSetMask (w);
+
         player->shield = 1;
     }
+    /* Power Up Delacao Premiada */
     else if (pu->type == 1) {
-        img = ReadPic(w, "img/powerUps/delacao.xpm", NULL);
-        PutPic(w, img, 0, 0, 250, 167, 235, 156.5);
+        img      = ReadPic(w, "img/powerUps/delacao.xpm", NULL);
+        infoMASK = NewMask (w, 720, 480);
+        info     = ReadPic (w, "img/powerUps/delacaoInfo.xpm", NULL);
+        infoAux  = ReadPic (w, "img/powerUps/delacaoInfo_MASK.xpm", infoMASK);
+
+        PutPic(w, img, 0, 0, 250, 167, 235, 116.5);
+
+        SetMask (w, infoMASK);
+        PutPic (w, info, 0, 0, 720, 480, 0, 0);
+        UnSetMask (w);
+
         player->superShot = 1;
     }
+    /* Power Up Triplex No Guaruja */
     else {
-        img = ReadPic(w, "img/powerUps/triplex.xpm", NULL);
-        PutPic(w, img, 0, 0, 250, 150, 235, 165);
+        img      = ReadPic(w, "img/powerUps/triplex.xpm", NULL);
+        infoMASK = NewMask (w, 720, 480);
+        info     = ReadPic (w, "img/powerUps/triplexInfo.xpm", NULL);
+        infoAux  = ReadPic (w, "img/powerUps/triplexInfo_MASK.xpm", infoMASK);
+
+        PutPic(w, img, 0, 0, 250, 150, 235, 125);
+
+        SetMask (w, infoMASK);
+        PutPic (w, info, 0, 0, 720, 480, 0, 0);
+        UnSetMask (w);
+
         if (player->life < 100.0) player->life = 100.0;
     }
-    sleep(2);
+    sleep(5);
+
     FreePic (img);
+    FreePic (info);
+    FreePic (infoAux);
+    FreePic (infoMASK);
 } 
 
 /***********************      Funções públicas      *************************/

@@ -18,7 +18,7 @@
 #include "getIndex.h"
 #include "projectile.h"
 
-#define G 1.0        /* Constante gravitacional universal. */
+#define G 0.8        /* Constante gravitacional universal. */
 #define CENTERX 360  /* Centro x da imagem. */
 #define CENTERY 240  /* Centro y da imagem. */
 #define MAX_VEL 300  /* Velocidade maxima.   */

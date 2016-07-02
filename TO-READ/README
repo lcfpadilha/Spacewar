@@ -16,6 +16,8 @@ enter. Basicamente a simulação é feita calculando as variações de tempo e
 posição (a partir das entradas do teclado) e então desenhando os corpos na tela 
 até o jogo acabar (uma ou as duas naves explodirem).
 
+Todos os módulos abaixo estão localizado no diretório lib/:
+
 - planet.c: Implementa a estrutura de dados que é o planeta. A struct planet tem
 os seguintes campos:
     float
@@ -44,6 +46,12 @@ foram implementadas em uma struct da seguinte forma:
         timeForCharge: tempo para a recarga dos tiros (2 segundos).
                        A nave tem 6 tiros, então ela precisa recarregar.
         life: vida da nave.
+        timeForShield: tempo decorrido do Escudo.
+        timeForSS: tempo decorrido do SuperShot.
+    int
+        charge: carga de tiros que a nave possui.
+        shield: booleano que determina se a nave possui escudo ou não.
+        superShot: booleano que determina se a nave possui superShot ou não.
     PIC 
         img[16], aux[16]: um vetor de ponteiros para imagens. A razão de termos 
                           um vetor de imagens é que cada uma dessas está 
@@ -56,9 +64,9 @@ nave; função de aceleração em relação ao planeta; função de aceleração
 relação a outra nave; função de aceleração em relação aos projéteis; função de 
 atualização de informações após uma variação de tempo; função que verifica
 colisão com outra nave; função que detecta colisão com o planeta; função que 
-verifica colisão com o projétil; e a função de desenho das naves na tela. Como 
-temos duas naves, temos 2 conjuntos de imagens diferentes: um para a nave azul e
-outro para a nave vermelha.
+verifica colisão com o projétil; a função de desenho das naves na tela; função
+que libera todas as imagens carregadas. Como  temos duas naves, temos 2 conjuntos 
+de imagens diferentes: um para a nave Mortalldels e outro para a nave Coxynia.
 
 - projectile.c: Parecido com os dois módulos anteriores, mas para os projéteis.
 Cada projétil foi implementado como o seguinte:
@@ -69,6 +77,8 @@ Cada projétil foi implementado como o seguinte:
                     possuem velocidade máxima de 300);
         aceX, aceY: vetor da aceleração;
         lifeTime: tempo de vida do projétil.
+    int
+        doubleDamage: booleano que determina se o projétil possui dano duplo.
     char
         playerID[10]: nome da nave que disparou o projétil. Isso impede que
                       a nave que disparou o projétil seja atingida por ele.
@@ -77,10 +87,10 @@ suas estruturas são iguais e os cálculos são análogos.
 Este módulo ainda conta com as funções de inicialização, criação de projétil, 
 deleção de projétil, de aceleração em relação ao planeta, de aceleração em 
 relação às naves, função de aceleração em relação aos outros projéteis, de 
-atualização de informações, detecção de colisão, inicialização de imagens, e de 
-desenho na tela. 
+atualização de informações, detecção de colisão, inicialização de imagens, de 
+desenho na tela e de liberação das imagens carregadas. 
 
-- getIndex.c: módulo que possui funções utlizadas pelos módulos ship.c e 
+- getIndex.c: Módulo que possui funções utlizadas pelos módulos ship.c e 
 projectile.c que devolve o ângulo referente à velocidade da nave, com isso, 
 obtém sua orientação. O resultado é um número de 0 a 15 que é relacionado com as 
 imagens declaradas para os corpos.
@@ -97,7 +107,22 @@ jogo. Tem as seguintes funções: inicializar detecção do teclado, mover as na
 verificar quando tem que fechar a janela do jogo, e de verificar leitura do 
 [enter].
 
-OBS.: O motivo do uso algumas constantes, como a constante gravitacional (1.0), 
-a massa do planeta (2400000.0), a massa das naves (5500.0), dos projeteis (1.0), 
-além das velocidades máximas e o impulso dado quando pressionado a tecla, foi 
-exclusivamente pensado para melhor experiência do usuário, esperamos que gostem!
+-powerUp: Módulo que possui funções relacionadas aos powerUps do jogo, ela cria
+um novo próximo ao planeta ou atualiza o existente; Verifia colisão se houver 
+Power Up presente e se caso haja com uma nave, atualiza os valores
+desta dependendo do tipo de especial, mostra as informações e imagem do
+Power Up ativado; mostra o Power Up que está no jogo através de um circulo com 
+uma cor que varia dependendo do seu tipo (amarelo para tipo 1, cinza para tipo
+2 e verde para tipo 3);
+Para este módulo foi criado uma estrutura de dados específica para PowerUp, 
+contendo seu tipo, posição e velocidade, além disso, usamos uma váriavel
+global interna ao módulo do tipo POWERUP, que guarda o PowerUp que está no
+jogo ou, se não houver nenhum, essa variavel guardará NULL.
+Vale ressaltar que quando o P.U. está no jogo, ele não afeta nem é afetado
+pela gravidade.
+
+OBS.: O motivo do uso algumas constantes, como a constante gravitacional (0.8), 
+a massa do planeta (2400000.0), a massa das naves (5500.0), dos projeteis (1.0
+para prójetel simples e 200.0 para projétil especial),  além das velocidades 
+máximas e o impulso dado quando pressionado a tecla, foi exclusivamente pensado 
+para melhor experiência do usuário, esperamos que gostem!

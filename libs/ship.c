@@ -19,14 +19,14 @@
 #include "ship.h"
 
 
-#define G 0.5        /* Constante gravitacional universal. */
+#define G 0.8        /* Constante gravitacional universal. */
 #define CENTERX 360  /* Centro x da imagem. */
 #define CENTERY 240  /* Centro y da imagem. */
 #define MAX_VEL 240  /* Velocidade máxima da nave*/
 #define MAX_CHARGE 6  /* Carga máxima de tiros. */
 #define TIME_FOR_SPECIAL 6.5 /* Tempo máximo de especiais*/
 
-#define FALSE 0
+#define FALSE 0 
 #define TRUE 1
 
 /*      Funções privadas        */

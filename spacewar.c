@@ -147,6 +147,8 @@ int main (int argc, char** argv) {
             else {
                 changeIndex = TRUE;
                 bullets[i] = increaseTimeProjectile (bullets[i], W/2, -W/2, H/2, -H/2, t);
+                
+                /* Seleciona o dano do projetil. */
                 if (bullets[i].doubleDamage)
                     dmg = 68;
                 else
