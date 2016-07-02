@@ -5,7 +5,7 @@
  *
  *
  *  Arquivo:       powerup.c
- *  Funções necessárias para os power Ups do jogo.
+ *  Funções de manipulação e controle dos power Ups do jogo.
  *
  ******************************************************************************/
 #include <math.h>
@@ -23,13 +23,13 @@ typedef struct {
     float posX, posY, velX, velY;
 } POWERUP;
 
-#define PU_RADIUS 7.5 /* raio da imagem do power Up*/
-#define LIFE_TIME 7.0 /* tempo que o power up fica na tela */
+#define PU_RADIUS 7.5     /* raio da imagem do power Up             */
+#define LIFE_TIME 7.0     /* tempo que o power up fica na tela      */
 #define TIME_FOR_NEXT 4.5 /* tempo de espera para o próximo power Up*/
 
 /*******************     Variáveis globais privadas     *********************/
-static float t;
-static POWERUP *pu;
+static float t;     /* tempo transcorrido desde a criação/deleção do PWRUP. */
+static POWERUP *pu; /* PWRUP atual. */
 
 /***********************      Funções privadas      *************************/
 static void selectPowerUp (ship *player, WINDOW *w) {
@@ -81,7 +81,6 @@ static void selectPowerUp (ship *player, WINDOW *w) {
         if (player->life < 100.0) player->life = 100.0;
     }
     sleep(5);
-
     FreePic (img);
     FreePic (info);
     FreePic (infoAux);

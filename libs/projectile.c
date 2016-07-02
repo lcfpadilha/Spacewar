@@ -7,7 +7,7 @@
  *  Arquivo:       projectile.c
  *  Dependências:  getIndex.h xwc.h
  * 
- *  Arquivo .c de projectile.h
+ *  Arquivo .c de projectile.h, manipula todos os dados relacionados aos projeteis
  *
  ******************************************************************************/ 
 
@@ -18,18 +18,19 @@
 #include "getIndex.h"
 #include "projectile.h"
 
-#define G 0.8        /* Constante gravitacional universal. */
-#define CENTERX 360  /* Centro x da imagem. */
-#define CENTERY 240  /* Centro y da imagem. */
-#define MAX_VEL 300  /* Velocidade maxima.   */
-#define LIFE_T  2.0  /* Tempo de vida de um projétil */
+#define G 0.8              /* Constante gravitacional universal. */
+#define CENTERX 360        /* Centro x da imagem. */
+#define CENTERY 240        /* Centro y da imagem. */
+#define MAX_VEL 300        /* Velocidade maxima.   */
+#define LIFE_T  2.0        /* Tempo de vida de um projétil */
 #define LIFE_T_SPECIAL 3.5 /* Temp de vida de um projetil especial */
 #define TRUE 1
 #define FALSE 0
 
-/*      Funções e variáveis privadas        */
+/*******************     Variáveis globais privadas     *********************/
 static int size; /* tamanho do array de projectile  */
 
+/***********************      Funções privadas      *************************/
 static float accelerateProjectile (projectile p, float mass, float posX, float posY, 
                             char c) {
     float dx = posX - p.posX;
@@ -51,7 +52,7 @@ static projectile *resize (int max, int size, projectile *old) {
     return new;
 }
 
-/*      Funções públicas        */
+/***********************      Funções públicas      *************************/
 projectile *initProj () {
     projectile *bullets;
 

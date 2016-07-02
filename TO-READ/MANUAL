@@ -42,7 +42,9 @@ na batalha, lançando PowerUps para os combatentes. Os PowerUps são:
   * Triplex no Guarujá: Regenera 100% da vida.
 - Como os Planaltuanos não gostam muito de respeitar leis, os PowerUps feito por 
 eles também não respeitam a lei da gravidade. Além disso, o efeito do Foro
-Privilegiado e da Delação Premiada duram 6.5 segundos. 
+Privilegiado e da Delação Premiada duram 6.5 segundos.
+-Ao pegar um PowerUp, o jogo ficará congelado por 5 segundos, mostrando qual 
+PowerUp foi adquirido e o seu efeito.
 - Para que haja um vencedor é necessário que uma das naves exploda. Isso pode 
 acontecer de três maneiras: 
 	1) Uma nave recebe três tiros comuns da outra nave.

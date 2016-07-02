@@ -5,11 +5,10 @@
  *
  *
  *  Arquivo:       scenes.c
- *  Dependências:  xwc.h
  *
  ******************************************************************************/
 #include <stdio.h>
-#include "xwc.h"
+#include "scenes.h"
 
 void showMainMenu (WINDOW *w) {
     PIC menu = ReadPic (w, "img/etc/spacewar.xpm", NULL);

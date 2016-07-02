@@ -5,7 +5,7 @@
  *
  *
  *  Arquivo:       projectile.h
- *  Dependências:  getIndex.h xwc.h
+ *  Dependências:  planet.h ship.h
  * 
  *  Tem uma estrutura de bala, é responsável pelas funções de aceleração e 
  *  incremento de tempo delas, além de exibi-las na tela.
@@ -19,12 +19,11 @@
 #ifndef PROJECTILE_H
 #define PROJECTILE_H
 
-/* Cada bala é declarada como uma estrutura que possui os campos name (nome, de 
-// até 10 caracteres), mass (massa), posX (coordenada x), posY (coordenada Y), 
-// velX (velocidade na direção x), velY (análogo para Y), aceX (aceleração na 
-// direção x), aceY, (análogo para Y), lifeTime (tempo de vida), doubleDamage
-// (booleano que verifica se o projetil possui dano duplo) e playerID[10],
-// que define quem a atirou. */
+/* Cada bala é declarada como uma estrutura que possui os campos mass (massa), 
+// posX (coordenada x), posY (coordenada Y), velX (velocidade na direção x), 
+// velY (análogo para Y), aceX (aceleração na direção x), aceY, (análogo para 
+// Y), lifeTime (tempo de vida), doubleDamage (booleano que verifica se o 
+// projetil possui dano duplo) e playerID[10], que define quem a atirou. */
 typedef struct {
     float mass, posX, posY, velX, velY, aceX, aceY;
     float lifeTime;

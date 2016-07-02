@@ -7,7 +7,7 @@
  *  Arquivo:       ship.c
  *  Dependências:  getIndex.h xwc.h
  * 
- *  Arquivo .c de ship.h
+ *  Arquivo .c de ship.h, manipula os dados relacionados aos ships do jogo
  *
  ******************************************************************************/ 
 
@@ -29,7 +29,7 @@
 #define FALSE 0 
 #define TRUE 1
 
-/*      Funções privadas        */
+/***********************      Funções privadas      *************************/
 static float accelerateShip (ship s, float mass, float posX, float posY, char c) {
     float dx = posX - s.posX;
     float dy = posY - s.posY;
@@ -40,8 +40,7 @@ static float accelerateShip (ship s, float mass, float posX, float posY, char c)
     return accel * dy / delta;
 }
 
-
-/*        Funções Públicas        */
+/***********************      Funções públicas      *************************/
 void initPlayer (ship *p, int playerID, WINDOW *w) {
     int i;
     /* Leitura dos dados do player */

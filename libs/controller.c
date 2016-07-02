@@ -5,7 +5,7 @@
  *
  *
  *  Arquivo:       controller.h
- *  Dependências:  ship.h xwc.h math.h
+ *  Arquivo de controle do jogo.
  *
  ******************************************************************************/
 #include <stdio.h>
@@ -27,11 +27,12 @@
 #define ENTER 36
 #define QUIT   9
 
-/* Variáveis privadas */
+/*******************     Variáveis globais privadas     *********************/
 static int acc1Press, fire1Press, left1Press, right1Press;
 static int acc2Press, fire2Press, left2Press, right2Press; 
 static float time, timeP1, timeP2;
 
+/***********************      Funções públicas      *************************/
 void initDetection (WINDOW *w) {
     InitKBD(w);
     acc1Press = fire1Press = left1Press = right1Press = FALSE;

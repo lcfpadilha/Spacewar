@@ -7,7 +7,7 @@
  *  Arquivo:       projectile.c
  *  Dependências:  xwc.h
  * 
- *  Arquivo .c de planet.c
+ *  Arquivo .c de planet.c contendo todas as funções pra manipulação do planet.
  *
  ******************************************************************************/ 
 #include <stdio.h>

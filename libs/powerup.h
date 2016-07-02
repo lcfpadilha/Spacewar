@@ -22,13 +22,15 @@
 /* Inicia as variaveis relacionadas aos powerUps. */
 void initPowerUp ();
 
-/* Cria um powerUp ou atualiza as posições do powerUp já existente. */
+/* Cria um powerUp aleatório próximo ao planet world ou atualiza as posições do
+// powerUp já existentes dado que o tempo passado foi de dt. */
 void createPowerUp (planet world, float dt);
 
-/* Verifica se há colisão do powerUp ativo com algum dos objetos. */
+/* Verifica se há colisão do powerUp atual no jogo com algum dos objetos, se um ship
+// colidiu, atualiza os dados dela dependendo do tipo do powerUp. */
 void checkPowerUpCollision (planet world, ship *player1, ship *player2, WINDOW *w);
 
-/* Mostra o powerUp que está ativo (se houver algum ativo). */
+/* Mostra o powerUp que está no jogo (se houver algum ativo), na janela w. */
 void showPowerUp (WINDOW *w);
 
 #endif

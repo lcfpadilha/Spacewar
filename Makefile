@@ -29,3 +29,6 @@ libs/ship.o : libs/ship.c libs/ship.h
 
 libs/xwc.o : libs/xwc.c libs/xwc.h
 
+clean:
+	rm -f spacewar *.o libs/*.o
+

@@ -17,7 +17,7 @@
 #define SCENES_H
 
 /* As funções abaixo mostram telas específicas do jogo, como são descritas
-// abaixo: */
+// abaixo:                                                                  */
 
 /* Tela inicial. */
 void showMainMenu (WINDOW *w);

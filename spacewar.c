@@ -6,13 +6,10 @@
  *
  *  Arquivo:       spacewar.c
  *  Compilação:    make
- *  Dependências:  planet.h ship.h projectile.h simulation.h xwc.h
- *  Execução:      ./spacewar t < entrada.txt
+ *  Dependências:  controller.h scenes.h ship.h planet.h powerup.h projectile.h
+ *  Execução:      ./spacewar
  * 
- *  Recebe as informações sobre um certo número de corpos no espaço (planeta, 
- *  naves e projéteis), e calcula as forças resultantes em cada corpo a cada t 
- *  instantes de um total de T instantes (t <= T), gerando imagens referentes 
- *  a esse processo.
+ *  Inicia e controla o jogo SPACEWAR: BATTLE FOR BRASILIA!  
  *
  ******************************************************************************/      
 #include <unistd.h>
