@@ -92,22 +92,22 @@ void initPlayer (ship *p, int playerID, WINDOW *w) {
         p->img[14] = ReadPic (w, "img/playerOne/playerOne15.xpm", NULL);
         p->img[15] = ReadPic (w, "img/playerOne/playerOne16.xpm", NULL);
 
-        p->aux[0] =  ReadPic (w, "img/playerMask/playerMask01.xpm", p->msk[0]);
-        p->aux[1] =  ReadPic (w, "img/playerMask/playerMask02.xpm", p->msk[1]);
-        p->aux[2] =  ReadPic (w, "img/playerMask/playerMask03.xpm", p->msk[2]);
-        p->aux[3] =  ReadPic (w, "img/playerMask/playerMask04.xpm", p->msk[3]);
-        p->aux[4] =  ReadPic (w, "img/playerMask/playerMask05.xpm", p->msk[4]);
-        p->aux[5] =  ReadPic (w, "img/playerMask/playerMask06.xpm", p->msk[5]);
-        p->aux[6] =  ReadPic (w, "img/playerMask/playerMask07.xpm", p->msk[6]);
-        p->aux[7] =  ReadPic (w, "img/playerMask/playerMask08.xpm", p->msk[7]);
-        p->aux[8] =  ReadPic (w, "img/playerMask/playerMask09.xpm", p->msk[8]);
-        p->aux[9] =  ReadPic (w, "img/playerMask/playerMask10.xpm", p->msk[9]);
-        p->aux[10] = ReadPic (w, "img/playerMask/playerMask11.xpm", p->msk[10]);
-        p->aux[11] = ReadPic (w, "img/playerMask/playerMask12.xpm", p->msk[11]);
-        p->aux[12] = ReadPic (w, "img/playerMask/playerMask13.xpm", p->msk[12]);
-        p->aux[13] = ReadPic (w, "img/playerMask/playerMask14.xpm", p->msk[13]);
-        p->aux[14] = ReadPic (w, "img/playerMask/playerMask15.xpm", p->msk[14]);
-        p->aux[15] = ReadPic (w, "img/playerMask/playerMask16.xpm", p->msk[15]);
+        p->aux[0] =  ReadPic (w, "img/playerOneMask/playerOneMask01.xpm", p->msk[0]);
+        p->aux[1] =  ReadPic (w, "img/playerOneMask/playerOneMask02.xpm", p->msk[1]);
+        p->aux[2] =  ReadPic (w, "img/playerOneMask/playerOneMask03.xpm", p->msk[2]);
+        p->aux[3] =  ReadPic (w, "img/playerOneMask/playerOneMask04.xpm", p->msk[3]);
+        p->aux[4] =  ReadPic (w, "img/playerOneMask/playerOneMask05.xpm", p->msk[4]);
+        p->aux[5] =  ReadPic (w, "img/playerOneMask/playerOneMask06.xpm", p->msk[5]);
+        p->aux[6] =  ReadPic (w, "img/playerOneMask/playerOneMask07.xpm", p->msk[6]);
+        p->aux[7] =  ReadPic (w, "img/playerOneMask/playerOneMask08.xpm", p->msk[7]);
+        p->aux[8] =  ReadPic (w, "img/playerOneMask/playerOneMask09.xpm", p->msk[8]);
+        p->aux[9] =  ReadPic (w, "img/playerOneMask/playerOneMask10.xpm", p->msk[9]);
+        p->aux[10] = ReadPic (w, "img/playerOneMask/playerOneMask11.xpm", p->msk[10]);
+        p->aux[11] = ReadPic (w, "img/playerOneMask/playerOneMask12.xpm", p->msk[11]);
+        p->aux[12] = ReadPic (w, "img/playerOneMask/playerOneMask13.xpm", p->msk[12]);
+        p->aux[13] = ReadPic (w, "img/playerOneMask/playerOneMask14.xpm", p->msk[13]);
+        p->aux[14] = ReadPic (w, "img/playerOneMask/playerOneMask15.xpm", p->msk[14]);
+        p->aux[15] = ReadPic (w, "img/playerOneMask/playerOneMask16.xpm", p->msk[15]);
     }
 
     /* Inicializa as imagens do player 2 */
